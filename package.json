@@ -1,0 +1,31 @@
+{
+  "name": "jeoparty-web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Vue/Vite frontend for the Jeoparty quiz game (replaces the Flask/Jinja frontend)",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "vue-tsc --noEmit"
+  },
+  "dependencies": {
+    "pinia": "^2.2.6",
+    "socket.io-client": "^4.8.1",
+    "vue": "^3.5.13",
+    "vue-i18n": "^11.1.14",
+    "vue-router": "^4.4.5"
+  },
+  "devDependencies": {
+    "@types/node": "^26.4.1",
+    "@vitejs/plugin-vue": "^5.2.1",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.3",
+    "vue-tsc": "^2.1.10"
+  },
+  "allowScripts": {
+    "esbuild@0.25.12": true,
+    "vue-demi@0.14.10": true
+  }
+}

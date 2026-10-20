@@ -1,0 +1,87 @@
+{
+    "pages": {
+        "presenter/lobby": {
+            "lobby_url_1": "Gå til:",
+            "lobby_url_2": "og skriv passwordet",
+            "lobby_url_3": "for at deltage!",
+            "none_joined": "Ingen endnu..."
+        },
+        "presenter/selection": {
+            "finale_reveal_1": "Kategorien er...",
+            "finale_reveal_2": "Tid til at satse hele butikken!"
+        },
+        "presenter/question": {
+            "daily_double_wager_1": "Hvor mange point tør",
+            "daily_double_wager_2": "satse?",
+            "game_feed_buzz_1": "buzzede ind efter",
+            "game_feed_buzz_2": "sekunder",
+            "game_feed_power_1": "brugte sin",
+            "game_feed_power_2": "power-up",
+            "correct_answer": "Korrekt!",
+            "correct_answer_was": "Rigtige svar var",
+            "wrong_answer_time": "Ikke mere tid",
+            "wrong_answer_given": "Forkert...",
+            "wrong_answer_cowards": "Ingen kan/tør svare"
+        },
+        "presenter/finale": {
+            "wager_header": "Hvad folk satsede:",
+            "answer_header": "Svaret er",
+            "player_answer": "svarede",
+            "endscreen_teaser": "Hvilket betyder...",
+            "answer_skipped": "og intet ændrer sig",
+            "answer_correct": "vinder",
+            "answer_wrong": "taber",
+            "nothing": "ingenting"
+        },
+        "presenter/endscreen": {
+            "winner_flavor_1": "vandt!!! Bøj jer i støvet!",
+            "winner_flavor_2": "har samme mængde point, de vinder begge to!!!",
+            "winner_flavor_3": "har alle samme mængde point! De er alle vindere!!!",
+            "name": "Spiller",
+            "score": "Score",
+            "buzzes": "Buzzes",
+            "correct": "Korrekt",
+            "wrong": "Forkert"
+        },
+        "contestant/lobby": {
+            "welcome_header": "Velkommen til Jeoparty!",
+            "placeholder_name": "Dit Navn",
+            "color_label": "Din Farve",
+            "join": "Deltag",
+            "wrong_password": "Kunne ikke joine: Forkert password",
+            "game_over": "Kunne ikke joine: Spillet er slut",
+            "lobby_full": "Failed to joine: Lobbyen er fuld"
+        },
+        "contestant/game": {
+            "waiting_for_start": "Venter på at spillet starter...",
+            "game_over_winner_header": "Du vandt!",
+            "game_over_winner_text": "TILLYKKE!!! 🥳🎉🎈🤩🤩🤩",
+            "game_over_loser_header": "Bedre held næste gang!",
+            "game_over_loser_text": "Du vandt desværre ikke, men du kæmpede bravt!",
+            "round_header": "Runde",
+            "question_header": "Spørgsmål",
+            "finale_wager_amount": "Du satsede",
+            "finale_answer": "Skriv svaret herunder",
+            "finale_no_wager": "Du kan ikke svare da du ikke satsede nogle point.",
+            "daily_double_wager": "Din tur! Hvor mange point tør du satse?",
+            "finale_wager": "Hvor mange point tør du satse?!",
+            "your_turn": "Din tur til at vælge et spørgsmål!",
+            "waiting_turn_1": "Venter på at",
+            "waiting_turn_2": "vælger et spørgsmål...",
+            "waiting_turn_3": "Venter på at en anden spiller vælger et spørgsmål...",
+            "waiting_double": "svarer på Bonus Spørgsmålet...",
+            "invalid_wager": "Ugyldig mængde point, skal være mellem"
+        },
+        "global": {
+            "points": "point",
+            "points_short": "pt",
+            "contestants": "deltagere",
+            "for": "til",
+            "and": "og",
+            "daily_double": "Bonus Spørgsmål!",
+            "connecting": "Forbinder til serveren",
+            "waiting": "Venter på deltagere",
+            "confirm_remove": "Er du sikker på du vil fjerne denne deltager?"
+        }
+    }
+}
