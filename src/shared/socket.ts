@@ -62,7 +62,7 @@ export interface ContestantServerEvents extends CommonServerEvents {
   power_up_used: (powerId: PowerUpType) => void;
   /** Partial GameContestant -- any of score/hits/misses/powers. */
   contestant_info_changed: (info: JsonString) => void;
-  ping_response: (contestantId: string, timeSent: number) => void;
+  ping_response: (timeSent: number) => void;
   /** Preformatted to 1dp, clamped to 1-999. */
   ping_calculated: (ping: string) => void;
   /** [min, max] */
@@ -82,11 +82,7 @@ export interface ContestantServerEvents extends CommonServerEvents {
 export interface PresenterClientEvents {
   presenter_join: (userId: string) => void;
   presenter_join_timeout: () => void;
-  /**
-   * `refresh` made contestants reload the page. With a persistent socket that
-   * is obsolete -- see the handshake note in API_BLUEPRINT.md.
-   */
-  setup_complete: (refresh: boolean) => void;
+  stage_ready: () => void;
   contestant_join_timeout: () => void;
   remove_contestant: (contestantId: string) => void;
   mark_question_active: (questionId: string, ack?: () => void) => void;
@@ -111,13 +107,13 @@ export interface PresenterClientEvents {
 
 export interface ContestantClientEvents {
   contestant_join: (contestantId: string) => void;
-  buzzer_pressed: (contestantId: string) => void;
-  use_power_up: (contestantId: string, powerId: PowerUpType) => void;
-  ping_request: (contestantId: string, timestamp: number) => void;
-  calculate_ping: (contestantId: string, sent: number, received: number) => void;
-  make_daily_wager: (contestantId: string, amount: string) => void;
-  make_finale_wager: (contestantId: string, amount: string) => void;
-  give_finale_answer: (contestantId: string, answer: string) => void;
+  buzzer_pressed: () => void;
+  use_power_up: (powerId: PowerUpType) => void;
+  ping_request: (timestamp: number) => void;
+  calculate_ping: (sent: number, received: number) => void;
+  make_daily_wager: (amount: string) => void;
+  make_finale_wager: (amount: string) => void;
+  give_finale_answer: (answer: string) => void;
 }
 
 export type PresenterSocket = Socket<PresenterServerEvents, PresenterClientEvents>;

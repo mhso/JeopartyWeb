@@ -79,7 +79,7 @@ export const useGameStore = defineStore("contestantGame", () => {
       stopPing();
     });
 
-    socket.on("contestant_joined", () => startPing(myId));
+    socket.on("contestant_joined", () => startPing());
 
     // Presenter moved to a new stage. Refetch instead of reloading.
     socket.on("state_changed", () => void refresh(gameId));
@@ -135,8 +135,8 @@ export const useGameStore = defineStore("contestantGame", () => {
     });
 
     // -- ping ---------------------------------------------------------------
-    socket.on("ping_response", (contestantId, timeSent) => {
-      socket!.emit("calculate_ping", contestantId, timeSent, Date.now());
+    socket.on("ping_response", (timeSent) => {
+      socket!.emit("calculate_ping", timeSent, Date.now());
     });
     socket.on("ping_calculated", (value) => {
       ping.value = Number.parseFloat(value);
@@ -181,10 +181,10 @@ export const useGameStore = defineStore("contestantGame", () => {
     }
   }
 
-  function startPing(contestantId: string): void {
+  function startPing(): void {
     stopPing();
     pingTimer = window.setInterval(() => {
-      socket?.emit("ping_request", contestantId, Date.now());
+      socket?.emit("ping_request", Date.now());
     }, PING_INTERVAL_MS);
   }
 
@@ -200,25 +200,25 @@ export const useGameStore = defineStore("contestantGame", () => {
   function pressBuzzer(): void {
     if (buzzer.value !== "active" || !me.value) return;
     buzzer.value = "pressed";
-    socket?.emit("buzzer_pressed", me.value.id);
+    socket?.emit("buzzer_pressed");
   }
 
   function usePowerUp(powerId: PowerUpType): void {
     const power = powerUps.value.find((p) => p.type === powerId);
     if (!me.value || !power?.enabled || power.used) return;
-    socket?.emit("use_power_up", me.value.id, powerId);
+    socket?.emit("use_power_up", powerId);
   }
 
   function makeDailyWager(amount: string): void {
-    if (me.value) socket?.emit("make_daily_wager", me.value.id, amount);
+    if (me.value) socket?.emit("make_daily_wager", amount);
   }
 
   function makeFinaleWager(amount: string): void {
-    if (me.value) socket?.emit("make_finale_wager", me.value.id, amount);
+    if (me.value) socket?.emit("make_finale_wager", amount);
   }
 
   function giveFinaleAnswer(answer: string): void {
-    if (me.value) socket?.emit("give_finale_answer", me.value.id, answer);
+    if (me.value) socket?.emit("give_finale_answer", answer);
   }
 
   function teardown(): void {

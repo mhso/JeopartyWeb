@@ -60,6 +60,10 @@ export const useGameStore = defineStore("presenterGame", () => {
     });
     socket.on("disconnect", () => (connected.value = false));
 
+    if (state.value?.game.stage != "lobby") {
+      socket.on("presenter_joined", () => socket?.emit("stage_ready"));
+    }
+
     socket.on("all_contestants_joined", () => (contestantsReady.value = true));
 
     socket.on("contestant_joined", (json) => {
@@ -123,6 +127,7 @@ export const useGameStore = defineStore("presenterGame", () => {
   // Thin on purpose: the flow composable decides *when*, the store owns *how*.
 
   const emit = {
+    stageReady: () => socket?.emit("stage_ready"),
     enableBuzz: (activePlayers: Record<string, boolean>) =>
       socket?.emit("enable_buzz", JSON.stringify(activePlayers)),
     disableBuzz: () => socket?.emit("disable_buzz"),
