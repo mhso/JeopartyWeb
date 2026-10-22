@@ -104,7 +104,7 @@ export const useGameStore = defineStore("contestantGame", () => {
 
     // -- power-ups ----------------------------------------------------------
     socket.on("power_up_enabled", (powerId) => setPowerEnabled([powerId], true));
-    socket.on("power_ups_disabled", (powerIds) => setPowerEnabled(powerIds, false));
+    socket.on("power_ups_disabled", (powerIds) => setPowerEnabled(JSON.parse(powerIds), false));
     socket.on("power_up_used", (powerId) => {
       const power = powerUps.value.find((p) => p.type === powerId);
       if (power) {
@@ -143,8 +143,9 @@ export const useGameStore = defineStore("contestantGame", () => {
     });
 
     // -- wagers -------------------------------------------------------------
-    socket.on("invalid_wager", (min, max) => {
-      wagerBounds.value = [min, max];
+    socket.on("invalid_wager", (payload: string) => {
+      let parsed = JSON.parse(payload);
+      wagerBounds.value = [parsed["min"], parsed["max"]];
       wagerAccepted.value = false;
     });
     socket.on("daily_wager_made", () => (wagerAccepted.value = true));

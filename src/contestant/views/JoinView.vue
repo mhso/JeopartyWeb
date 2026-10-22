@@ -13,7 +13,7 @@ import { api, ApiError } from "@shared/api";
 import { setLanguage, pageStrings } from "@shared/i18n";
 import { staticUrl } from "@shared/static";
 import { useWakeLock } from "@shared/composables/useWakeLock";
-import type { LobbyInfo } from "@shared/types";
+import type { ContestantLobbyInfo } from "@shared/types";
 
 import { resizeImage, isValidImageType } from "../avatar";
 
@@ -22,7 +22,7 @@ const router = useRouter();
 const wakeLock = useWakeLock();
 const t = pageStrings("contestant/lobby");
 
-const lobby = ref<LobbyInfo | null>(null);
+const lobby = ref<ContestantLobbyInfo | null>(null);
 const name = ref("");
 const color = ref(randomColor());
 const password = ref("");

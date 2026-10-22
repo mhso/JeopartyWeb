@@ -62,7 +62,7 @@ To serve the build from Flask instead of the Jinja pages, start the backend with
 | Area | Status |
 |---|---|
 | Shared: API client, typed socket, types, i18n, countdown, wake lock, action key | Done |
-| Contestant: join, buzzer, power-ups, wagers, finale, game over | Done, needs the API behind it |
+| Contestant: join, buzzer, power-ups, wagers, finale, game over | Done |
 | Dashboard: auth, home, create game, create pack, cheatsheet | Done |
 | Dashboard: pack editor | Store done; editing UI is Phase 2 |
 | Presenter: shell, socket store, footer, countdown, theme overlays, lobby, selection, finale, endscreen | Skeleton |

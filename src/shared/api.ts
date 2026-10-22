@@ -13,7 +13,7 @@ import type {
   ContestantState,
   Game,
   GameSummary,
-  LobbyInfo,
+  ContestantLobbyInfo,
   PackSaveSuccess,
   PresenterState,
   QuestionPack,
@@ -128,7 +128,7 @@ export const api = {
     post<PresenterState>(`/game/${gameId}/advance/${stage}`),
 
   // -- contestant -----------------------------------------------------------
-  lobbyInfo: (joinCode: string) => get<LobbyInfo>(`/lobby/${joinCode}`),
+  lobbyInfo: (joinCode: string) => get<ContestantLobbyInfo>(`/lobby/${joinCode}`),
   /** Multipart because of the avatar upload. Sets the contestant cookie. */
   join: (form: FormData) => post<{ game_id: string; contestant_id: string }>("/contestant/join", form),
   contestantState: (gameId: string) => get<ContestantState>(`/game/${gameId}/contestant-state`),

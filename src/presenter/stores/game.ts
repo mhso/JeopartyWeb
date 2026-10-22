@@ -15,12 +15,14 @@ import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 
 import { api } from "@shared/api";
-import { setLanguage } from "@shared/i18n";
+import { pageStrings, setLanguage } from "@shared/i18n";
 import { connectPresenter, type PresenterSocket } from "@shared/socket";
 import type { Contestant, PowerUpType, PresenterState, StageType } from "@shared/types";
 
 /** Stages the presenter can explicitly advance to. */
 export type AdvanceTarget = Extract<StageType, "selection" | "question" | "finale_result" | "ended">;
+
+const feedStrings = pageStrings("presenter/question");
 
 export const useGameStore = defineStore("presenterGame", () => {
   const state = ref<PresenterState | null>(null);
@@ -101,16 +103,25 @@ export const useGameStore = defineStore("presenterGame", () => {
     apply(await api.advanceStage(game.value.id, target));
     readyContestants.value.clear();
     feed.value = [];
+    spotlight.value = undefined;
   }
 
   // -- score bookkeeping ----------------------------------------------------
 
-  function adjustScore(contestantId: string, delta: number, correct: boolean): void {
-    const contestant = contestants.value.find((c) => c.id === contestantId);
-    if (!contestant) return;
-    contestant.score += delta;
-    if (correct) contestant.hits += 1;
-    else contestant.misses += 1;
+  function contestant(contestantId: string): Contestant | undefined {
+    return contestants.value.find((c) => c.id === contestantId);
+  }
+
+  /** Applies deltas to a contestant's score and buzz stats. Negative deltas undo. */
+  function adjustStats(
+    contestantId: string,
+    delta: Partial<Record<"score" | "hits" | "misses", number>>,
+  ): void {
+    const target = contestant(contestantId);
+    if (!target) return;
+    target.score += delta.score ?? 0;
+    target.hits += delta.hits ?? 0;
+    target.misses += delta.misses ?? 0;
   }
 
   function setTurn(contestantId: string | null): void {
@@ -119,8 +130,54 @@ export const useGameStore = defineStore("presenterGame", () => {
     }
   }
 
+  /**
+   * Footer highlight, overriding `has_turn` while set. presenter.js called this
+   * `setPlayerTurn(id, save=false)`: whoever is answering lights up without
+   * taking the turn. `undefined` follows `has_turn`; `null` highlights nobody.
+   */
+  const spotlight = ref<string | null | undefined>(undefined);
+
+  function isHighlighted(contestantId: string): boolean {
+    if (spotlight.value === undefined) return contestant(contestantId)?.has_turn ?? false;
+    return spotlight.value === contestantId;
+  }
+
+  function hasUnusedPower(contestantId: string, powerId: PowerUpType): boolean {
+    const power = contestant(contestantId)?.power_ups?.find((p) => p.type === powerId);
+    return power !== undefined && !power.used;
+  }
+
+  function markPowerUsed(contestantId: string, powerId: PowerUpType): void {
+    const power = contestant(contestantId)?.power_ups?.find((p) => p.type === powerId);
+    if (power) power.used = true;
+  }
+
+  // -- game feed ------------------------------------------------------------
+
   function addToFeed(html: string): void {
     feed.value.push({ id: `${Date.now()}-${feed.value.length}`, html });
+  }
+
+  function clearFeed(): void {
+    feed.value = [];
+  }
+
+  /** Contestant names are user input, so escape before they reach v-html. */
+  function contestantTag(contestantId: string): string {
+    const target = contestant(contestantId);
+    const name = (target?.name ?? "?").replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
+    const color = /^#?[0-9a-fA-F]{3,8}$/.test(target?.color ?? "") ? target!.color : "inherit";
+    return `<span style="color: ${color}; font-weight: 800">${name}</span>`;
+  }
+
+  function addBuzzToFeed(contestantId: string, seconds: string): void {
+    addToFeed(`${contestantTag(contestantId)} ${feedStrings("game_feed_buzz_1")} ${seconds} ${feedStrings("game_feed_buzz_2")}`);
+  }
+
+  function addPowerUseToFeed(contestantId: string, powerId: PowerUpType): void {
+    addToFeed(
+      `${contestantTag(contestantId)} ${feedStrings("game_feed_power_1")} <strong>${powerId}</strong> ${feedStrings("game_feed_power_2")}!`,
+    );
   }
 
   // -- emit wrappers --------------------------------------------------------
@@ -179,11 +236,19 @@ export const useGameStore = defineStore("presenterGame", () => {
     contestantsReady,
     readyContestants,
     feed,
+    spotlight,
     init,
     advance,
-    adjustScore,
+    contestant,
+    adjustStats,
     setTurn,
+    isHighlighted,
+    hasUnusedPower,
+    markPowerUsed,
     addToFeed,
+    clearFeed,
+    addBuzzToFeed,
+    addPowerUseToFeed,
     emit,
     rawSocket,
     teardown,

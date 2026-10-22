@@ -7,7 +7,7 @@
  * fit. The colour is a pure function of the background, so it's a computed;
  * the font size uses the same formula but no longer needs a reflow.
  */
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 
 import { staticUrl } from "@shared/static";
 import type { Contestant } from "@shared/types";
@@ -32,6 +32,43 @@ const nameFontSize = computed(
   () => `${Math.round(Math.max(120 - props.contestant.name.length * 3.3, 45))}%`,
 );
 
+/**
+ * presenter.js `triggerScoreUpdateAnimation`: the score pulses on change,
+ * bigger for bigger swings, green up / red down. Duration matches the 2s
+ * `animation-duration` on `.footer-contestant-entry-score`.
+ */
+const scoreAnimation = ref<{ name: string; className: string } | null>(null);
+let scoreAnimationTimer: number | null = null;
+
+watch(
+  () => props.contestant.score,
+  (score, previous) => {
+    const delta = score - previous;
+    if (!delta) return;
+
+    const size = Math.abs(delta);
+    const name =
+      size < 500
+        ? "scoreUpdatedSmall"
+        : size < 1000
+          ? "scoreUpdatedMedium"
+          : size < 1500
+            ? "scoreUpdatedLarge"
+            : "scoreUpdatedHuge";
+
+    // Clear first so a second change mid-animation restarts it.
+    scoreAnimation.value = null;
+    if (scoreAnimationTimer !== null) clearTimeout(scoreAnimationTimer);
+    requestAnimationFrame(() => {
+      scoreAnimation.value = {
+        name,
+        className: `score-animation-${delta >= 0 ? "correct" : "wrong"}`,
+      };
+      scoreAnimationTimer = window.setTimeout(() => (scoreAnimation.value = null), 2000);
+    });
+  },
+);
+
 function toggleEdit(): void {
   if (editing.value) {
     store.emit.editContestant(props.contestant.id, {
@@ -54,7 +91,7 @@ function remove(): void {
 <template>
   <div
     class="footer-contestant-entry"
-    :class="{ 'active-contestant-entry': contestant.has_turn }"
+    :class="{ 'active-contestant-entry': store.isHighlighted(contestant.id) }"
     :style="{ backgroundColor: contestant.color, color: textColor }"
     @mouseenter="hovered = true"
     @mouseleave="hovered = false"
@@ -72,7 +109,12 @@ function remove(): void {
       <div class="footer-contestant-entry-name" :style="{ fontSize: nameFontSize }">
         {{ contestant.name }}
       </div>
-      <div class="footer-contestant-entry-score" :contenteditable="editing">
+      <div
+        class="footer-contestant-entry-score"
+        :class="scoreAnimation?.className"
+        :style="{ animationName: scoreAnimation?.name ?? 'none' }"
+        :contenteditable="editing"
+      >
         {{ contestant.score }} {{ pointsLabel }}
       </div>
     </div>

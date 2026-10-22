@@ -64,6 +64,7 @@ export interface Question {
   question: string;
   answer: string;
   value: number;
+  used: boolean;
   extra: QuestionExtra;
 }
 
@@ -117,14 +118,11 @@ export interface QuestionPack {
  * "LAN") fit this shape; the only script in them set a video's volume and an
  * onended handler, which the "intro" overlay type covers.
  */
-export interface ThemeOverlay {
+interface ThemeOverlayBase {
   /** Which presenter stage this overlay appears on. */
-  stage: StageType;
-  type: "image" | "video" | "intro";
+  stage?: StageType;
   /** Relative to the theme's data path; resolve with `themeAssetUrl()`. */
-  src: string;
-  /** Applied verbatim as inline style. */
-  css?: Record<string, string | number>;
+  src?: string;
   loop?: boolean;
   muted?: boolean;
   autoplay?: boolean;
@@ -138,13 +136,25 @@ export interface ThemeOverlay {
   when?: "start_of_game" | "not_start_of_game";
 }
 
+export interface MediaOverlay extends ThemeOverlayBase {
+  type: "image" | "video" | "intro";
+  /** Applied verbatim as inline style. */
+  css?: Record<string, string | number>;
+}
+
+export interface StyleOverlay extends ThemeOverlayBase {
+  type: "style";
+  /** Selector -> declarations. */
+  css?: Record<string, Record<string, string | number>>;
+}
+
+export type ThemeOverlay = MediaOverlay | StyleOverlay;
+
 export interface Theme {
   id: string;
   name: string;
   public: boolean;
   language: Language;
-  /** Static path prefix for this theme's assets, e.g. "data/themes/<id>". */
-  data_path: string;
   bg_image: string | null;
   logo: string | null;
   overlays: ThemeOverlay[];
@@ -234,9 +244,11 @@ export interface AuthUser {
   user_name: string;
 }
 
-export interface JoinInfo {
+export interface PresenterLobbyInfo {
   join_url: string;
   lan_mode: boolean;
+  lobby_music: string | null;
+  lobby_volume: number | null;
 }
 
 /** GET /api/game/<id>/presenter-state */
@@ -246,7 +258,7 @@ export interface PresenterState {
   round_name: string;
   language: Language;
   /** Null outside the lobby stage */
-  join_info: JoinInfo;
+  lobby_info: PresenterLobbyInfo | null;
   /** Null outside the question/finale_question stages */
   question: ActiveQuestion | null;
   /** Board layout, null outside the selection stage */
@@ -285,7 +297,7 @@ export interface ContestantState {
 }
 
 /** GET /api/lobby/<join_code> -- public, no auth. */
-export interface LobbyInfo {
+export interface ContestantLobbyInfo {
   game_id: string;
   join_code: string;
   title: string;

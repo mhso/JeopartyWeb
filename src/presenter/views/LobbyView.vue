@@ -7,7 +7,7 @@
  * presenter's first keypress also satisfies the browser's autoplay gesture
  * requirement -- worth keeping for exactly that reason.
  */
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, capitalize } from "vue";
 import { useRouter } from "vue-router";
 
 import { pageStrings } from "@shared/i18n";
@@ -29,14 +29,8 @@ const musicStarted = ref(false);
 const lobbyMusic = computed(() => store.state?.game && musicSrc());
 function musicSrc(): string | undefined {
   // lobby_music comes back already prefixed with the pack's data path.
-  const pack = store.state?.game as unknown as { lobby_music?: string | null };
-  return staticUrl(pack?.lobby_music ?? null);
+  return staticUrl(store.state?.lobby_info?.lobby_music ?? null);
 }
-
-const joinUrl = computed(() => {
-  const code = store.game?.join_code;
-  return code ? `${window.location.origin}/jeoparty/${code}` : "";
-});
 
 async function begin(): Promise<void> {
   await store.advance("selection");
@@ -74,11 +68,11 @@ onMounted(() => {
 
     <div id="menu-lobby-url">
       <div>{{ t("lobby_url_1") }}</div>
-      <span id="menu-join-url">{{ joinUrl }}</span>
+      <span id="menu-join-url">{{ store.state?.lobby_info?.join_url }}</span>
       <div>{{ t("lobby_url_3") }}</div>
     </div>
 
-    <h3>{{ t("contestants") }}</h3>
+    <h3>{{ capitalize(t("contestants")) }}</h3>
 
     <div id="menu-contestants">
       <p v-if="!store.contestants.length" id="menu-no-contestants-placeholder">
@@ -102,5 +96,11 @@ onMounted(() => {
     </div>
   </div>
 
-  <audio v-if="lobbyMusic" ref="music" :src="lobbyMusic" loop />
+  <audio
+    v-if="lobbyMusic"
+    ref="music"
+    :src="lobbyMusic"
+    :volume="store.state?.lobby_info?.lobby_volume ?? 1"
+    loop 
+  />
 </template>

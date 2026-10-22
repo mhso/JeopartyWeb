@@ -4,13 +4,9 @@
  * finale category reveal that shares the route.
  *
  * Still to port from presenter.js (Phase 3):
- *   - goToQuestion's zoom animation: the tile scales 11x toward screen centre
- *     over 2.5s, then navigates. Now that navigation is client-side this can be
- *     a real <Transition> instead of a setTimeout racing a page load.
- *   - chooseStartingPlayer's slot-machine effect over the footer cards.
  *   - showFinaleCategory's staged header reveals.
  */
-import { computed, onMounted } from "vue";
+import { computed, onMounted, watch, ref } from "vue";
 import { useRouter } from "vue-router";
 
 import { pageStrings } from "@shared/i18n";
@@ -19,7 +15,7 @@ import { useActionKey } from "@shared/composables/useActionKey";
 
 import { useGameStore } from "../stores/game";
 
-defineProps<{ gameId: string }>();
+const props = defineProps<{ gameId: string }>();
 
 const store = useGameStore();
 const router = useRouter();
@@ -29,13 +25,75 @@ const t = pageStrings("presenter/selection");
 const categories = computed(() => store.state?.round?.categories ?? []);
 const isFinale = computed(() => store.stage === "finale_wager");
 
-async function pickQuestion(questionId: string): Promise<void> {
-  // Tell the server which question is live, wait for the ack, then advance.
-  // The ack is what the old code used to time its 2.6s zoom against.
-  store.emit.markQuestionActive(questionId, async () => {
+const zoomDone = ref(false);
+const questionActive = ref(false);
+
+async function advance() {
+  if (zoomDone.value && questionActive.value) {
     await store.advance("question");
     await router.push({ name: "question", params: { gameId: store.game!.id } });
+  }
+}
+
+watch([zoomDone, questionActive], advance);
+
+async function pickQuestion(questionId: string, event: MouseEvent): Promise<void> {
+  if (document.querySelector(".selection-question-box.zooming") != null) {
+    return;
+  }
+
+  const el = event.currentTarget as HTMLElement;
+
+  const bbox = el.getBoundingClientRect();
+  const distX = (window.innerWidth / 2) - (bbox.x + bbox.width / 2);
+  const distY = (window.innerHeight / 2) - (bbox.y + bbox.height / 2);
+
+  el.classList.add("zooming");
+
+  el.animate(
+    [{ transform: "none" }, { transform: `translate(${distX}px, ${distY}px) scale(11)` }],
+    { duration: 2000, easing: "ease-in", fill: "forwards" },
+  ).finished.then(() => {
+    zoomDone.value = true;
+    el.classList.remove("zooming");
   });
+
+  store.emit.markQuestionActive(questionId, async () => {
+    questionActive.value = true;
+  });
+}
+
+function chooseStartingPlayer() {
+  let playerEntries = document.querySelectorAll(".footer-contestant-entry");
+  let minIters = 30;
+  let maxIters = 40;
+  let iters = minIters + (maxIters - minIters) * Math.random();
+  let minWait = 25;
+  let maxWait = 420;
+
+  function showStartPlayerCandidate(iter: number) {
+      let wait = minWait + (maxWait - minWait) * (iter / iters);
+
+      setTimeout(() => {
+          let player = iter % playerEntries.length;
+          let playerId = store.contestants[player].id;
+
+          store.setTurn(playerId);
+
+          if (iter < iters) {
+              showStartPlayerCandidate(iter + 1);
+          }
+          else {
+              store.setTurn(playerId);
+              document.querySelectorAll(".selection-question-box").forEach((elem) => {
+                  elem.classList.remove("inactive");
+              });
+              store.emit.firstTurn(playerId);
+          }
+      }, wait);
+  }
+
+  showStartPlayerCandidate(0);
 }
 
 onMounted(() => {
@@ -47,6 +105,13 @@ onMounted(() => {
         await router.push({ name: "question", params: { gameId: store.game!.id } });
       },
     });
+  }
+  else {
+    setHandlers(
+      {
+        onAction: chooseStartingPlayer,
+      }
+    )
   }
   // TODO(phase-3): arrow-key board navigation (tabulateCategorySelection) and
   // Enter to pick, for presenting without a mouse.
@@ -73,8 +138,8 @@ onMounted(() => {
           v-for="question in category.questions"
           :key="question.id"
           class="selection-question-box"
-          :class="{ inactive: store.state?.start_of_game }"
-          @click="pickQuestion(question.id)"
+          :class="{ inactive: question.used || store.state?.start_of_game }"
+          @click="pickQuestion(question.id, $event)"
         >
           <span>{{ question.value }}</span>
         </div>
@@ -89,3 +154,10 @@ onMounted(() => {
     </div>
   </div>
 </template>
+
+<style scoped>
+.selection-question-box.zooming {
+  position: relative;
+  z-index: 999;
+}
+</style>

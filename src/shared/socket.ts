@@ -38,9 +38,9 @@ export interface PresenterServerEvents extends CommonServerEvents {
   contestant_joined: (contestant: JsonString) => void;
   contestant_disconnected: (contestantId: string) => void;
   /** [contestantId, secondsTaken] -- seconds is preformatted to 2dp. */
-  buzz_received: (payload: [string, string]) => void;
+  buzz_received: (payload: JsonString) => void;
   buzz_winner: (contestantId: string) => void;
-  power_up_used: (payload: [string, PowerUpType]) => void;
+  power_up_used: (payload: JsonString) => void;
   /** Emitted when a contestant has locked in a finale wager or answer. */
   contestant_ready: (contestantId: string) => void;
   daily_wager_made: (amount: number) => void;
@@ -58,7 +58,7 @@ export interface ContestantServerEvents extends CommonServerEvents {
   /** Acknowledges this contestant's own buzz reaching the server. */
   buzz_received: () => void;
   power_up_enabled: (powerId: PowerUpType) => void;
-  power_ups_disabled: (powerIds: PowerUpType[]) => void;
+  power_ups_disabled: (powerIds: JsonString) => void;
   power_up_used: (powerId: PowerUpType) => void;
   /** Partial GameContestant -- any of score/hits/misses/powers. */
   contestant_info_changed: (info: JsonString) => void;
@@ -66,7 +66,7 @@ export interface ContestantServerEvents extends CommonServerEvents {
   /** Preformatted to 1dp, clamped to 1-999. */
   ping_calculated: (ping: string) => void;
   /** [min, max] */
-  invalid_wager: (min: number, max: number) => void;
+  invalid_wager: (payload: JsonString) => void;
   daily_wager_made: (amount: number) => void;
   finale_wager_enabled: () => void;
   finale_wager_made: () => void;
