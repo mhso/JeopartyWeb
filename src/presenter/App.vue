@@ -2,7 +2,7 @@
 import { computed, nextTick, onMounted, onUnmounted, watch } from "vue";
 import { useRoute } from "vue-router";
 
-import { staticUrl } from "@shared/static";
+import { themeAssetUrl } from "@shared/static";
 
 //import ConnectionStatus from "./components/ConnectionStatus.vue";
 import PresenterFooter from "./components/PresenterFooter.vue";
@@ -29,7 +29,8 @@ watch(
 
 const backgroundStyle = computed(() => {
   const image = store.state?.theme?.bg_image;
-  return image ? { backgroundImage: `url(${staticUrl(image)})` } : undefined;
+  const themeId = `data/themes/${store.state?.theme?.id}`;
+  return image ? { backgroundImage: `url(${themeAssetUrl(themeId, image)})` } : undefined;
 });
 
 // The contestant strip is absent from the lobby (which has its own list) and

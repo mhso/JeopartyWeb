@@ -27,7 +27,7 @@ const feedStrings = pageStrings("presenter/question");
 export const useGameStore = defineStore("presenterGame", () => {
   const state = ref<PresenterState | null>(null);
   const connected = ref(false);
-  const contestantsReady = ref(false);
+  const contestantsJoined = ref(false);
   /** Contestant ids that have locked in a finale wager or answer. */
   const readyContestants = ref(new Set<string>());
   /** Rolling log of buzzes and power-up uses for the on-screen feed. */
@@ -66,7 +66,7 @@ export const useGameStore = defineStore("presenterGame", () => {
       socket.on("presenter_joined", () => socket?.emit("stage_ready"));
     }
 
-    socket.on("all_contestants_joined", () => (contestantsReady.value = true));
+    socket.on("all_contestants_joined", () => (contestantsJoined.value = true));
 
     socket.on("contestant_joined", (json) => {
       const contestant = JSON.parse(json) as Contestant;
@@ -233,7 +233,7 @@ export const useGameStore = defineStore("presenterGame", () => {
     stage,
     contestantWithTurn,
     connected,
-    contestantsReady,
+    contestantsJoined,
     readyContestants,
     feed,
     spotlight,

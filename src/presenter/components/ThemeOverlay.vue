@@ -81,8 +81,6 @@ function onIntroEnded(event: Event): void {
         :volume="overlay.volume"
         @ended="overlay.type === 'intro' && onIntroEnded($event)"
       />
-  
-      <!-- "style" handled separately, e.g. compiled into a <style> block -->
     </template>
   </template>
 </template>

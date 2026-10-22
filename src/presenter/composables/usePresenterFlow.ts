@@ -260,12 +260,22 @@ export function usePresenterFlow(question: ActiveQuestion, options: FlowOptions)
     });
   }
 
+  function recordsAreEqual(a: Object | null, b: Object | null) {
+    if (a == null || b == null) return a == b;
+  
+    return Object.keys(a).length === Object.keys(b).length &&
+    (Object.keys(a) as (keyof typeof a)[]).every((key) => {
+      return (
+        Object.prototype.hasOwnProperty.call(b, key) && a[key] === b[key]
+      );
+    });
+  }
+
   function showIndicator(next: AnswerIndicator): void {
-    console.log("Show indicator:", next);
     indicator.value = next;
     indicatorVisible.value = false;
     later(() => {
-      if (indicator.value !== next) return;
+      if (!recordsAreEqual(indicator.value, next)) return;
       indicatorVisible.value = true;
       if (next.correct) {
         void playSound(store.state?.correct_sound);

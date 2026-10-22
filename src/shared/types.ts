@@ -64,7 +64,6 @@ export interface Question {
   question: string;
   answer: string;
   value: number;
-  used: boolean;
   extra: QuestionExtra;
 }
 
@@ -235,6 +234,14 @@ export interface ActiveQuestion extends Question {
   used: boolean;
 }
 
+export interface ActiveQuestionCategory extends QuestionCategory {
+  questions: ActiveQuestion[]
+}
+
+export interface ActiveQuestionRound extends QuestionRound {
+  categories: ActiveQuestionCategory[];
+}
+
 // ---------------------------------------------------------------------------
 // API payloads
 // ---------------------------------------------------------------------------
@@ -262,7 +269,7 @@ export interface PresenterState {
   /** Null outside the question/finale_question stages */
   question: ActiveQuestion | null;
   /** Board layout, null outside the selection stage */
-  round: QuestionRound | null;
+  round: ActiveQuestionRound | null;
   start_of_game: boolean;
   /** Game winners, null outside ended stage */
   winners: Pick<Contestant, "id" | "name" | "color" | "avatar">[];

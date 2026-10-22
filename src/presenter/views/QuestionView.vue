@@ -133,11 +133,11 @@ onMounted(() => {
 
   // presenter.js `finalizeSetup`: hijack unlocks once everyone is connected.
   // Usually already true by now -- contestants joined back in the lobby.
-  if (store.contestantsReady) {
+  if (store.contestantsJoined) {
     flow.enableHijackWhenReady();
   } else {
     const stop = watch(
-      () => store.contestantsReady,
+      () => store.contestantsJoined,
       (ready) => {
         if (!ready) return;
         stop();

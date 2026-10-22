@@ -10,7 +10,7 @@ import { computed, onMounted, watch, ref } from "vue";
 import { useRouter } from "vue-router";
 
 import { pageStrings } from "@shared/i18n";
-import { staticUrl } from "@shared/static";
+import { staticUrl, themeAssetUrl } from "@shared/static";
 import { useActionKey } from "@shared/composables/useActionKey";
 
 import { useGameStore } from "../stores/game";
@@ -37,12 +37,21 @@ async function advance() {
 
 watch([zoomDone, questionActive], advance);
 
-async function pickQuestion(questionId: string, event: MouseEvent): Promise<void> {
+async function pickQuestion(questionId: string, isDouble: boolean, event: MouseEvent): Promise<void> {
   if (document.querySelector(".selection-question-box.zooming") != null) {
     return;
   }
 
   const el = event.currentTarget as HTMLElement;
+
+  if (isDouble) {
+    let span = el.getElementsByTagName("span").item(0);
+    if (span) {
+      span.textContent = `${t("daily_double")}!`;
+    }
+  
+    el.style.animationName = "dailyDouble";
+  }
 
   const bbox = el.getBoundingClientRect();
   const distX = (window.innerWidth / 2) - (bbox.x + bbox.width / 2);
@@ -52,10 +61,9 @@ async function pickQuestion(questionId: string, event: MouseEvent): Promise<void
 
   el.animate(
     [{ transform: "none" }, { transform: `translate(${distX}px, ${distY}px) scale(11)` }],
-    { duration: 2000, easing: "ease-in", fill: "forwards" },
+    { duration: 2000, easing: "ease-in-out", fill: "forwards" },
   ).finished.then(() => {
     zoomDone.value = true;
-    el.classList.remove("zooming");
   });
 
   store.emit.markQuestionActive(questionId, async () => {
@@ -96,6 +104,15 @@ function chooseStartingPlayer() {
   showStartPlayerCandidate(0);
 }
 
+function logo() {
+  let themeLogo = store.state?.theme?.logo;
+  if (themeLogo) {
+    return themeAssetUrl(`data/themes/${store.state?.theme?.id}`, themeLogo);
+  }
+
+  return staticUrl("img/logo.webp");
+}
+
 onMounted(() => {
   if (isFinale.value) {
     setHandlers({
@@ -123,7 +140,7 @@ onMounted(() => {
     <div id="logo-wrapper">
       <img
         id="jeopardy-logo"
-        :src="staticUrl(store.state?.theme?.logo ?? 'img/logo.webp')"
+        :src="logo()"
         alt="Jeoparty"
       />
     </div>
@@ -139,7 +156,7 @@ onMounted(() => {
           :key="question.id"
           class="selection-question-box"
           :class="{ inactive: question.used || store.state?.start_of_game }"
-          @click="pickQuestion(question.id, $event)"
+          @click="pickQuestion(question.id, question.daily_double, $event)"
         >
           <span>{{ question.value }}</span>
         </div>
