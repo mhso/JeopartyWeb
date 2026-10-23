@@ -3,20 +3,18 @@
  * Ports templates/presenter/endscreen.html + startWinnerParty() /
  * startEndscreenAnimation() in presenter.js.
  *
- * PHASE 3 for the party animation (confetti video, music, the strobing colour
- * overlay); the scores table below is complete.
- *
  * Note the winner description is built here rather than server-side. The old
  * `endscreen` route assembled an HTML string in Python, interpolating
  * contestant names straight into <span style="color: ..."> -- user-controlled
  * text in markup. Structured data in, markup out, escaped by Vue.
  */
-import { computed, onMounted } from "vue";
+import { onMounted } from "vue";
 
 import { pageStrings } from "@shared/i18n";
 import { staticUrl } from "@shared/static";
 import { useActionKey } from "@shared/composables/useActionKey";
 
+import Logo from "../components/Logo.vue";
 import { useGameStore } from "../stores/game";
 
 defineProps<{ gameId: string }>();
@@ -26,23 +24,83 @@ const { setHandlers } = useActionKey();
 const t = pageStrings("presenter/endscreen");
 
 const winners = store.state?.winners || [];
+const sorted = store.game?.game_contestants?.sort(
+  (a, b) => {
+    if (a.score > b.score) {
+      return -1;
+    }
+    if (a.score < b.score) {
+      return 1;
+    }
+
+    return 0;
+  }
+)
+
+function startEndscreenAnimation() {
+  let endscreenMusic = document.getElementById("endscreen-music") as HTMLAudioElement;
+  let confettiVideo = document.getElementById("endscreen-confetti-video") as HTMLVideoElement;
+  let overlay = document.getElementById("endscreen-techno-overlay") as HTMLDivElement;
+
+  endscreenMusic.play();
+  confettiVideo.play();
+  overlay.classList.remove("d-none");
+
+  let colors = ["#1dd8265e", "#1d74d85e", "#c90f0f69", "#deb5115c"];
+  let colorIndex = 0;
+
+  let initialDelay = 320;
+  let intervalDelay = 472;
+
+  setTimeout(() => {
+    overlay.style.backgroundColor = colors[colorIndex];
+    colorIndex += 1;
+
+    setInterval(() => {
+      overlay.style.backgroundColor = colors[colorIndex];
+
+      colorIndex += 1;
+
+      if (colorIndex == colors.length) {
+        colorIndex = 0;
+      }
+    }, intervalDelay);
+  }, initialDelay);
+
+  // Add listener for stopping the party when the police knocks down the door
+  setHandlers({
+    onAction: () => {
+      overlay.classList.add("d-none");
+      endscreenMusic.pause();
+      confettiVideo.pause();
+      confettiVideo.classList.add("d-none");
+    }
+  });
+}
+
+function startWinnerParty() {
+  const endscreenSound = document.getElementById("endscreen-sound") as HTMLAudioElement;
+  if (endscreenSound) {
+    endscreenSound.onended = function() {
+      startEndscreenAnimation();
+    }
+    endscreenSound.play();
+  }
+  else {
+    startEndscreenAnimation();
+  }
+}
 
 onMounted(() => {
-  // TODO(phase-3): confetti video + shooting_star.mp3 + strobing overlay,
-  // and a second action press to stop the party.
-  setHandlers({});
+  setHandlers({
+    onAction: startWinnerParty
+  });
 });
 </script>
 
 <template>
   <div id="endscreen-wrapper">
-    <div id="logo-wrapper">
-      <img
-        id="jeopardy-logo"
-        :src="staticUrl(store.state?.theme?.logo ?? 'img/logo.webp')"
-        alt="Jeoparty"
-      />
-    </div>
+    <Logo />
 
     <p id="endscreen-winner-desc">
       <template v-for="(winner, index) in winners" :key="winner.id">
@@ -78,5 +136,21 @@ onMounted(() => {
         <td class="endscreen-score-data">{{ contestant.misses }}</td>
       </tr>
     </table>
+
+    <!-- Confetti overlay video -->
+    <video
+      id="endscreen-confetti-video"
+      :src="staticUrl('img/confetti.webm')"
+      muted
+      loop
+      preload="auto"
+    />
   </div>
+
+  <!-- Shooting Star celebratory music -->
+  <audio
+    id="endscreen-music"
+    :volume="0.6"
+    :src="staticUrl('data/sounds/shooting_star.mp3')"
+  />
 </template>

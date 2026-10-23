@@ -101,6 +101,7 @@ async function join(): Promise<void> {
     joining.value = false;
   }
 }
+
 </script>
 
 <template>

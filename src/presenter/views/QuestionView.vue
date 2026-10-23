@@ -30,8 +30,6 @@ const router = useRouter();
 const { setHandlers } = useActionKey();
 const t = pageStrings("presenter/question");
 
-console.log(store.state);
-
 const question = store.question;
 const extra = question?.extra ?? {};
 const choices = extra.choices ?? [];

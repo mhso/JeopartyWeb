@@ -1,11 +1,6 @@
 <script setup lang="ts">
 /**
  * Ports templates/presenter/lobby.html.
- *
- * The lobby-music gate is preserved: the first Space press starts the music,
- * and only a second press (after a beat) begins the game. That exists so the
- * presenter's first keypress also satisfies the browser's autoplay gesture
- * requirement -- worth keeping for exactly that reason.
  */
 import { computed, onMounted, ref, capitalize } from "vue";
 import { useRouter } from "vue-router";
@@ -14,6 +9,7 @@ import { pageStrings } from "@shared/i18n";
 import { staticUrl } from "@shared/static";
 import { useActionKey } from "@shared/composables/useActionKey";
 
+import Logo from "../components/Logo.vue";
 import { useGameStore } from "../stores/game";
 
 defineProps<{ gameId: string }>();
@@ -56,13 +52,7 @@ onMounted(() => {
 
 <template>
   <div id="menu-wrapper">
-    <div id="logo-wrapper">
-      <img
-        id="jeopardy-logo"
-        :src="staticUrl(store.state?.theme?.logo ?? 'img/logo.webp')"
-        alt="Jeoparty"
-      />
-    </div>
+    <Logo />
 
     <h2 id="menu-game-title">{{ store.game?.title }}</h2>
 

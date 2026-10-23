@@ -6,14 +6,16 @@
  * Still to port from presenter.js (Phase 3):
  *   - showFinaleCategory's staged header reveals.
  */
-import { computed, onMounted, watch, ref } from "vue";
+import { computed, onMounted, watch, ref, useTemplateRef } from "vue";
 import { useRouter } from "vue-router";
 
 import { pageStrings } from "@shared/i18n";
-import { staticUrl, themeAssetUrl } from "@shared/static";
 import { useActionKey } from "@shared/composables/useActionKey";
 
+import Logo from "../components/Logo.vue";
+import { useThemeOverlays } from "../composables/useThemeOverlays";
 import { useGameStore } from "../stores/game";
+import { staticUrl } from "@/shared/static.js";
 
 const props = defineProps<{ gameId: string }>();
 
@@ -21,9 +23,15 @@ const store = useGameStore();
 const router = useRouter();
 const { setHandlers } = useActionKey();
 const t = pageStrings("presenter/selection");
+const { playIntro } = useThemeOverlays(() => store.stage);
 
 const categories = computed(() => store.state?.round?.categories ?? []);
 const isFinale = computed(() => store.stage === "finale_wager");
+
+const finaleSound = useTemplateRef("finale-sound");
+const finale1Revealed = ref(false);
+const finaleCategoryRevealed = ref(false);
+const finale2Revealed = ref(false);
 
 const zoomDone = ref(false);
 const questionActive = ref(false);
@@ -104,29 +112,43 @@ function chooseStartingPlayer() {
   showStartPlayerCandidate(0);
 }
 
-function logo() {
-  let themeLogo = store.state?.theme?.logo;
-  if (themeLogo) {
-    return themeAssetUrl(`data/themes/${store.state?.theme?.id}`, themeLogo);
-  }
+function showFinaleCategory() {
+  setHandlers({
+    onAction: () => {
+      finale1Revealed.value = true;
+  
+      setTimeout(() => {
+        finaleCategoryRevealed.value = true;
+        finale2Revealed.value = true;
+      }, 2000);
+  
+      setTimeout(() => {
+        store.emit.enableFinaleWager();
 
-  return staticUrl("img/logo.webp");
+        finaleSound.value?.play();
+
+        setHandlers({
+          onAction: async () => {
+            await store.advance("question");
+            await router.push({ name: "question", params: { gameId: store.game!.id } });
+          }
+        });
+      }, 3000);
+    }
+  });
 }
 
 onMounted(() => {
   if (isFinale.value) {
-    setHandlers({
-      onAction: async () => {
-        store.emit.enableFinaleWager();
-        await store.advance("question");
-        await router.push({ name: "question", params: { gameId: store.game!.id } });
-      },
-    });
+    setHandlers({ onAction: showFinaleCategory });
   }
   else {
     setHandlers(
       {
-        onAction: chooseStartingPlayer,
+        onAction: () => {
+          const delay = playIntro() ?? 100;
+          setTimeout(chooseStartingPlayer, delay);
+        },
       }
     )
   }
@@ -137,13 +159,7 @@ onMounted(() => {
 
 <template>
   <div id="selection-wrapper">
-    <div id="logo-wrapper">
-      <img
-        id="jeopardy-logo"
-        :src="logo()"
-        alt="Jeoparty"
-      />
-    </div>
+    <Logo />
 
     <div v-if="!isFinale" id="selection-categories-wrapper">
       <div v-for="category in categories" :key="category.id" class="selection-category-entry">
@@ -165,9 +181,12 @@ onMounted(() => {
 
     <div v-else id="selection-finale-wrapper">
       <h1>{{ store.state?.round_name }}</h1>
-      <h2 id="selection-finale-header1">{{ t("finale_reveal_1") }}</h2>
-      <h2 id="selection-finale-header2">{{ categories[0]?.name }}</h2>
-      <h3 id="selection-finale-header3">{{ t("finale_reveal_2") }}</h3>
+      <h2 id="selection-finale-header1" :style="{ opacity: finale1Revealed ? 1 : 0 }">{{ t("finale_reveal_1") }}</h2>
+      <h2 id="selection-finale-header2" :style="{ opacity: finaleCategoryRevealed ? 1 : 0 }">{{ categories[0]?.name }}</h2>
+      <h3 id="selection-finale-header3" :style="{ opacity: finale2Revealed ? 1 : 0 }">{{ t("finale_reveal_2") }}</h3>
+
+      <!-- Jeopardy theme music -->
+      <audio ref="finale-sound" :src="staticUrl('data/sounds/jeopardy_theme.mp3')"/>
     </div>
   </div>
 </template>

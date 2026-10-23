@@ -16,24 +16,12 @@ import { computed } from "vue";
 import { themeAssetUrl } from "@shared/static";
 import type { StageType, ThemeOverlay, StyleOverlay } from "@shared/types";
 
-import { useGameStore } from "../stores/game";
+import { isIntroOverlay, useThemeOverlays } from "../composables/useThemeOverlays";
 
 const props = defineProps<{ stage: StageType }>();
-const store = useGameStore();
 
-const theme = computed(() => store.state?.theme ?? null);
+const { theme, overlays, setIntroMedia } = useThemeOverlays(() => props.stage);
 const dataPath = computed(() => `data/themes/${theme?.value?.id}`);
-
-const overlays = computed<ThemeOverlay[]>(() => {
-  const all = theme.value?.overlays ?? [];
-  const startOfGame = store.state?.start_of_game ?? false;
-  return all.filter((overlay) => {
-    if (overlay.stage != null && overlay.stage !== props.stage) return false;
-    if (overlay.when === "start_of_game" && !startOfGame) return false;
-    if (overlay.when === "not_start_of_game" && startOfGame) return false;
-    return true;
-  });
-});
 
 function toCssText(rules: Record<string, Record<string, string | number>>): string {
   return Object.entries(rules)
@@ -61,6 +49,10 @@ function src(overlay: ThemeOverlay): string {
 function onIntroEnded(event: Event): void {
   (event.target as HTMLVideoElement).style.display = "none";
 }
+
+function mediaRef(overlay: ThemeOverlay) {
+  return isIntroOverlay(overlay) ? setIntroMedia : undefined;
+}
 </script>
 
 <template>
@@ -70,16 +62,26 @@ function onIntroEnded(event: Event): void {
     <component :is="'style'" v-if="overlayCss" v-text="overlayCss" />
 
     <template v-for="(overlay, index) in overlays" :key="`${overlay.stage}-${index}`">
-      <img v-if="overlay.type === 'image'" :src="src(overlay)" :style="overlay.css" alt="" />
+      <img v-if="overlay.type === 'image'" :src="src(overlay)" :style="overlay.css" :class="overlay.class" alt="" />
       <video
-        v-else-if="overlay.type === 'video' || overlay.type === 'intro'"
+        v-else-if="overlay.type === 'video' || overlay.type === 'intro_video'"
+        :ref="mediaRef(overlay)"
         :src="src(overlay)"
         :style="overlay.css"
         :loop="overlay.loop"
         :muted="overlay.muted"
         :autoplay="overlay.autoplay"
         :volume="overlay.volume"
-        @ended="overlay.type === 'intro' && onIntroEnded($event)"
+        @ended="overlay.type === 'intro_video' && onIntroEnded($event)"
+      />
+      <audio
+        v-else-if="overlay.type === 'audio' || overlay.type === 'intro_audio'"
+        :ref="mediaRef(overlay)"
+        :src="src(overlay)"
+        :style="overlay.css"
+        :loop="overlay.loop"
+        :autoplay="overlay.autoplay"
+        :volume="overlay.volume"
       />
     </template>
   </template>
