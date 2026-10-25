@@ -55,7 +55,7 @@
         "contestant/game": {
             "waiting_for_start": "Waiting for the game to start...",
             "game_over_winner_header": "You won!",
-            "game_over_winner_text": "CONGRATULATIONS!!! 🥳🎉🎈🤩🤩🤩",
+            "game_over_winner_text": "CONGRATULATIONS!!!",
             "game_over_loser_header": "Better luck next time!",
             "game_over_loser_text": "You did not win, but you did your best and that's what matters!",
             "round_header": "Round",

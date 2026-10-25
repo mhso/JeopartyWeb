@@ -47,6 +47,8 @@ onMounted(() => {
       void begin();
     },
   });
+
+  console.debug("on_lobby_mounted");
 });
 </script>
 

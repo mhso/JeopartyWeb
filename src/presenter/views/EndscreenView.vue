@@ -2,11 +2,6 @@
 /**
  * Ports templates/presenter/endscreen.html + startWinnerParty() /
  * startEndscreenAnimation() in presenter.js.
- *
- * Note the winner description is built here rather than server-side. The old
- * `endscreen` route assembled an HTML string in Python, interpolating
- * contestant names straight into <span style="color: ..."> -- user-controlled
- * text in markup. Structured data in, markup out, escaped by Vue.
  */
 import { onMounted } from "vue";
 
@@ -33,7 +28,7 @@ const sorted = store.game?.game_contestants?.sort(
       return 1;
     }
 
-    return 0;
+    return a.name < b.name ? -1 : 1;
   }
 )
 
@@ -95,6 +90,8 @@ onMounted(() => {
   setHandlers({
     onAction: startWinnerParty
   });
+
+  console.debug("on_endscreen_mounted");
 });
 </script>
 

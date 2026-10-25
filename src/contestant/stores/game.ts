@@ -60,6 +60,7 @@ export const useGameStore = defineStore("contestantGame", () => {
   async function refresh(gameId: string): Promise<void> {
     state.value = await api.contestantState(gameId);
     setLanguage(state.value.language);
+    console.debug("on_contestant_refresh");
   }
 
   async function init(gameId: string): Promise<void> {

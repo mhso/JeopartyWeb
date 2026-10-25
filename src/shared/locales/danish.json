@@ -55,7 +55,7 @@
         "contestant/game": {
             "waiting_for_start": "Venter på at spillet starter...",
             "game_over_winner_header": "Du vandt!",
-            "game_over_winner_text": "TILLYKKE!!! 🥳🎉🎈🤩🤩🤩",
+            "game_over_winner_text": "TILLYKKE!!!",
             "game_over_loser_header": "Bedre held næste gang!",
             "game_over_loser_text": "Du vandt desværre ikke, men du kæmpede bravt!",
             "round_header": "Runde",

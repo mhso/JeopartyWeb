@@ -65,6 +65,8 @@ onMounted(() => {
       judged.value.delete(contestant.id);
     },
   });
+
+  console.debug("on_finale_mounted");
 });
 </script>
 

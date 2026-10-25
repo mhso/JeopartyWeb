@@ -1,7 +1,7 @@
 # Overview
 This is a port of a Flask + HTML + JS + CSS quiz website called Jeoparty. The new project reuses much of the old Flask API (see API_BLUEPRINT.md), but replaces the frontend with a Vue web app.
 
-The backend API is located in `../jeoparty/src/jeoparty/routes/api`.
+The backend API is located in `../jeoparty/src/jeoparty/app/routes/api`.
 
 The backend uses a custom library called `mhooge_flask` located in `../scripts/mhooge_flask`
 
@@ -73,9 +73,9 @@ Styles are global for now, with one sheet per app, located in `shared/styles`.
 | Shared: API client, typed socket, types, i18n, countdown, wake lock, action key | Done |
 | Contestant: join, buzzer, power-ups, wagers, finale, game over | Done |
 | Dashboard: auth, home, create game, create pack, cheatsheet | Done |
-| Dashboard: pack editor | Store done; editing UI is Phase 2 |
+| Dashboard: pack editor | Implemented; tested against a mocked API, not yet against the live backend |
 | Presenter: shell, lobby, selection | Done |
-| Presenter: shell, socket store, footer, countdown, theme overlays, finale, endscreen | Skeleton |
-| Presenter: question stage | Implemented (`usePresenterFlow.ts` + `QuestionView.vue`), not yet tested in a live game |
+| Presenter: shell, socket store, footer, countdown, theme overlays, finale, endscreen | Done, needs testing |
+| Presenter: question stage | Implemented (`usePresenterFlow.ts` + `QuestionView.vue`) |
 
-Phase 3 is the bulk of what's left and the most crucial to get right.
+Phase 2 is the bulk of what's left implementation wise. Tests need to be adjusted and everything run through in a live game.

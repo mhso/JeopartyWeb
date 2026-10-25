@@ -43,9 +43,9 @@ function resumeGame(game: GameSummary): void {
   <div id="dashboard-wrapper">
     <h1>Welcome, {{ auth.user?.user_name }}</h1>
 
-    <div v-if="loading">Loading…</div>
+    <div v-if="loading" :style="{ textAlign: 'center' }">Loading…</div>
 
-    <div v-else id="dashboard-inner-wrapper">
+    <div v-else>
       <div id="dashboard-games-list">
         <div class="dashboard-list-header">Your Games</div>
 

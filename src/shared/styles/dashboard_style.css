@@ -54,6 +54,9 @@
 }
 
 #dashboard-form-error {
+    position: absolute;
+    transform: translateX(-50%);
+    left: 50%;
     color: red;
     font-weight: 800;
     font-size: 20px;
@@ -65,19 +68,21 @@
 #login-wrapper {
     color: white;
     margin-top: 5vh;
-    display: inline-flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: left;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
 }
 
-#login-wrapper > form {
-    width: 100%;
+#login-wrapper h1 {
+    text-align: center;
+}
+
+#login-wrapper form {
     text-align: center;
 }
 
 .login-submit-btn {
-    width: 80px;
+    width: 85px;
     font-size: 16px;
 }
 
@@ -95,21 +100,24 @@
     HOME
 */
 #dashboard-wrapper {
+    color: #f4f4f4;
     margin-top: 2vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-#dashboard-wrapper > h1 {
+#dashboard-wrapper h1 {
     text-align: center;
     font-size: 3rem;
-    color: #f4f4f4;
     text-shadow: 0px 1px 3px #454545;
     margin-top: 0;
 }
 
-#dashboard-inner-wrapper {
+#dashboard-wrapper > div {
     display: flex;
-    flex-direction: row;
-    justify-content: center;
+
 }
 
 #dashboard-games-list, #dashboard-questions-list {
@@ -131,7 +139,7 @@
     text-align: left;
 }
 
-#dashboard-inner-wrapper > div > h3 {
+#dashboard-wrapper div > h3 {
     margin: 0;
     margin-bottom: 15px;
 }
@@ -253,18 +261,9 @@
 /*
     CREATE GAME
 */
-#create-game-wrapper {
-    margin-top: 5vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: white;
-}
-
 #create-game-wrapper > div {
     min-width: 350px;
     max-width: 500px;
-    text-align: left;
     padding: 20px;
     background-color: #2139bc;
     border: solid 2px black;
@@ -284,20 +283,25 @@
 /*
     CREATE PACK
 */
-#create-pack-wrapper {
-    margin-top: 5vh;
-    display: inline-flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: left;
+#create-game-wrapper, #create-pack-wrapper {
     color: white;
+    margin-top: 5vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#create-pack-wrapper > div, #create-game-wrapper > div {
+    text-align: center;
     padding: 20px;
     background-color: #2139bc;
     border: solid 2px black;
     border-radius: 20px;
 }
 
-#create-pack-wrapper > h1 {
+#create-pack-wrapper h1 {
+    text-align: center;
     margin-top: 0.5rem;
 }
 
@@ -310,6 +314,7 @@
     QUESTION PACK
 */
 #question-pack-outer-wrapper {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -369,8 +374,6 @@
     text-align: center;
     background-color: #16163b;
     border-radius: 10px;
-    top: -20px;
-    position: relative;
     border: 1px solid white;
     font-weight: 800;
     padding-left: 10px;
@@ -868,7 +871,6 @@
 
 .question-pack-add-question-btn {
     border-top: none;
-    top: -10px;
 }
 
 .question-pack-add-category-btn {

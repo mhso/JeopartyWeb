@@ -143,6 +143,8 @@ onMounted(() => {
       },
     );
   }
+
+  console.debug("on_question_mounted");
 });
 
 onUnmounted(() => {

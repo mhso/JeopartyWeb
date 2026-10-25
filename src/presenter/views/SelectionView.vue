@@ -17,8 +17,6 @@ import { useThemeOverlays } from "../composables/useThemeOverlays";
 import { useGameStore } from "../stores/game";
 import { staticUrl } from "@/shared/static.js";
 
-const props = defineProps<{ gameId: string }>();
-
 const store = useGameStore();
 const router = useRouter();
 const { setHandlers } = useActionKey();
@@ -152,8 +150,10 @@ onMounted(() => {
       }
     )
   }
+
   // TODO(phase-3): arrow-key board navigation (tabulateCategorySelection) and
   // Enter to pick, for presenting without a mouse.
+  console.debug("on_selection_mounted");
 });
 </script>
 

@@ -347,15 +347,31 @@ export interface PackSaveError {
   category_id?: string;
   question_id?: string;
   /**
-   * Semantic field name -- "choices", "media", "answer", "question".
+   * Semantic field name -- "choices", "media", "answer", "question" from the
+   * backend, plus "name" and "value" from client-side validation.
    * The Jinja version returned a CSS selector; the component decides now.
    */
   field?: string;
+  /** 1-based, for the "choices" field. */
   index?: number
+}
+
+/**
+ * One row the database created during a save, as `update_question_pack`
+ * reports it: by *position* in the payload, not by any client id. `round`
+ * indexes the payload's rounds array; `category` and `question` index the
+ * non-deleted entries within their parent.
+ */
+export interface PackSaveNewId {
+  round: number;
+  category?: number;
+  question?: number;
+  id: string;
+  round_id?: string;
+  category_id?: string;
 }
 
 export interface PackSaveSuccess {
   response: string;
-  /** Maps client-generated temporary ids to the ids the database assigned. */
-  ids: Record<string, string>;
+  ids: PackSaveNewId[];
 }

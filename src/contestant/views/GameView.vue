@@ -30,6 +30,7 @@ const t = pageStrings("contestant/game");
 onMounted(async () => {
   await store.init(props.gameId);
   void wakeLock.request();
+  console.debug("on_game_mounted");
 });
 
 onUnmounted(() => store.teardown());
