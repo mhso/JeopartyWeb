@@ -18,6 +18,7 @@ import { pageStrings } from "@shared/i18n";
 import { useActionKey } from "@shared/composables/useActionKey";
 
 import { useGameStore } from "../stores/game";
+import { Contestant } from "@/shared/types";
 
 defineProps<{ gameId: string }>();
 
@@ -28,7 +29,8 @@ const t = pageStrings("presenter/finale");
 
 /** -1 = nothing revealed yet. */
 const revealIndex = ref(-1);
-const judged = ref(new Map<string, "correct" | "wrong">());
+const revealTeaser = ref(false);
+const judged = ref(new Map<string, "correct" | "wrong" | null>());
 
 const contestants = computed(() => store.contestants);
 
@@ -36,7 +38,10 @@ function judge(correct: boolean): void {
   const contestant = contestants.value[revealIndex.value];
   if (!contestant) return;
   const amount = contestant.finale_wager ?? 0;
-  if (amount === 0) return;
+  if (amount === 0) {
+    judged.value.set(contestant.id, null);
+    return;
+  }
 
   if (correct) store.emit.finaleCorrect(contestant.id, amount);
   else store.emit.finaleWrong(contestant.id, amount);
@@ -45,11 +50,20 @@ function judge(correct: boolean): void {
 
 async function next(): Promise<void> {
   if (revealIndex.value >= contestants.value.length - 1) {
-    await store.advance("ended");
-    await router.push({ name: "endscreen", params: { gameId: store.game!.id } });
+    revealTeaser.value = true;
+
+    setTimeout(async () => {
+      await store.advance("ended");
+      await router.push({ name: "endscreen", params: { gameId: store.game!.id } });
+    }, 2000);
+
     return;
   }
   revealIndex.value += 1;
+}
+
+function answer(contestant: Contestant) {
+  return contestant.finale_answer ? `'${contestant.finale_answer}'` : t("nothing");
 }
 
 onMounted(() => {
@@ -59,9 +73,12 @@ onMounted(() => {
     onUndo: () => {
       const contestant = contestants.value[revealIndex.value];
       const verdict = contestant && judged.value.get(contestant.id);
-      if (!contestant || !verdict) return;
-      const amount = contestant.finale_wager ?? 0;
-      store.emit.finaleUndo(contestant.id, verdict === "correct" ? -amount : amount);
+      if (!contestant || verdict === undefined) return;
+
+      if (verdict !== null) {
+        const amount = contestant.finale_wager ?? 0;
+        store.emit.finaleUndo(contestant.id, verdict === "correct" ? -amount : amount);
+      }
       judged.value.delete(contestant.id);
     },
   });
@@ -101,16 +118,21 @@ onMounted(() => {
         >
           <span style="font-weight: 800">{{ contestant.name }}</span>
           {{ t("player_answer") }}
-          <strong>{{ contestant.finale_answer || t("nothing") }}</strong>
+          <strong>{{ answer(contestant) }}</strong>
           <span
+            v-if="index <= revealIndex && judged.has(contestant.id)"
             class="finale-result-desc"
             :class="{
               'wager-answer-correct': judged.get(contestant.id) === 'correct',
               'wager-answer-wrong': judged.get(contestant.id) === 'wrong',
             }"
-          />
+          >&nbsp;{{ contestant.finale_wager ? t("and") : t("answer_skipped") }}
+            <strong v-if="contestant.finale_wager">{{ t(`answer_${judged.get(contestant.id)}`) }}&nbsp;{{ contestant.finale_wager }}&nbsp;{{  t("points") }}!</strong>
+          </span>
         </li>
       </ul>
     </div>
   </div>
+
+  <p id="endscreen-teaser" :style="{ opacity: revealTeaser ? 1 : 0 }">{{ t("endscreen_teaser") }}</p>
 </template>

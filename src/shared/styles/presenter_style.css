@@ -404,8 +404,8 @@ h3 {
 }
 
 #finale-wagers-wrapper {
-    width: 250px;
-    max-width: 400px;
+    min-width: 250px;
+    max-width: 450px;
     margin: 0 auto;
     text-align: center;
     background-color: #000000d6;

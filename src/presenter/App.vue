@@ -4,7 +4,7 @@ import { useRoute } from "vue-router";
 
 import { themeAssetUrl } from "@shared/static";
 
-//import ConnectionStatus from "./components/ConnectionStatus.vue";
+import ConnectionStatus from "./components/ConnectionStatus.vue";
 import PresenterFooter from "./components/PresenterFooter.vue";
 import ThemeOverlay from "./components/ThemeOverlay.vue";
 import { useGameStore } from "./stores/game";
@@ -42,7 +42,7 @@ const showFooter = computed(() => store.stage !== "lobby" && store.stage !== "en
   <div v-if="store.stage != 'question' || !store.question?.category.bg_image"
       class="bg-fill" :class="{ 'bg-image': backgroundStyle }" :style="backgroundStyle" />
 
-  <!--<ConnectionStatus v-if="store.stage && store.stage !== 'lobby'" />-->
+  <ConnectionStatus v-if="store.stage && store.stage !== 'lobby'" />
   <ThemeOverlay :stage="store.stage" />
 
   <RouterView v-if="store.state" />

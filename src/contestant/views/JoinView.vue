@@ -148,5 +148,5 @@ async function join(): Promise<void> {
     </form>
   </div>
 
-  <div v-if="error" id="contestant-lobby-status" class="error-status">{{ error }}</div>
+  <div v-if="error" id="contestant-lobby-status" class="error-status">{{ t(error) }}</div>
 </template>

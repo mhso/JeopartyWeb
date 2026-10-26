@@ -112,7 +112,7 @@ export const useGameStore = defineStore("contestantGame", () => {
         power.used = true;
         power.enabled = false;
       }
-      if (powerId !== "freeze") buzzer.value = "inactive";
+      if (powerId === "rewind") buzzer.value = "inactive";
     });
 
     // -- score / stats ------------------------------------------------------

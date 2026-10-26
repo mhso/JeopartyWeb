@@ -102,10 +102,10 @@ onMounted(() => {
     <p id="endscreen-winner-desc">
       <template v-for="(winner, index) in winners" :key="winner.id">
         <span :style="{ color: winner.color, fontWeight: 800 }">{{ winner.name }}</span>
-        <template v-if="index < winners.length - 2">, </template>
-        <template v-else-if="index === winners.length - 2"> {{ t("and") }} </template>
+        <template v-if="index < winners.length - 2">,&nbsp;</template>
+        <template v-else-if="index === winners.length - 2">&nbsp;{{ t("and") }}&nbsp;</template>
       </template>
-      {{ winners.length === 1 ? t("winner_flavor_1") : t("winner_flavor_2") }}
+      {{ winners.length === 1 ? t("winner_flavor_1") : (winners.length == 2 ? t("winner_flavor_2") : t("winner_flavor_3")) }}
     </p>
 
     <div id="endscreen-avatars-wrapper">
