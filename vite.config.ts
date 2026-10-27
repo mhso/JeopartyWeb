@@ -81,7 +81,7 @@ export default defineConfig({
     proxy: {
       "/jeoparty/api": { target: BACKEND, changeOrigin: true },
       "/jeoparty/static": { target: BACKEND, changeOrigin: true },
-      "/socket.io": { target: BACKEND, changeOrigin: true, ws: true },
+      "/jeoparty/socket.io": { target: BACKEND, changeOrigin: true, ws: true },
     },
   },
 });

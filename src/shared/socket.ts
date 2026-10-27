@@ -80,7 +80,7 @@ export interface ContestantServerEvents extends CommonServerEvents {
 // ---------------------------------------------------------------------------
 
 export interface PresenterClientEvents {
-  presenter_join: (userId: string) => void;
+  presenter_join: () => void;
   presenter_join_timeout: () => void;
   stage_ready: () => void;
   contestant_join_timeout: () => void;
@@ -106,7 +106,7 @@ export interface PresenterClientEvents {
 }
 
 export interface ContestantClientEvents {
-  contestant_join: (contestantId: string) => void;
+  contestant_join: () => void;
   buzzer_pressed: () => void;
   use_power_up: (powerId: PowerUpType) => void;
   ping_request: (timestamp: number) => void;
@@ -134,6 +134,7 @@ export type ContestantSocket = Socket<ContestantServerEvents, ContestantClientEv
  */
 function connect<S extends EventsMap, C extends EventsMap>(gameId: string): Socket<S, C> {
   return io(`/${gameId}`, {
+    path: "/jeoparty/socket.io",
     transports: ["websocket"],
     rememberUpgrade: true,
     timeout: 10000,

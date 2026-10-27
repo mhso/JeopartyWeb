@@ -27,6 +27,7 @@ const feedStrings = pageStrings("presenter/question");
 export const useGameStore = defineStore("presenterGame", () => {
   const state = ref<PresenterState | null>(null);
   const connected = ref(false);
+  const presenterJoined = ref(false);
   const contestantsJoined = ref(false);
   /** Contestant ids that have locked in a finale wager or answer. */
   const readyContestants = ref(new Set<string>());
@@ -54,19 +55,21 @@ export const useGameStore = defineStore("presenterGame", () => {
     if (socket) return;
 
     socket = connectPresenter(gameId);
-    const createdBy = state.value!.game.created_by;
 
     socket.on("connect", () => {
       connected.value = true;
-      socket!.emit("presenter_join", createdBy);
+      socket!.emit("presenter_join");
     });
     socket.on("disconnect", () => (connected.value = false));
 
-    if (state.value?.game.stage != "lobby") {
-      socket.on("presenter_joined", () => socket?.emit("stage_ready"));
-    }
+    socket.on("presenter_joined", () => {
+        presenterJoined.value = true;
+        if (state.value?.game.stage != "lobby") {
+          socket?.emit("stage_ready")
+        }
+      });
 
-    socket.on("all_contestants_joined", () => (contestantsJoined.value = true));
+    socket.on("all_contestants_joined", () => contestantsJoined.value = true);
 
     socket.on("contestant_joined", (json) => {
       const contestant = JSON.parse(json) as Contestant;
@@ -233,6 +236,7 @@ export const useGameStore = defineStore("presenterGame", () => {
     stage,
     contestantWithTurn,
     connected,
+    presenterJoined,
     contestantsJoined,
     readyContestants,
     feed,

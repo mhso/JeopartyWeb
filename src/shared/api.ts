@@ -28,10 +28,14 @@ export class ApiError extends Error {
     readonly status: number,
     message: string,
     readonly body?: unknown,
+    template?: string,
   ) {
     super(message);
     this.name = "ApiError";
+    this.template = template;
   }
+
+  template: string | undefined;
 }
 
 /**
@@ -67,7 +71,11 @@ async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
       (isJson && typeof body === "object" && body !== null && "response" in body
         ? String((body as { response: unknown }).response)
         : null) ?? `Request failed with status ${response.status}`;
-    throw new ApiError(response.status, message, body);
+
+      const template = (isJson && typeof body === "object" && body !== null && "template" in body
+        ? String((body as { template: unknown }).template)
+        : null) ?? undefined;
+    throw new ApiError(response.status, message, body, template);
   }
 
   return body as T;

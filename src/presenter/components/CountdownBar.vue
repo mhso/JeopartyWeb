@@ -36,7 +36,12 @@ const freezeStyle = computed(() => {
 </script>
 
 <template>
-  <div v-show="countdown.running.value" class="question-countdown-wrapper" style="opacity: 1">
+  <div
+    v-show="countdown.running.value"
+    :class="{'running': countdown.running, 'paused': countdown.paused}"
+    class="question-countdown-wrapper"
+    style="opacity: 1"
+  >
     <div class="question-countdown-frozen" :style="freezeStyle">
       <img :src="staticUrl('img/frozen.png')" alt="Frozen" />
     </div>

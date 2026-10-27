@@ -49,6 +49,7 @@
             "color_label": "Din Farve",
             "join": "Deltag",
             "missing_code": "Kunne ikke joine: Spilkoden blev ikke givet",
+            "unknown_error": "Kunne ikke joine: Der skete en fejl",
             "no_such_game": "Der findes ikke et spil med den givne kode",
             "wrong_password": "Kunne ikke joine: Forkert password",
             "game_over": "Kunne ikke joine: Spillet er slut",

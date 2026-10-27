@@ -75,6 +75,7 @@ onMounted(() => {
         v-for="contestant in store.contestants"
         :key="contestant.id"
         class="menu-contestant-entry"
+        :class="`menu-contestant-${contestant.id}`"
         :style="{ border: `2px solid ${contestant.color}` }"
       >
         <img

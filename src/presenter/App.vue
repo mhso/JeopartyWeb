@@ -17,13 +17,30 @@ const store = useGameStore();
 onMounted(() => store.init(String(route.params.gameId)));
 onUnmounted(() => store.teardown());
 
+function waitForInit() {
+  const done = watch(
+    () => store.presenterJoined,
+    (joined) => {
+      if (joined) {
+        void nextTick(() => {
+          done();
+          store.emit.stageReady();
+        });
+      }
+    },
+    {immediate: true}
+  );
+}
+
 // The handshake from API_BLUEPRINT.md: once a new stage has rendered, tell the
 // server, which broadcasts `state_changed` so contestants refetch. A fresh
 // page load is covered by the store's `presenter_joined` handler instead.
 watch(
   () => route.name,
   (name, previous) => {
-    if (previous && name !== previous) void nextTick(() => store.emit.stageReady());
+    if (previous && name !== previous) {
+      waitForInit();
+    }
   },
 );
 

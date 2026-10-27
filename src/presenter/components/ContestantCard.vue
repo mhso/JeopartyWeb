@@ -91,7 +91,7 @@ function remove(): void {
 <template>
   <div
     class="footer-contestant-entry"
-    :class="{ 'active-contestant-entry': store.isHighlighted(contestant.id) }"
+    :class="[{ 'active-contestant-entry': store.isHighlighted(contestant.id) }, `footer-contestant-${contestant.id}`]"
     :style="{ backgroundColor: contestant.color, color: textColor }"
     @mouseenter="hovered = true"
     @mouseleave="hovered = false"

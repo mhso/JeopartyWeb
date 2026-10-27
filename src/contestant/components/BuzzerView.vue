@@ -43,7 +43,7 @@ const resultSrc = computed(() => {
     </span>
   </h2>
 
-  <div id="buzzer-wrapper" @click="store.pressBuzzer()">
+  <div id="buzzer-wrapper" @click="store.pressBuzzer()" :class="store.buzzer">
     <img :src="buzzerSrc" alt="Buzzer" />
   </div>
 

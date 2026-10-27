@@ -68,11 +68,10 @@ export const useGameStore = defineStore("contestantGame", () => {
     if (!state.value) return;
 
     socket = connectContestant(gameId);
-    const myId = state.value.me.id;
 
     socket.on("connect", () => {
       connected.value = true;
-      socket!.emit("contestant_join", myId);
+      socket!.emit("contestant_join");
     });
 
     socket.on("disconnect", () => {
@@ -164,7 +163,10 @@ export const useGameStore = defineStore("contestantGame", () => {
 
   function setPowerEnabled(powerIds: PowerUpType[], enabled: boolean): void {
     for (const power of powerUps.value) {
-      if (powerIds.includes(power.type) && !power.used) power.enabled = enabled;
+      if (powerIds.includes(power.type) && !power.used) {
+        power.enabled = enabled;
+        console.debug(`on_${power.type}_${enabled ? 'enabled' : 'disabled'}`);
+      }
     }
   }
 

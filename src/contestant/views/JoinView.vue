@@ -28,7 +28,7 @@ const color = ref(randomColor());
 const password = ref("");
 const avatarFile = ref<File | null>(null);
 const avatarPreview = ref<string | null>(null);
-const error = ref<string | null>(null);
+const error = ref<ApiError | null>(null);
 const joining = ref(false);
 
 const avatarSrc = computed(
@@ -56,7 +56,7 @@ onMounted(async () => {
       await router.replace({ name: "nogame" });
       return;
     }
-    error.value = "Could not reach the server.";
+    error.value = new ApiError(500, "Could not reach the server.");
   }
 });
 
@@ -65,7 +65,8 @@ async function onAvatarSelected(event: Event): Promise<void> {
   if (!file) return;
 
   if (!isValidImageType(file)) {
-    error.value = `'${file.name}' is not a valid file type (should be .png, .gif, .jpg, or .webp).`;
+    const msg = `'${file.name}' is not a valid file type (should be .png, .gif, .jpg, or .webp).`;
+    error.value = new ApiError(403, msg);
     return;
   }
 
@@ -97,7 +98,7 @@ async function join(): Promise<void> {
     const { game_id } = await api.join(body);
     await router.push({ name: "game", params: { gameId: game_id } });
   } catch (err) {
-    error.value = err instanceof ApiError ? err.message : "Could not join the game.";
+    error.value = err instanceof ApiError ? err : new ApiError(500, "Could not join the game.");
     joining.value = false;
   }
 }
@@ -148,5 +149,5 @@ async function join(): Promise<void> {
     </form>
   </div>
 
-  <div v-if="error" id="contestant-lobby-status" class="error-status">{{ t(error) }}</div>
+  <div v-if="error" id="contestant-lobby-status" class="error-status">{{ error.template ? t(error.template) : error.message }}</div>
 </template>

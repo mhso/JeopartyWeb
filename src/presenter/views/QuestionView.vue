@@ -129,20 +129,7 @@ onMounted(() => {
   socket?.on("power_up_used", onPowerUpUsed);
   socket?.on("daily_wager_made", onDailyWager);
 
-  // presenter.js `finalizeSetup`: hijack unlocks once everyone is connected.
-  // Usually already true by now -- contestants joined back in the lobby.
-  if (store.contestantsJoined) {
-    flow.enableHijackWhenReady();
-  } else {
-    const stop = watch(
-      () => store.contestantsJoined,
-      (ready) => {
-        if (!ready) return;
-        stop();
-        flow.enableHijackWhenReady();
-      },
-    );
-  }
+  flow.enableHijackWhenReady();
 
   console.debug("on_question_mounted");
 });
@@ -327,6 +314,7 @@ onUnmounted(() => {
       <video
         v-for="[powerId, src] in powerUpVideos"
         v-show="flow.splash.value === powerId"
+        :id="`question-power-up-video-${powerId}`"
         :key="powerId"
         :ref="(el) => setSplashVideo(powerId, el)"
         :src="staticUrl(src)"

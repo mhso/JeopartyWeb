@@ -49,6 +49,7 @@
             "color_label": "Your Color",
             "join": "Join",
             "missing_code": "Failed to join: Join code was not provided",
+            "unknown_error": "Could not join: An unknown error happened",
             "no_such_game": "No game exists with the given join code",
             "wrong_password": "Failed to join: Wrong password",
             "game_over": "Failed to join: Game is over",
