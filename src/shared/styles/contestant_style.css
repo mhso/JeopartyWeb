@@ -229,8 +229,6 @@ h1 {
 #contestant-buzzer-status {
     position: fixed;
     background-color: rgba(0, 0, 0, 0.662);
-    transition: opacity 0.5s;
-    opacity: 0;
     top: 0;
     left: 0;
     width: 100vw;
@@ -242,9 +240,19 @@ h1 {
 
 #contestant-buzzer-status > img {
     width: 90vw;
-    animation-duration: 2s;
     position: relative;
     top: calc(50% - 45vw);
+}
+
+@keyframes flash {
+    0%   { opacity: 0; }
+    15%  { opacity: 1; }
+    80%  { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+.flash {
+    animation: flash 2.5s ease forwards;
 }
 
 #contestant-power-ups {

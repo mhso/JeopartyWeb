@@ -96,10 +96,6 @@ export const useGameStore = defineStore("presenterGame", () => {
 
   /**
    * Advances the game, then returns so the caller can navigate.
-   *
-   * The POST is what mutates; the route change is cosmetic. In the old design
-   * these were the same action, which is why refreshing /selection silently
-   * advanced the round.
    */
   async function advance(target: AdvanceTarget): Promise<void> {
     if (!game.value) return;

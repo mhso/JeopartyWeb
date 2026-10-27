@@ -47,7 +47,7 @@ const resultSrc = computed(() => {
     <img :src="buzzerSrc" alt="Buzzer" />
   </div>
 
-  <div v-if="resultSrc" id="contestant-buzzer-status">
+  <div v-if="resultSrc" :key="resultSrc" id="contestant-buzzer-status" class="flash">
     <img :src="resultSrc" alt="" />
   </div>
 

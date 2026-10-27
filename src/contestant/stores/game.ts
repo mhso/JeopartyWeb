@@ -81,6 +81,9 @@ export const useGameStore = defineStore("contestantGame", () => {
 
     socket.on("contestant_joined", () => startPing());
 
+    // If presenter refreshes page, redo the join handshake
+    socket.on("presenter_joined", () => socket!.emit("contestant_join"));
+
     // Presenter moved to a new stage. Refetch instead of reloading.
     socket.on("state_changed", () => void refresh(gameId));
 

@@ -29,10 +29,10 @@ interface CommonServerEvents {
   /** Broadcast when the presenter moves the game to a new stage. */
   state_changed: () => void;
   contestant_removed: (contestantId: string) => void;
+  presenter_joined: () => void;
 }
 
 export interface PresenterServerEvents extends CommonServerEvents {
-  presenter_joined: () => void;
   all_contestants_joined: () => void;
   /** Serialised GameContestant. */
   contestant_joined: (contestant: JsonString) => void;
