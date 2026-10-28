@@ -32,6 +32,7 @@ const form = reactive({
 onMounted(async () => {
   themes.value = await api.listThemes();
   form.name = `${auth.user?.user_name ?? "My"}'s Question Pack`;
+  console.debug("on_create_pack_mounted");
 });
 
 function onMusicSelected(event: Event): void {

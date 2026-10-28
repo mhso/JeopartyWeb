@@ -99,6 +99,7 @@ export const useGameStore = defineStore("presenterGame", () => {
    */
   async function advance(target: AdvanceTarget): Promise<void> {
     if (!game.value) return;
+    console.log("Advancing to", target)
     apply(await api.advanceStage(game.value.id, target));
     readyContestants.value.clear();
     feed.value = [];
