@@ -103,6 +103,7 @@ function chooseStartingPlayer() {
                   elem.classList.remove("inactive");
               });
               store.emit.firstTurn(playerId);
+              console.debug("on_first_turn_chosen");
           }
       }, wait);
   }
@@ -111,29 +112,25 @@ function chooseStartingPlayer() {
 }
 
 function showFinaleCategory() {
-  setHandlers({
-    onAction: () => {
-      finale1Revealed.value = true;
-  
-      setTimeout(() => {
-        finaleCategoryRevealed.value = true;
-        finale2Revealed.value = true;
-      }, 2000);
-  
-      setTimeout(() => {
-        store.emit.enableFinaleWager();
+  finale1Revealed.value = true;
 
-        finaleSound.value?.play();
+  setTimeout(() => {
+    finaleCategoryRevealed.value = true;
+    finale2Revealed.value = true;
+  }, 2000);
 
-        setHandlers({
-          onAction: async () => {
-            await store.advance("question");
-            await router.push({ name: "question", params: { gameId: store.game!.id } });
-          }
-        });
-      }, 3000);
-    }
-  });
+  setTimeout(() => {
+    store.emit.enableFinaleWager();
+
+    finaleSound.value?.play();
+
+    setHandlers({
+      onAction: async () => {
+        await store.advance("question");
+        await router.push({ name: "question", params: { gameId: store.game!.id } });
+      }
+    });
+  }, 3000);
 }
 
 onMounted(() => {
@@ -186,7 +183,7 @@ onMounted(() => {
       <h3 id="selection-finale-header3" :style="{ opacity: finale2Revealed ? 1 : 0 }">{{ t("finale_reveal_2") }}</h3>
 
       <!-- Jeopardy theme music -->
-      <audio ref="finale-sound" :src="staticUrl('data/sounds/jeopardy_theme.mp3')"/>
+      <audio id="finale-jeopardy-theme" ref="finale-sound" :src="staticUrl('data/sounds/jeopardy_theme.mp3')"/>
     </div>
   </div>
 </template>

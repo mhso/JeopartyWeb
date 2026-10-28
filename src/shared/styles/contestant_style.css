@@ -320,6 +320,10 @@ h1 {
     height: 35px;
 }
 
+.contestant-invalid-wager {
+    color: red;
+}
+
 #finale-answer {
     font-size: 20px;
     border: 2px solid black;

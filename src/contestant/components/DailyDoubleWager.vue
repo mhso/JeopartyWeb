@@ -38,7 +38,7 @@ const maxWager = computed(() =>
       OK
     </button>
 
-    <p v-if="store.wagerBounds">
+    <p v-if="store.wagerBounds" class="contestant-invalid-wager">
       {{ t("invalid_wager") }} {{ store.wagerBounds[0] }} {{ t("and") }} {{ store.wagerBounds[1] }}
     </p>
   </template>

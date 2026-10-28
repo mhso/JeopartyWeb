@@ -42,7 +42,7 @@ const enabled = computed(() => store.stage === "finale_wager" && store.connected
     OK
   </button>
 
-  <p v-if="store.wagerBounds">
+  <p v-if="store.wagerBounds" class="contestant-invalid-wager">
     {{ t("invalid_wager") }} {{ store.wagerBounds[0] }} {{ t("and") }} {{ store.wagerBounds[1] }}
   </p>
 </template>
