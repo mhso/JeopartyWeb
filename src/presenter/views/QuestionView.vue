@@ -186,13 +186,15 @@ onUnmounted(() => {
           </h3>
         </div>
 
-        <h3
-          v-if="question.question && !floatingHeader"
-          class="question-question-header"
-          :style="{ opacity: flow.questionVisible.value ? 1 : 0 }"
-        >
-          {{ question.question }}
-        </h3>
+        <div class="question-header-wrapper">
+          <h3
+            v-if="question.question && !floatingHeader"
+            class="question-question-header"
+            :style="{ opacity: flow.questionVisible.value ? 1 : 0 }"
+          >
+            {{ question.question }}
+          </h3>
+        </div>
 
         <div v-if="hasMedia" class="question-question-image-wrapper">
           <h3

@@ -134,7 +134,7 @@ export const useGameStore = defineStore("presenterGame", () => {
    * `setPlayerTurn(id, save=false)`: whoever is answering lights up without
    * taking the turn. `undefined` follows `has_turn`; `null` highlights nobody.
    */
-  const spotlight = ref<string | null | undefined>(undefined);
+  const spotlight = ref<string | null | undefined>(game?.value?.stage == "selection" ? undefined : null);
 
   function isHighlighted(contestantId: string): boolean {
     if (spotlight.value === undefined) return contestant(contestantId)?.has_turn ?? false;
