@@ -483,6 +483,20 @@ export function usePresenterFlow(question: ActiveQuestion, options: FlowOptions)
     beat.value = "judging";
   }
 
+  function contestantDisconnected() {
+    if (countdown.running) {
+      console.log("Contestant disconnected, pausing countdown...");
+      countdown.paused.value = true;
+    }
+  }
+
+  function contestantJoined() {
+    if (store.game?.game_contestants.every((c) => !c.disconnected) && countdown.running) {
+      console.log("All contestants reconnected, starting countdown...");
+      countdown.paused.value = false;
+    }
+  }
+
   // -- 3. judging -----------------------------------------------------------
 
   /** Digit on `judging`. */
@@ -922,6 +936,8 @@ export function usePresenterFlow(question: ActiveQuestion, options: FlowOptions)
     currentValue,
     onBuzzReceived,
     playerBuzzedFirst,
+    contestantJoined,
+    contestantDisconnected,
     powerUpUsed,
     afterDailyDoubleWager,
     enableHijackWhenReady,

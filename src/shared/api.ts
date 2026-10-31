@@ -136,7 +136,7 @@ export const api = {
     post<PresenterState>(`/game/${gameId}/advance/${stage}`),
 
   // -- contestant -----------------------------------------------------------
-  lobbyInfo: (joinCode: string) => get<ContestantLobbyInfo>(`/lobby/${joinCode}`),
+  lobbyInfo: (joinCode: string, user_id: string | null) => get<ContestantLobbyInfo>(`/lobby/${joinCode}${user_id ? `?user_id=${user_id}` : ''}`),
   /** Multipart because of the avatar upload. Sets the contestant cookie. */
   join: (form: FormData) => post<{ game_id: string; contestant_id: string }>("/contestant/join", form),
   contestantState: (gameId: string) => get<ContestantState>(`/game/${gameId}/contestant-state`),

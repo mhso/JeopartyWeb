@@ -31,6 +31,7 @@ const t = pageStrings("presenter/finale");
 const revealIndex = ref(-1);
 const revealTeaser = ref(false);
 const judged = ref(new Map<string, "correct" | "wrong" | null>());
+const revealAnswer = ref(false);
 
 const contestants = computed(() => store.contestants);
 
@@ -49,6 +50,12 @@ function judge(correct: boolean): void {
 }
 
 async function next(): Promise<void> {
+  console.log("REVEAL INDEX:", revealIndex.value);
+  if (revealIndex.value == -1 && !revealAnswer.value) {
+    revealAnswer.value = true;
+    return;
+  }
+
   if (revealIndex.value >= contestants.value.length - 1) {
     revealTeaser.value = true;
 
@@ -104,19 +111,19 @@ onMounted(() => {
       </div>
     </div>
 
-    <h3 id="finale-answer">
+    <h3 id="finale-answer" :style="{ opacity: revealAnswer ? 1 : 0 }">
       {{ t("answer_header") }} <span class="question-emph">'{{ store.question?.answer }}'</span>
     </h3>
 
-    <div id="finale-results-wrapper">
+    <div id="finale-results-wrapper" :style="{ opacity: revealIndex == -1 ? 0 : 1 }">
       <ul>
         <li
           v-for="(contestant, index) in contestants"
           :key="contestant.id"
           class="finale-result-name"
-          :style="{ opacity: index <= revealIndex ? 1 : 0, color: contestant.color }"
+          :style="{ opacity: index <= revealIndex ? 1 : 0 }"
         >
-          <span style="font-weight: 800">{{ contestant.name }}</span>
+          <span style="font-weight: 800" :style="{ color: contestant.color }">{{ contestant.name }}</span>
           {{ t("player_answer") }}
           <strong>{{ answer(contestant) }}</strong>
           <span

@@ -79,6 +79,8 @@ export const useGameStore = defineStore("presenterGame", () => {
       } else {
         contestants.value.push(contestant);
       }
+
+      contestant.disconnected = false;
     });
 
     socket.on("contestant_disconnected", (id) => {

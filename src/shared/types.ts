@@ -318,6 +318,8 @@ export interface ContestantLobbyInfo {
     name: string;
     color: string;
     avatar: string | null;
+    buzz_sound: string | null;
+    bg_image: string | null;
   };
   default_avatar: string;
 }

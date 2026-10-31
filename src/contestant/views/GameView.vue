@@ -29,6 +29,8 @@ const t = pageStrings("contestant/game");
 
 onMounted(async () => {
   await store.init(props.gameId);
+  // Works on Android/desktop. iOS tends to refuse outside a gesture; there the
+  // app-wide tap listener (see App.vue) picks it up on the first tap instead.
   void wakeLock.request();
   console.debug("on_game_mounted");
 });

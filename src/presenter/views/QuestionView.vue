@@ -108,6 +108,8 @@ const onPowerUpUsed = (payload: string) => {
   void flow?.powerUpUsed(parsed["user_id"], parsed["power_id"]);
 }
 const onDailyWager = (amount: number) => flow?.afterDailyDoubleWager(Number(amount));
+const onContestantDisconnected = (_contestantId: string) => flow?.contestantDisconnected();
+const onContestantJoined = (_contestantId: string) => flow?.contestantJoined();
 
 onMounted(() => {
   if (!flow) {
@@ -128,6 +130,8 @@ onMounted(() => {
   socket?.on("buzz_winner", onBuzzWinner);
   socket?.on("power_up_used", onPowerUpUsed);
   socket?.on("daily_wager_made", onDailyWager);
+  socket?.on("contestant_disconnected", onContestantDisconnected);
+  socket?.on("contestant_joined", onContestantJoined);
 
   flow.enableHijackWhenReady();
 

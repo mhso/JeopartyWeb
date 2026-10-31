@@ -39,6 +39,7 @@ onMounted(() => {
       if (music.value && !musicStarted.value) {
         musicStarted.value = true;
         void music.value.play();
+
         // Second press begins the game; the delay stops a double-tap skipping
         // straight past the music.
         setTimeout(() => setHandlers({ onAction: () => void begin() }), 1000);
@@ -58,7 +59,11 @@ onMounted(() => {
 
     <h2 id="menu-game-title">{{ store.game?.title }}</h2>
 
-    <div id="menu-lobby-url">
+    <div v-if="store.state?.lobby_info?.lan_mode" id="menu-lobby-url">
+        Skriv <span id="menu-join-command">!jeopardy</span> i <strong>CoreNibbas</strong> for at joine!
+    </div>
+
+    <div v-else id="menu-lobby-url">
       <div>{{ t("lobby_url_1") }}</div>
       <span id="menu-join-url">{{ store.state?.lobby_info?.join_url }}</span>
       <div>{{ t("lobby_url_3") }}</div>
@@ -91,6 +96,7 @@ onMounted(() => {
 
   <audio
     v-if="lobbyMusic"
+    id="menu-lobby-music"
     ref="music"
     :src="lobbyMusic"
     :volume="store.state?.lobby_info?.lobby_volume ?? 1"

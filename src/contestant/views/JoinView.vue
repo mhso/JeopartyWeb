@@ -8,18 +8,18 @@
  */
 import { computed, onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
+import { useRoute } from "vue-router";
 
 import { api, ApiError } from "@shared/api";
 import { setLanguage, pageStrings } from "@shared/i18n";
 import { staticUrl } from "@shared/static";
-import { useWakeLock } from "@shared/composables/useWakeLock";
 import type { ContestantLobbyInfo } from "@shared/types";
 
 import { resizeImage, isValidImageType } from "../avatar";
 
 const props = defineProps<{ joinCode: string }>();
 const router = useRouter();
-const wakeLock = useWakeLock();
+const route = useRoute();
 const t = pageStrings("contestant/lobby");
 
 const lobby = ref<ContestantLobbyInfo | null>(null);
@@ -28,6 +28,9 @@ const color = ref(randomColor());
 const password = ref("");
 const avatarFile = ref<File | null>(null);
 const avatarPreview = ref<string | null>(null);
+const userId = ref<string | null>(null);
+const buzzSound = ref<string | null>(null);
+const bgImage = ref<string | null>(null);
 const error = ref<ApiError | null>(null);
 const joining = ref(false);
 
@@ -45,11 +48,14 @@ function randomColor(): string {
 
 onMounted(async () => {
   try {
-    lobby.value = await api.lobbyInfo(props.joinCode);
+    userId.value = typeof route.query.user_id === "string" && route.query.user_id ? route.query.user_id : null;
+    lobby.value = await api.lobbyInfo(props.joinCode, userId.value);
     setLanguage(lobby.value.language);
     if (lobby.value.existing) {
       name.value = lobby.value.existing.name;
       color.value = lobby.value.existing.color;
+      buzzSound.value = lobby.value.existing.buzz_sound;
+      bgImage.value = lobby.value.existing.bg_image;
     }
   } catch (err) {
     if (err instanceof ApiError && err.status === 404) {
@@ -81,7 +87,6 @@ async function join(): Promise<void> {
   if (joining.value || !lobby.value) return;
   joining.value = true;
   error.value = null;
-  void wakeLock.request();
 
   const body = new FormData();
   body.append("join_code", props.joinCode);
@@ -90,8 +95,21 @@ async function join(): Promise<void> {
   if (password.value) body.append("password", password.value);
   if (avatarFile.value) {
     body.append("avatar", avatarFile.value);
-  } else {
+  }
+  else if (lobby.value.existing?.avatar) {
+    body.append("avatar", lobby.value.existing?.avatar);
+  }
+  else {
     body.append("default_avatar", "1");
+  }
+  if (userId.value) {
+    body.append("id", userId.value);
+  }
+  if (buzzSound.value) {
+    body.append("buzz_sound", buzzSound.value);
+  }
+  if (bgImage.value) {
+    body.append("bg_image", bgImage.value);
   }
 
   try {
@@ -139,6 +157,11 @@ async function join(): Promise<void> {
         </label>
         <input id="contestant-lobby-password" v-model="password" type="password" />
       </template>
+
+      <!-- Optional parameters -->
+      <input v-if="userId" name="user_id" type="hidden" :value="userId">
+      <input v-if="buzzSound" name="buzz_sound" type="hidden" :value="buzzSound">
+      <input v-if="bgImage" name="bg_image" type="hidden" :value="bgImage">
 
       <input
         id="contestant-lobby-join"

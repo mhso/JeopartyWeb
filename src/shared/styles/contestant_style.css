@@ -9,6 +9,10 @@ h1 {
     display: none !important;
 }
 
+body.has-bg-image {
+    background-color: transparent;
+}
+
 #bg-image {
     position: fixed;
     z-index: -1;

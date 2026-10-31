@@ -22,7 +22,12 @@ const timer = window.setInterval(() => {
 }, 1000);
 onUnmounted(() => clearInterval(timer));
 
-const visible = computed(() => !store.connected || !store.contestantsJoined);
+function anyContestantDisconnected() {
+  let contestants = store.game?.game_contestants ?? [];
+  return contestants.some((c) => c.disconnected)
+}
+
+const visible = computed(() => !store.connected || !store.contestantsJoined || anyContestantDisconnected());
 const label = computed(() => (store.connected ? t("waiting") : t("connecting")));
 
 // Stop animating once we're through -- avoids a pointless repaint every second
