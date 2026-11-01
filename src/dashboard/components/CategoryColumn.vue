@@ -150,6 +150,7 @@ function onDragEnd(): void {
     <!-- The finale takes exactly one question. -->
     <button
       v-if="!isFinale || category.questions.length === 0"
+      :style="{ top: props.category.questions ? '0px' : '-10px'}"
       class="question-pack-add-question-btn"
       title="Add question"
       @click="emit('open', null)"

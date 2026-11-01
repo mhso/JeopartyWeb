@@ -37,6 +37,7 @@ export interface PresenterServerEvents extends CommonServerEvents {
   /** Serialised GameContestant. */
   contestant_joined: (contestant: JsonString) => void;
   contestant_disconnected: (contestantId: string) => void;
+  contestant_info_changed: (info: JsonString) => void;
   /** [contestantId, secondsTaken] -- seconds is preformatted to 2dp. */
   buzz_received: (payload: JsonString) => void;
   buzz_winner: (contestantId: string) => void;
@@ -97,7 +98,7 @@ export interface PresenterClientEvents {
   wrong_answer: (contestantId: string, value: number) => void;
   undo_answer: (contestantId: string, value: number) => void;
   first_turn: (contestantId: string) => void;
-  edit_contestant_info: (contestantId: string, info: JsonString) => void;
+  edit_contestant_info: (info: JsonString) => void;
   enable_finale_wager: () => void;
   enable_finale_answer: () => void;
   finale_answer_correct: (contestantId: string, amount: number) => void;

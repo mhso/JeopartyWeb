@@ -7,7 +7,7 @@
  * fit. The colour is a pure function of the background, so it's a computed;
  * the font size uses the same formula but no longer needs a reflow.
  */
-import { computed, ref, watch } from "vue";
+import { computed, reactive, ref, watch } from "vue";
 
 import { staticUrl } from "@shared/static";
 import type { Contestant } from "@shared/types";
@@ -69,14 +69,39 @@ watch(
   },
 );
 
+/**
+ * Edited values live here until saved. `contenteditable` can't take a
+ * `v-model`, so the fields push their text into this on `@input`, and the
+ * contestant prop (which belongs to the store) stays untouched until the
+ * server sends back the update.
+ */
+const draft = reactive({
+  hits: 0,
+  misses: 0,
+  score: 0,
+  powers: {} as Record<string, boolean>,
+});
+
+/** Parse an edited field, keeping the previous value if it isn't a number. */
+function readNumber(event: Event, fallback: number): number {
+  const value = Number.parseInt((event.target as HTMLElement).textContent ?? "", 10);
+  return Number.isNaN(value) ? fallback : value;
+}
+
 function toggleEdit(): void {
   if (editing.value) {
-    store.emit.editContestant(props.contestant.id, {
-      hits: props.contestant.hits,
-      misses: props.contestant.misses,
-      score: props.contestant.score,
-      powers: Object.fromEntries(props.contestant.power_ups.map((p) => [p.type, p.used])),
+    store.emit.editContestant({
+      id: props.contestant.id,
+      hits: draft.hits,
+      misses: draft.misses,
+      score: draft.score,
+      powers: { ...draft.powers },
     });
+  } else {
+    draft.hits = props.contestant.hits;
+    draft.misses = props.contestant.misses;
+    draft.score = props.contestant.score;
+    draft.powers = Object.fromEntries(props.contestant.power_ups.map((p) => [p.type, p.used]));
   }
   editing.value = !editing.value;
 }
@@ -97,10 +122,25 @@ function remove(): void {
     @mouseleave="hovered = false"
   >
     <div class="footer-contestant-buzzes">
-      <div class="footer-contestant-entry-hits" :contenteditable="editing">
+      <!--
+        Keyed on `editing` so the element is rebuilt on save: typing into a
+        contenteditable can replace the text node Vue patches, leaving later
+        updates pointed at a detached node.
+      -->
+      <div
+        :key="`hits-${editing}`"
+        class="footer-contestant-entry-hits"
+        :contenteditable="editing"
+        @input="draft.hits = readNumber($event, draft.hits)"
+      >
         {{ contestant.hits }}
       </div>
-      <div class="footer-contestant-entry-misses" :contenteditable="editing">
+      <div
+        :key="`misses-${editing}`"
+        class="footer-contestant-entry-misses"
+        :contenteditable="editing"
+        @input="draft.misses = readNumber($event, draft.misses)"
+      >
         {{ contestant.misses }}
       </div>
     </div>
@@ -110,10 +150,12 @@ function remove(): void {
         {{ contestant.name }}
       </div>
       <div
+        :key="`score-${editing}`"
         class="footer-contestant-entry-score"
         :class="scoreAnimation?.className"
         :style="{ animationName: scoreAnimation?.name ?? 'none' }"
         :contenteditable="editing"
+        @input="draft.score = readNumber($event, draft.score)"
       >
         {{ contestant.score }} {{ pointsLabel }}
       </div>
@@ -150,10 +192,10 @@ function remove(): void {
         v-for="power in contestant.power_ups"
         :key="power.type"
         :class="`footer-contestant-power-${power.type}`"
-        @click="editing && (power.used = !power.used)"
+        @click="editing && (draft.powers[power.type] = !draft.powers[power.type])"
       >
         <img
-          v-if="power.used"
+          v-if="editing ? draft.powers[power.type] : power.used"
           class="footer-contestant-entry-power-used"
           :src="staticUrl('img/forbidden.png')"
           alt="Used"

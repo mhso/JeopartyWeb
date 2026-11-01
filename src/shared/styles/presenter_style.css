@@ -328,6 +328,7 @@ h3 {
 }
 
 .selection-category-header > span {
+    pointer-events: none;
     margin-top: -8px;
 }
 

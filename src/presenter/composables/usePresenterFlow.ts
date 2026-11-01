@@ -756,7 +756,8 @@ export function usePresenterFlow(question: ActiveQuestion, options: FlowOptions)
     const refund = lastJudgement && !lastJudgement.correct ? lastJudgement.value : value.value;
     const target = store.contestant(contestantId);
     if (target) {
-      store.emit.editContestant(contestantId, {
+      store.emit.editContestant({
+        id: contestantId,
         misses: target.misses - 1,
         score: target.score + refund,
       });

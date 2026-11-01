@@ -17,6 +17,7 @@ import { computed, ref } from "vue";
 import { api } from "@shared/api";
 import { pageStrings, setLanguage } from "@shared/i18n";
 import { connectPresenter, type PresenterSocket } from "@shared/socket";
+import { applyContestantEdit, ContestantInfo } from "@shared/util";
 import type { Contestant, PowerUpType, PresenterState, StageType } from "@shared/types";
 
 /** Stages the presenter can explicitly advance to. */
@@ -42,6 +43,10 @@ export const useGameStore = defineStore("presenterGame", () => {
   const stage = computed<StageType>(() => game.value?.stage ?? "lobby");
 
   const contestantWithTurn = computed(() => contestants.value.find((c) => c.has_turn) ?? null);
+
+  function contestant(contestantId: string): Contestant | undefined {
+    return contestants.value.find((c) => c.id === contestantId);
+  }
 
   function apply(next: PresenterState): void {
     state.value = next;
@@ -83,6 +88,14 @@ export const useGameStore = defineStore("presenterGame", () => {
       contestant.disconnected = false;
     });
 
+    socket.on("contestant_info_changed", (json) => {
+      if (!state.value) return;
+      const info = JSON.parse(json) as ContestantInfo;
+      if (!info.id) return;
+
+      applyContestantEdit(contestant(info.id), info)
+    });
+
     socket.on("contestant_disconnected", (id) => {
       const contestant = contestants.value.find((c) => c.id === id);
       if (contestant) contestant.disconnected = true;
@@ -109,11 +122,6 @@ export const useGameStore = defineStore("presenterGame", () => {
   }
 
   // -- score bookkeeping ----------------------------------------------------
-
-  function contestant(contestantId: string): Contestant | undefined {
-    return contestants.value.find((c) => c.id === contestantId);
-  }
-
   /** Applies deltas to a contestant's score and buzz stats. Negative deltas undo. */
   function adjustStats(
     contestantId: string,
@@ -204,8 +212,8 @@ export const useGameStore = defineStore("presenterGame", () => {
     markQuestionActive: (questionId: string, ack?: () => void) =>
       socket?.emit("mark_question_active", questionId, ack),
     removeContestant: (contestantId: string) => socket?.emit("remove_contestant", contestantId),
-    editContestant: (contestantId: string, info: Record<string, unknown>) =>
-      socket?.emit("edit_contestant_info", contestantId, JSON.stringify(info)),
+    editContestant: (info: Record<string, unknown>) =>
+      socket?.emit("edit_contestant_info", JSON.stringify(info)),
     enableFinaleWager: () => socket?.emit("enable_finale_wager"),
     enableFinaleAnswer: () => socket?.emit("enable_finale_answer"),
     finaleCorrect: (contestantId: string, amount: number) =>

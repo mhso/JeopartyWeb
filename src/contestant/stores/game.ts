@@ -21,6 +21,7 @@ import { computed, ref } from "vue";
 import { api } from "@shared/api";
 import { setLanguage } from "@shared/i18n";
 import { connectContestant, type ContestantSocket } from "@shared/socket";
+import { applyContestantEdit, ContestantInfo } from "@shared/util";
 import type { ContestantState, PowerUpType } from "@shared/types";
 
 /**
@@ -119,22 +120,9 @@ export const useGameStore = defineStore("contestantGame", () => {
 
     // -- score / stats ------------------------------------------------------
     socket.on("contestant_info_changed", (json) => {
-      const info = JSON.parse(json) as Partial<{
-        score: number;
-        hits: number;
-        misses: number;
-        powers: Record<PowerUpType, boolean>;
-      }>;
       if (!state.value) return;
-      if (info.score !== undefined) state.value.me.score = info.score;
-      if (info.hits !== undefined) state.value.me.hits = info.hits;
-      if (info.misses !== undefined) state.value.me.misses = info.misses;
-      if (info.powers) {
-        for (const power of state.value.me.power_ups) {
-          const used = info.powers[power.type];
-          if (used !== undefined) power.used = used;
-        }
-      }
+
+      applyContestantEdit(state.value.me, JSON.parse(json) as ContestantInfo);
     });
 
     // -- ping ---------------------------------------------------------------
