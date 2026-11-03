@@ -166,7 +166,7 @@ async function join(): Promise<void> {
       <input
         id="contestant-lobby-join"
         type="submit"
-        :value="t('join')"
+        :value="joining ? t('joining') : t('join')"
         :disabled="joining || !lobby"
       />
     </form>

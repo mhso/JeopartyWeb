@@ -48,6 +48,7 @@
             "placeholder_name": "Your Name",
             "color_label": "Your Color",
             "join": "Join",
+            "joining": "Joining...",
             "missing_code": "Failed to join: Join code was not provided",
             "unknown_error": "Could not join: An unknown error happened",
             "no_such_game": "No game exists with the given join code",

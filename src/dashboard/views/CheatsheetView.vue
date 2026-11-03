@@ -8,31 +8,67 @@ import type { QuestionPack } from "@shared/types";
 const props = defineProps<{ packId: string }>();
 const pack = ref<QuestionPack | null>(null);
 
+const activeRound = ref<number>(0);
+const showCategories = ref<Array<Map<string, boolean>>>(new Array());
+
+const roundNameShort = (roundIndex: number) => {
+  return roundIndex == pack.value?.rounds.length && pack.value?.include_finale ? "Finale" : `Round ${roundIndex}`;
+}
+
 onMounted(async () => {
-  pack.value = await api.cheatsheet(props.packId);
+  pack.value = await api.getPack(props.packId);
+  for (let i = 0; i < (pack.value ? pack.value?.rounds.length : 0); i++) {
+    showCategories.value.push(new Map());
+    for (let category of pack.value?.rounds[i].categories ?? []) {
+      showCategories.value[i].set(category.id, false);
+    }
+  }
 });
 </script>
 
 <template>
-  <div v-if="pack" id="cheatsheet-wrapper">
-    <h1>{{ pack.name }}</h1>
+  <div v-if="pack" id="cheatsheet-outer-wrapper">
+    <div v-if="pack" id="cheatsheet-wrapper">
+      <h1>{{ pack.name }}</h1>
+      <div id="cheatsheet-rounds-header">
+        <button
+          v-for="(round, roundIndex) in pack.rounds"
+          :key="round.id"
+          :style="{ borderColor: activeRound == roundIndex ? 'blue' : 'gray'}"
+          @click="activeRound = roundIndex"
+        >
+        {{ roundNameShort(roundIndex + 1) }}
+        </button>
+      </div>
 
-    <section v-for="round in pack.rounds" :key="round.id">
-      <h2>{{ round.name }}</h2>
+      <section v-for="(round, roundIndex) in pack.rounds" :key="round.id" v-show="roundIndex == activeRound">
+        <h2>{{ round.name }}</h2>
 
-      <table v-for="category in round.categories" :key="category.id" class="cheatsheet-category">
-        <caption>
-          {{ category.name }}
-        </caption>
-        <tr v-for="question in category.questions" :key="question.id">
-          <td class="cheatsheet-value">{{ question.value }}</td>
-          <td class="cheatsheet-question">{{ question.question }}</td>
-          <td class="cheatsheet-answer">
-            {{ question.answer }}
-            <span v-if="question.extra.explanation"> ({{ question.extra.explanation }})</span>
-          </td>
-        </tr>
-      </table>
-    </section>
+        <div
+          v-for="category in round.categories"
+          :key="category.id"
+          class="cheatsheet-category"
+        >
+          <div class="cheatsheet-category-header">
+            <h3>{{ category.name }}</h3>
+            <button
+              @click="showCategories[roundIndex].set(category.id, !showCategories[roundIndex].get(category.id))"
+            >
+              {{ showCategories[roundIndex].get(category.id) ? 'Hide' : 'Show' }}
+            </button>
+          </div>
+          <table class="cheatsheet-questions-table">
+            <tr v-for="question in category.questions" :key="question.id" v-show="showCategories[roundIndex].get(category.id)">
+              <td class="cheatsheet-value">{{ question.value }}:</td>
+              <td class="cheatsheet-question">{{ question.question }}</td>
+              <td class="cheatsheet-answer">
+                {{ question.answer }}
+                <span v-if="question.extra.explanation"> ({{ question.extra.explanation }})</span>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </section>
+    </div>
   </div>
 </template>

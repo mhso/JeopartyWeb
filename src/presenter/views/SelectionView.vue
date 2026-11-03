@@ -137,7 +137,7 @@ onMounted(() => {
   if (isFinale.value) {
     setHandlers({ onAction: showFinaleCategory });
   }
-  else {
+  else if (store.state?.start_of_game) {
     setHandlers(
       {
         onAction: () => {

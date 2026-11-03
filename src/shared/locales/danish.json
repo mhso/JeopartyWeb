@@ -48,6 +48,7 @@
             "placeholder_name": "Dit Navn",
             "color_label": "Din Farve",
             "join": "Deltag",
+            "joining": "Joiner...",
             "missing_code": "Kunne ikke joine: Spilkoden blev ikke givet",
             "unknown_error": "Kunne ikke joine: Der skete en fejl",
             "no_such_game": "Der findes ikke et spil med den givne kode",

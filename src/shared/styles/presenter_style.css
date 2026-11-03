@@ -772,6 +772,55 @@ h3 {
     top: 10px;
 }
 
+#transition-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #00000075;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+
+#transition-overlay > div {
+    transition: opacity 0.5s;
+    color: white;
+    text-align: center;
+    width: 40%;
+    height: 40%;
+}
+
+#transition-overlay svg {
+    stroke: black;
+    fill: white;
+    width: 100%;
+}
+
+@keyframes svgFlash {
+    0% {
+        fill: white;
+    }
+    100% {
+        fill: rgb(0, 110, 255);
+    }
+}
+
+#transition-overlay svg path {
+    animation: svgFlash 0.5s linear 0s infinite alternate both;
+}
+
+#transition-overlay svg use:nth-of-type(1) {
+    animation: svgFlash 0.5s linear 0.5s infinite alternate both;
+}
+
+#transition-overlay svg use:nth-of-type(2) {
+    animation: svgFlash 0.5s linear 1s infinite alternate both;
+}
+
 /****************##############****************\
 |                  ENDSCREEN                   |
 \****************##############****************/

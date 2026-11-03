@@ -192,6 +192,10 @@ body.has-bg-image {
     padding: 5px 10px;
 }
 
+#contestant-lobby-join:disabled {
+    background-color: rgb(67, 67, 67);
+}
+
 .contestant-round-header {
     font-weight: 1000;
     margin-bottom: 0.5rem;

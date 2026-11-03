@@ -39,6 +39,8 @@ const LETTERS = "ABCDEFGH";
 const videoEl = ref<HTMLVideoElement | null>(null);
 const splashVideos: Partial<Record<PowerUpType, HTMLVideoElement>> = {};
 
+const showTransitionOverlay = ref(false);
+
 function setSplashVideo(powerId: PowerUpType, el: unknown): void {
   if (el instanceof HTMLVideoElement) {
     el.volume = 0.7;
@@ -53,8 +55,10 @@ const flow = question
       video: videoEl,
       powerUpVideo: (powerId) => splashVideos[powerId] ?? null,
       onFinish: async (target) => {
+        showTransitionOverlay.value = true;
         await store.advance(target === "finale" ? "finale_result" : "selection");
         await router.push({ name: target, params: { gameId: store.game!.id } });
+        showTransitionOverlay.value = false;
       },
     })
   : null;
@@ -90,6 +94,7 @@ const maxWager = computed(() =>
 const powerUpVideos = computed(
   () => Object.entries(store.game?.power_up_videos ?? {}) as Array<[PowerUpType, string]>,
 );
+
 
 // -- wiring -----------------------------------------------------------------
 
@@ -154,6 +159,28 @@ onUnmounted(() => {
       class="bg-fill bg-image"
       :style="{ backgroundImage: `url(${staticUrl(question.category.bg_image)})` }"
     />
+
+    <div v-if="showTransitionOverlay" id="transition-overlay">
+      <div>
+        <h2>Selection Time</h2>
+        <svg
+          version="1.1"
+          id="play-icon"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          x="0px"
+          y="0px"
+          viewBox="0 0 140 140"
+          xml:space="preserve"
+        >
+          <path id="play-icon-path" d="M36.068,20.176l-29-20C6.761-0.035,6.363-0.057,6.035,0.114C5.706,0.287,5.5,0.627,5.5,0.999v40
+            c0,0.372,0.206,0.713,0.535,0.886c0.146,0.076,0.306,0.114,0.465,0.114c0.199,0,0.397-0.06,0.568-0.177l29-20
+            c0.271-0.187,0.432-0.494,0.432-0.823S36.338,20.363,36.068,20.176z M7.5,39.095V2.904l26.239,18.096L7.5,39.095z"/>
+          <use href="#play-icon-path" x="45"></use>
+          <use href="#play-icon-path" x="98"></use>
+        </svg>
+      </div>
+    </div>
 
     <div id="question-wrapper">
       <div class="question-view-wrapper">

@@ -108,7 +108,6 @@ export const api = {
   savePack: (packId: string, form: FormData) =>
     post<PackSaveSuccess>(`/packs/${packId}/save`, form),
   deletePack: (packId: string) => del<{ response: string }>(`/packs/${packId}`),
-  cheatsheet: (packId: string) => get<QuestionPack>(`/packs/${packId}/cheatsheet`),
   /** Server-side proxy for cross-origin media dropped into the editor. */
   fetchResourceUrl: (url: string) => `${API_BASE}/packs/fetch?url=${encodeURIComponent(url)}`,
 

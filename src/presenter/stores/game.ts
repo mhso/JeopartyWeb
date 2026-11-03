@@ -114,7 +114,6 @@ export const useGameStore = defineStore("presenterGame", () => {
    */
   async function advance(target: AdvanceTarget): Promise<void> {
     if (!game.value) return;
-    console.log("Advancing to", target)
     apply(await api.advanceStage(game.value.id, target));
     readyContestants.value.clear();
     feed.value = [];
@@ -191,7 +190,6 @@ export const useGameStore = defineStore("presenterGame", () => {
   }
 
   // -- emit wrappers --------------------------------------------------------
-  // Thin on purpose: the flow composable decides *when*, the store owns *how*.
 
   const emit = {
     stageReady: () => socket?.emit("stage_ready"),
