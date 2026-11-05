@@ -294,7 +294,7 @@ export const usePackEditorStore = defineStore("packEditor", () => {
       while (used.has(value)) value += step;
     }
 
-    return { id: tempId(), category_id: categoryId, question: "", answer: "", value, extra: {} };
+    return { id: tempId(), category_id: categoryId, question: "", answer: "", value, allow_daily_double: true, extra: {} };
   }
 
   /**

@@ -729,6 +729,7 @@
     resize: vertical;
     max-height: 90px;
     overflow: hidden;
+    margin-top: 15px;
 }
 
 .question-answer-explanation-wrapper {

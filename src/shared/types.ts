@@ -64,6 +64,7 @@ export interface Question {
   question: string;
   answer: string;
   value: number;
+  allow_daily_double: boolean;
   extra: QuestionExtra;
 }
 

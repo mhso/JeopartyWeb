@@ -352,6 +352,7 @@ h3 {
 #selection-finale-header1, #selection-finale-header2, #selection-finale-header3 {
     opacity: 0;
     transition: opacity 2s;
+    text-shadow: 1px 1px 5px rgb(15, 15, 15);
 }
 
 #selection-finale-header2 {
@@ -818,7 +819,7 @@ h3 {
 
 #transition-overlay h2 {
     margin-top: 0;
-    color: rgb(39, 124, 198);
+    color: rgb(90, 168, 236);
     font-size: 6rem;
     text-shadow: 1px 1px 5px rgb(13, 13, 13);
 }
@@ -827,6 +828,7 @@ h3 {
     stroke: black;
     fill: white;
     width: 100%;
+    stroke-width: 8px;
 }
 
 @keyframes svgFlash {
@@ -839,15 +841,15 @@ h3 {
 }
 
 #transition-overlay svg path {
-    animation: svgFlash 1.5s linear 0s infinite alternate both;
+    animation: svgFlash 0.9s linear 0s infinite alternate both;
 }
 
 #transition-overlay svg use:nth-of-type(1) {
-    animation: svgFlash 1.5s linear 0.5s infinite alternate both;
+    animation: svgFlash 0.9s linear 0.3s infinite alternate both;
 }
 
 #transition-overlay svg use:nth-of-type(2) {
-    animation: svgFlash 1.5s linear 1s infinite alternate both;
+    animation: svgFlash 0.9s linear 0.6s infinite alternate both;
 }
 
 /****************##############****************\

@@ -31,3 +31,14 @@ body {
 #logo-wrapper img {
     height: 10vh;
 }
+
+@keyframes flash {
+    0%   { opacity: 0; }
+    15%  { opacity: 1; }
+    80%  { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+.flash {
+    animation: flash 2.5s ease forwards;
+}

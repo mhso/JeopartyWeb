@@ -44,7 +44,7 @@ import type { KeyHandlers } from "@shared/composables/useActionKey";
 import type { ActiveQuestion, PowerUpType } from "@shared/types";
 
 import { playSound, preloadSounds, SOUNDS, stopSound } from "../audio";
-import { useGameStore } from "../stores/game";
+import { useGameStore, BuzzEmoji } from "../stores/game";
 
 export type Beat =
   | "wager"
@@ -70,6 +70,8 @@ export type FreezePhase = "off" | "in" | "thawing";
 
 export interface AnswerIndicator {
   correct: boolean;
+  /** Contestant who answered correct/wrong, if any */
+  contestantId: string | null;
   /** Why the answer was wrong; unused when correct. */
   reason: string;
   /** "+400 points" / "-400 points", or empty when nobody answered. */
@@ -277,12 +279,23 @@ export function usePresenterFlow(question: ActiveQuestion, options: FlowOptions)
     later(() => {
       if (!recordsAreEqual(indicator.value, next)) return;
       indicatorVisible.value = true;
+      let resultEmoji;
       if (next.correct) {
         void playSound(store.state?.correct_sound);
+        resultEmoji = "sunglasses";
       } else {
         // Each wrong answer on a question gets the next sound in the list.
         void playSound(store.state?.wrong_sounds?.[wrongSoundsPlayed]);
         wrongSoundsPlayed += 1;
+        resultEmoji = "clown";
+      }
+
+      if (next.contestantId != null) {
+        store.buzzEmojis.set(next.contestantId, resultEmoji as BuzzEmoji);
+
+        later(() => {
+          if (next.contestantId != null) store.buzzEmojis.delete(next.contestantId);
+        }, 3000);
       }
     }, 100);
   }
@@ -545,7 +558,7 @@ export function usePresenterFlow(question: ActiveQuestion, options: FlowOptions)
       mediaVisible.value = false;
     }
     answerImageVisible.value = true;
-    showIndicator({ correct: true, reason: "", valueText: `+${awarded} ${t("points")}` });
+    showIndicator({ correct: true, contestantId, reason: "", valueText: `+${awarded} ${t("points")}` });
 
     store.adjustStats(contestantId, { score: awarded, hits: 1 });
     store.setTurn(contestantId);
@@ -593,7 +606,7 @@ export function usePresenterFlow(question: ActiveQuestion, options: FlowOptions)
       enablePowerUp(contestantId, "rewind");
     }
 
-    showIndicator({ correct: false, reason, valueText });
+    showIndicator({ correct: false, contestantId, reason, valueText });
     beat.value = "wrongShown";
 
     const allAnswered = Object.values(activeContestants.value).every((active) => !active);

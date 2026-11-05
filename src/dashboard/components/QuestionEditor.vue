@@ -265,7 +265,6 @@ onUnmounted(() => window.removeEventListener("keydown", onKeydown));
       <h2 v-show="!floatingHeader" class="question-category-header">
         <div>
           <span class="question-category-span">{{ category.name || "Category Name" }}</span>
-          <br />
           {{ t("for") }}
           <input
             v-model.number="draft.value"
@@ -418,6 +417,18 @@ onUnmounted(() => window.removeEventListener("keydown", onKeydown));
             alt=""
           />
         </MediaDropTarget>
+      </div>
+
+      <div class="input-field">
+        <label :for="`${uid}-multiple-choice`" style="display: inline">Allow for Daily Double</label>
+        <input
+          v-model="draft.allow_daily_double"
+          :id="`${uid}-daily-double`"
+          class="question-daily-double-checkbox"
+          type="checkbox"
+          :checked="draft.allow_daily_double"
+          title="Whether this question can be selected for daily double."
+        />
       </div>
 
       <div class="input-field">

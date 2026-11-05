@@ -164,6 +164,14 @@ function remove(): void {
     <img class="footer-contestant-entry-avatar" :src="staticUrl(contestant.avatar)" alt="" />
 
     <img
+      v-show="store.buzzEmojis.has(contestant.id)"
+      class="footer-contestant-entry-buzz-emoji footer-contestant-icon-overlay flash"
+      :src="staticUrl(`img/${store.buzzEmojis.get(contestant.id)}.png`)"
+      :key="store.buzzEmojis.get(contestant.id)"
+      alt=""
+    />
+
+    <img
       v-if="store.readyContestants.has(contestant.id)"
       class="footer-contestant-entry-ready footer-contestant-icon-overlay"
       :src="staticUrl('img/check.png')"

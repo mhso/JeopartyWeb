@@ -23,6 +23,8 @@ import type { Contestant, PowerUpType, PresenterState, StageType } from "@shared
 /** Stages the presenter can explicitly advance to. */
 export type AdvanceTarget = Extract<StageType, "selection" | "question" | "finale_result" | "ended">;
 
+export type BuzzEmoji = "clown" | "sunglasses"
+
 const feedStrings = pageStrings("presenter/question");
 
 export const useGameStore = defineStore("presenterGame", () => {
@@ -31,6 +33,7 @@ export const useGameStore = defineStore("presenterGame", () => {
   const presenterJoined = ref(false);
   const contestantsJoined = ref(false);
   const showTransitionOverlay = ref(false);
+  const buzzEmojis = ref(new Map<string, BuzzEmoji>());
   /** Contestant ids that have locked in a finale wager or answer. */
   const readyContestants = ref(new Set<string>());
   /** Rolling log of buzzes and power-up uses for the on-screen feed. */
@@ -241,6 +244,7 @@ export const useGameStore = defineStore("presenterGame", () => {
     question,
     stage,
     showTransitionOverlay,
+    buzzEmojis,
     contestantWithTurn,
     connected,
     presenterJoined,
