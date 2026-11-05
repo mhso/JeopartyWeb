@@ -334,7 +334,7 @@ h3 {
 
 .selection-question-box > span {
     text-shadow: 0px 1px 1px rgba(255, 255, 255, 0.75);
-    margin-top: -2px;
+    margin-top: -4px;
 }
 
 #selection-finale-wrapper {
@@ -378,11 +378,11 @@ h3 {
 }
 
 .wager-answer-correct {
-    color: rgb(31, 187, 31);
+    color: rgb(31, 187, 31) !important;
 }
 
 .wager-answer-wrong {
-    color: rgb(221, 17, 17);
+    color: rgb(221, 17, 17) !important;
 
 }
 
@@ -391,7 +391,10 @@ h3 {
 }
 
 #finale-category-header {
+    font-size: 3.5rem;
     color: gold;
+    text-shadow: 2px 2px 5px rgb(15, 15, 15);
+    margin-bottom: 0.5rem;
 }
 
 #finale-question-header {
@@ -405,9 +408,8 @@ h3 {
 }
 
 #finale-wagers-wrapper {
-    min-width: 250px;
-    max-width: 450px;
     margin: 0 auto;
+    border: 1px solid white;
     text-align: center;
     background-color: #000000d6;
     padding: 10px 20px;
@@ -438,16 +440,24 @@ h3 {
     float: right;
     text-align: right;
     font-size: 20px;
+    font-weight: 800;
 }
 
 #finale-answer {
     margin-top: 30px;
     font-size: 3rem;
+    text-shadow: 2px 2px 5px rgb(15, 15, 15);
+}
+
+#finale-answer-text {
+    text-decoration: underline;
+    font-weight: 1000;
 }
 
 #finale-answer, .finale-result-name, .finale-result-desc, #endscreen-teaser {
     color: white;
     transition: opacity 2s;
+    text-shadow: 2px 2px 5px rgb(15, 15, 15);
 }
 
 .finale-result-name {
@@ -772,26 +782,45 @@ h3 {
     top: 10px;
 }
 
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
 #transition-overlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: #00000075;
+    background-color: #00000095;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     z-index: 999;
+
+    animation: fadeIn 0.5s linear;
+    animation-fill-mode: forwards;
 }
 
 #transition-overlay > div {
     transition: opacity 0.5s;
     color: white;
     text-align: center;
-    width: 40%;
-    height: 40%;
+    width: 45%;
+    height: 50%;
+}
+
+#transition-overlay h2 {
+    margin-top: 0;
+    color: rgb(39, 124, 198);
+    font-size: 6rem;
+    text-shadow: 1px 1px 5px rgb(13, 13, 13);
 }
 
 #transition-overlay svg {
@@ -810,15 +839,15 @@ h3 {
 }
 
 #transition-overlay svg path {
-    animation: svgFlash 0.5s linear 0s infinite alternate both;
+    animation: svgFlash 1.5s linear 0s infinite alternate both;
 }
 
 #transition-overlay svg use:nth-of-type(1) {
-    animation: svgFlash 0.5s linear 0.5s infinite alternate both;
+    animation: svgFlash 1.5s linear 0.5s infinite alternate both;
 }
 
 #transition-overlay svg use:nth-of-type(2) {
-    animation: svgFlash 0.5s linear 1s infinite alternate both;
+    animation: svgFlash 1.5s linear 1s infinite alternate both;
 }
 
 /****************##############****************\
@@ -835,9 +864,10 @@ h3 {
 }
 
 #endscreen-winner-desc {
-    font-size: 30px;
+    font-size: 3rem;
     margin-top: 30px;
     margin-bottom: 100px;
+    text-shadow: 2px 2px 5px rgb(15, 15, 15);
 }
 
 #endscreen-avatars-wrapper {

@@ -30,6 +30,7 @@ export const useGameStore = defineStore("presenterGame", () => {
   const connected = ref(false);
   const presenterJoined = ref(false);
   const contestantsJoined = ref(false);
+  const showTransitionOverlay = ref(false);
   /** Contestant ids that have locked in a finale wager or answer. */
   const readyContestants = ref(new Set<string>());
   /** Rolling log of buzzes and power-up uses for the on-screen feed. */
@@ -110,6 +111,18 @@ export const useGameStore = defineStore("presenterGame", () => {
   }
 
   /**
+   * Footer highlight, overriding `has_turn` while set. presenter.js called this
+   * `setPlayerTurn(id, save=false)`: whoever is answering lights up without
+   * taking the turn. `undefined` follows `has_turn`; `null` highlights nobody.
+  */
+  const spotlight = ref<string | null | undefined>(game?.value?.stage == "selection" ? undefined : null);
+
+  function isHighlighted(contestantId: string): boolean {
+    if (spotlight.value === undefined) return contestant(contestantId)?.has_turn ?? false;
+    return spotlight.value === contestantId;
+  }
+
+  /**
    * Advances the game, then returns so the caller can navigate.
    */
   async function advance(target: AdvanceTarget): Promise<void> {
@@ -137,18 +150,6 @@ export const useGameStore = defineStore("presenterGame", () => {
     for (const contestant of contestants.value) {
       contestant.has_turn = contestant.id === contestantId;
     }
-  }
-
-  /**
-   * Footer highlight, overriding `has_turn` while set. presenter.js called this
-   * `setPlayerTurn(id, save=false)`: whoever is answering lights up without
-   * taking the turn. `undefined` follows `has_turn`; `null` highlights nobody.
-   */
-  const spotlight = ref<string | null | undefined>(game?.value?.stage == "selection" ? undefined : null);
-
-  function isHighlighted(contestantId: string): boolean {
-    if (spotlight.value === undefined) return contestant(contestantId)?.has_turn ?? false;
-    return spotlight.value === contestantId;
   }
 
   function hasUnusedPower(contestantId: string, powerId: PowerUpType): boolean {
@@ -239,6 +240,7 @@ export const useGameStore = defineStore("presenterGame", () => {
     contestants,
     question,
     stage,
+    showTransitionOverlay,
     contestantWithTurn,
     connected,
     presenterJoined,

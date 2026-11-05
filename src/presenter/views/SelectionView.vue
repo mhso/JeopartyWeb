@@ -126,8 +126,10 @@ function showFinaleCategory() {
 
     setHandlers({
       onAction: async () => {
+        store.showTransitionOverlay = true;
         await store.advance("question");
         await router.push({ name: "question", params: { gameId: store.game!.id } });
+        store.showTransitionOverlay = false;
       }
     });
   }, 3000);

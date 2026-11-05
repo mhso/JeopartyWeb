@@ -9,18 +9,14 @@ const t = pageStrings("contestant/game");
 
 const amount = ref("");
 
-/** Mirrors `on_make_finale_wager`: min 0, max max(score, 1000). */
-const maxWager = computed(() => Math.max(store.me?.score ?? 0, 1000));
+store.wagerAccepted = false;
 
-/**
- * The input stays disabled until the presenter reveals the category and emits
- * `finale_wager_enabled`.
- */
-const enabled = computed(() => store.stage === "finale_wager" && store.connected);
+/** Mirrors `on_make_finale_wager`: min 0, max max(score, 1000). */
+const maxWager = computed(() => Math.max(store.me?.score ?? 0, store.state?.game.max_value ?? 0));
 </script>
 
 <template>
-  <h2 id="finale-category-header">{{ store.state?.question?.category.name }}</h2>
+  <h2 id="finale-category-header">{{ store.finaleWagerEnabled ? store.state?.question?.category.name : '?????' }}</h2>
 
   <h3>{{ t("finale_wager") }}<br />(Min. 0, max. {{ maxWager }})</h3>
 
@@ -31,12 +27,12 @@ const enabled = computed(() => store.stage === "finale_wager" && store.connected
     type="number"
     min="0"
     :max="maxWager"
-    :disabled="!enabled || store.wagerAccepted"
+    :disabled="!store.finaleWagerEnabled || store.wagerAccepted"
   />
   <button
     id="contestant-wager-btn"
     :class="{ 'wager-made': store.wagerAccepted }"
-    :disabled="!enabled || store.wagerAccepted"
+    :disabled="!store.finaleWagerEnabled || store.wagerAccepted"
     @click="store.makeFinaleWager(amount)"
   >
     OK

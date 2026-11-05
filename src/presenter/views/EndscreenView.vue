@@ -3,13 +3,14 @@
  * Ports templates/presenter/endscreen.html + startWinnerParty() /
  * startEndscreenAnimation() in presenter.js.
  */
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 
 import { pageStrings } from "@shared/i18n";
 import { staticUrl } from "@shared/static";
 import { useActionKey } from "@shared/composables/useActionKey";
 
 import Logo from "../components/Logo.vue";
+import { useThemeOverlays } from "../composables/useThemeOverlays";
 import { useGameStore } from "../stores/game";
 
 defineProps<{ gameId: string }>();
@@ -17,6 +18,11 @@ defineProps<{ gameId: string }>();
 const store = useGameStore();
 const { setHandlers } = useActionKey();
 const t = pageStrings("presenter/endscreen");
+
+const { playOutro } = useThemeOverlays(() => store.stage);
+
+const showTechnoOverlay = ref(false);
+const avatarFlipped = ref(false);
 
 const winners = store.state?.winners || [];
 const sorted = store.game?.game_contestants?.sort(
@@ -39,7 +45,11 @@ function startEndscreenAnimation() {
 
   endscreenMusic.play();
   confettiVideo.play();
-  overlay.classList.remove("d-none");
+  showTechnoOverlay.value = true;
+
+  setInterval(function() {
+    avatarFlipped.value = !avatarFlipped.value;
+  }, 472);
 
   let colors = ["#1dd8265e", "#1d74d85e", "#c90f0f69", "#deb5115c"];
   let colorIndex = 0;
@@ -74,12 +84,11 @@ function startEndscreenAnimation() {
 }
 
 function startWinnerParty() {
-  const endscreenSound = document.getElementById("endscreen-sound") as HTMLAudioElement;
-  if (endscreenSound) {
-    endscreenSound.onended = function() {
+  const outroSound = playOutro();
+  if (outroSound) {
+    outroSound.onended = function() {
       startEndscreenAnimation();
     }
-    endscreenSound.play();
   }
   else {
     startEndscreenAnimation();
@@ -99,6 +108,8 @@ onMounted(() => {
   <div id="endscreen-wrapper">
     <Logo />
 
+    <div v-show="showTechnoOverlay" id="endscreen-techno-overlay"></div>
+
     <p id="endscreen-winner-desc">
       <template v-for="(winner, index) in winners" :key="winner.id">
         <span :style="{ color: winner.color, fontWeight: 800 }">{{ winner.name }}</span>
@@ -111,7 +122,7 @@ onMounted(() => {
     <div id="endscreen-avatars-wrapper">
       <div v-for="winner in winners" :key="winner.id" class="endscreen-avatars-entry">
         <img class="endscreen-crown" :src="staticUrl('img/crown.png')" alt="" />
-        <img class="endscreen-avatar" :src="staticUrl(winner.avatar)" alt="" />
+        <img class="endscreen-avatar" :src="staticUrl(winner.avatar)" :style="{ transform: avatarFlipped ? 'scaleX(-1)' : 'scaleX(1)' }" alt="" />
       </div>
     </div>
 

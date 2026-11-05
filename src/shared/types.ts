@@ -136,7 +136,7 @@ interface ThemeOverlayBase {
 }
 
 export interface MediaOverlay extends ThemeOverlayBase {
-  type: "image" | "audio" | "video" | "intro_audio" | "intro_video";
+  type: "image" | "audio" | "video" | "intro_audio" | "intro_video" | "outro_audio" | "outro_video";
   class?: string;
   /** Applied verbatim as inline style. */
   css?: Record<string, string | number>;

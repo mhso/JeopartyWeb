@@ -50,7 +50,6 @@ function judge(correct: boolean): void {
 }
 
 async function next(): Promise<void> {
-  console.log("REVEAL INDEX:", revealIndex.value);
   if (revealIndex.value == -1 && !revealAnswer.value) {
     revealAnswer.value = true;
     return;
@@ -100,19 +99,19 @@ onMounted(() => {
     <h3 id="finale-question-header">{{ store.question?.question }}</h3>
     <h4>{{ t("wager_header") }}</h4>
 
-    <div id="finale-wagers-wrapper">
-      <div v-for="contestant in contestants" :key="contestant.id" class="finale-wager-entry">
-        <span class="finale-wager-name" :style="{ fontWeight: 800, color: contestant.color }">
-          {{ contestant.name }}</span
-        >:
-        <div class="finale-wager-amount">
+    <table id="finale-wagers-wrapper">
+      <tr v-for="contestant in contestants" :key="contestant.id" class="finale-wager-entry">
+        <td class="finale-wager-name" :style="{ fontWeight: 800, color: contestant.color }">
+          {{ contestant.name }}</td
+        >
+        <td class="finale-wager-amount">
           {{ contestant.finale_wager || t("nothing") }}
-        </div>
-      </div>
-    </div>
+        </td>
+      </tr>
+    </table>
 
     <h3 id="finale-answer" :style="{ opacity: revealAnswer ? 1 : 0 }">
-      {{ t("answer_header") }} <span class="question-emph">'{{ store.question?.answer }}'</span>
+      {{ t("answer_header") }} <span id="finale-answer-text">{{ store.question?.answer }}</span>
     </h3>
 
     <div id="finale-results-wrapper" :style="{ opacity: revealIndex == -1 ? 0 : 1 }">

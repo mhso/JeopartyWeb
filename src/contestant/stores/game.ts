@@ -43,6 +43,8 @@ export const useGameStore = defineStore("contestantGame", () => {
   const wagerBounds = ref<[number, number] | null>(null);
   const wagerAccepted = ref(false);
 
+  const finaleWagerEnabled = ref(false);
+
   let socket: ContestantSocket | null = null;
   let pingTimer: number | null = null;
   let buzzResetTimer: number | null = null;
@@ -142,7 +144,7 @@ export const useGameStore = defineStore("contestantGame", () => {
     socket.on("daily_wager_made", () => (wagerAccepted.value = true));
     socket.on("finale_wager_made", () => (wagerAccepted.value = true));
     socket.on("finale_answer_given", () => (wagerAccepted.value = true));
-    socket.on("finale_wager_enabled", () => void refresh(gameId));
+    socket.on("finale_wager_enabled", () => (finaleWagerEnabled.value = true));
     socket.on("finale_answer_enabled", () => void refresh(gameId));
 
     socket.on("turn_chosen", () => void refresh(gameId));
@@ -236,6 +238,7 @@ export const useGameStore = defineStore("contestantGame", () => {
     kicked,
     wagerBounds,
     wagerAccepted,
+    finaleWagerEnabled,
     init,
     refresh,
     pressBuzzer,

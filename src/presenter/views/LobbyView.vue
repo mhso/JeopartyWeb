@@ -29,8 +29,10 @@ function musicSrc(): string | undefined {
 }
 
 async function begin(): Promise<void> {
+  store.showTransitionOverlay = true;
   await store.advance("selection");
   await router.push({ name: "selection", params: { gameId: store.game!.id } });
+  store.showTransitionOverlay = false;
 }
 
 onMounted(() => {

@@ -9,6 +9,8 @@ const t = pageStrings("contestant/game");
 
 const answer = ref("");
 
+store.wagerAccepted = false;
+
 /** Contestants who wagered nothing sit this one out. */
 const wagered = computed(() => (store.me?.finale_wager ?? 0) > 0);
 </script>

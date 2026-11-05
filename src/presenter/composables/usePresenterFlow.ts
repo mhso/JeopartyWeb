@@ -338,7 +338,7 @@ export function usePresenterFlow(question: ActiveQuestion, options: FlowOptions)
 
     questionVisible.value = true;
 
-    if (extra.answer_image || extra.video) {
+    if (!choices.length && (extra.answer_image || extra.video)) {
       // Question first, media on the next press.
       beat.value = "questionShown";
       return;
@@ -541,6 +541,9 @@ export function usePresenterFlow(question: ActiveQuestion, options: FlowOptions)
     activePowerUp.value = null;
 
     const awarded = currentValue();
+    if (extra.answer_image) {
+      mediaVisible.value = false;
+    }
     answerImageVisible.value = true;
     showIndicator({ correct: true, reason: "", valueText: `+${awarded} ${t("points")}` });
 
@@ -662,6 +665,7 @@ export function usePresenterFlow(question: ActiveQuestion, options: FlowOptions)
 
     questionOver.value = false;
     answerRevealed.value = false;
+    mediaVisible.value = true;
     answerImageVisible.value = false;
     if (last.choiceIndex !== null) delete choiceStates.value[last.choiceIndex];
 

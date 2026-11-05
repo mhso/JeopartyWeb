@@ -14,9 +14,10 @@ import { useGameStore } from "../stores/game";
 
 // Module scope: one ThemeOverlay exists, so one intro element at a time.
 const introMedia = shallowRef<HTMLMediaElement | null>(null);
+const outroMedia = shallowRef<HTMLMediaElement | null>(null);
 
-export function isIntroOverlay(overlay: ThemeOverlay): overlay is MediaOverlay {
-  return overlay.type === "intro_audio" || overlay.type === "intro_video";
+export function isInteractiveOverlay(overlay: ThemeOverlay, type: "intro" | "outro"): overlay is MediaOverlay {
+  return overlay.type === `${type}_audio` || overlay.type === `${type}_video`;
 }
 
 export function useThemeOverlays(stage: MaybeRefOrGetter<StageType>) {
@@ -36,10 +37,15 @@ export function useThemeOverlays(stage: MaybeRefOrGetter<StageType>) {
     });
   });
 
-  const intro = computed(() => overlays.value.find(isIntroOverlay) ?? null);
+  const intro = computed(() => overlays.value.find((o) => isInteractiveOverlay(o, "intro")) ?? null);
+  const outro = computed(() => overlays.value.find((o) => isInteractiveOverlay(o, "outro")) ?? null);
 
   function setIntroMedia(el: unknown): void {
     introMedia.value = (el as HTMLMediaElement | null) ?? null;
+  }
+
+  function setOutroMedia(el: unknown): void {
+    outroMedia.value = (el as HTMLMediaElement | null) ?? null;
   }
 
   /** Plays the intro, if this stage has one. Returns its configured delay. */
@@ -49,5 +55,12 @@ export function useThemeOverlays(stage: MaybeRefOrGetter<StageType>) {
     return intro.value.delayMs;
   }
 
-  return { theme, overlays, intro, setIntroMedia, playIntro };
+  /** Plays the outro, if this stage has one. */
+  function playOutro(): HTMLMediaElement | undefined {
+    if (!outro.value) return undefined;
+    void outroMedia.value?.play();
+    return outroMedia.value ?? undefined;
+  }
+
+  return { theme, overlays, intro, outro, setIntroMedia, setOutroMedia, playOutro, playIntro };
 }

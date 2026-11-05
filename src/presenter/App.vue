@@ -5,6 +5,7 @@ import { useRoute } from "vue-router";
 import { themeAssetUrl } from "@shared/static";
 
 import ConnectionStatus from "./components/ConnectionStatus.vue";
+import TransitionOverlay from "./components/TransitionOverlay.vue";
 import PresenterFooter from "./components/PresenterFooter.vue";
 import ThemeOverlay from "./components/ThemeOverlay.vue";
 import { useGameStore } from "./stores/game";
@@ -61,6 +62,7 @@ const showFooter = computed(() => store.stage !== "lobby" && store.stage !== "en
 
   <ConnectionStatus v-if="store.stage && store.stage !== 'lobby'" />
   <ThemeOverlay :stage="store.stage" />
+  <TransitionOverlay/>
 
   <RouterView v-if="store.state" />
 

@@ -9,6 +9,8 @@ const t = pageStrings("contestant/game");
 
 const amount = ref("");
 
+store.wagerAccepted = false;
+
 /** Mirrors the server-side bounds in `on_make_daily_wager`. */
 const maxWager = computed(() =>
   Math.max(store.me?.score ?? 0, store.state?.game.max_value ?? 0),

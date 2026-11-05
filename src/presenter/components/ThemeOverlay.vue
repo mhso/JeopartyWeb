@@ -16,11 +16,11 @@ import { computed } from "vue";
 import { themeAssetUrl } from "@shared/static";
 import type { StageType, ThemeOverlay, StyleOverlay } from "@shared/types";
 
-import { isIntroOverlay, useThemeOverlays } from "../composables/useThemeOverlays";
+import { isInteractiveOverlay, useThemeOverlays } from "../composables/useThemeOverlays";
 
 const props = defineProps<{ stage: StageType }>();
 
-const { theme, overlays, setIntroMedia } = useThemeOverlays(() => props.stage);
+const { theme, overlays, setIntroMedia, setOutroMedia } = useThemeOverlays(() => props.stage);
 const dataPath = computed(() => `data/themes/${theme?.value?.id}`);
 
 function toCssText(rules: Record<string, Record<string, string | number>>): string {
@@ -50,8 +50,9 @@ function onIntroEnded(event: Event): void {
   (event.target as HTMLVideoElement).style.display = "none";
 }
 
-function mediaRef(overlay: ThemeOverlay) {
-  return isIntroOverlay(overlay) ? setIntroMedia : undefined;
+function mediaRef(overlay: ThemeOverlay, isIntro: boolean) {
+  const func = isIntro ? setIntroMedia : setOutroMedia;
+  return isInteractiveOverlay(overlay, isIntro ? "intro" : "outro") ? func : undefined;
 }
 </script>
 
@@ -64,8 +65,8 @@ function mediaRef(overlay: ThemeOverlay) {
     <template v-for="(overlay, index) in overlays" :key="`${overlay.stage}-${index}`">
       <img v-if="overlay.type === 'image'" :src="src(overlay)" :style="overlay.css" :class="overlay.class" alt="" />
       <video
-        v-else-if="overlay.type === 'video' || overlay.type === 'intro_video'"
-        :ref="mediaRef(overlay)"
+        v-else-if="overlay.type === 'video' || overlay.type === 'intro_video' || overlay.type === 'outro_video'"
+        :ref="mediaRef(overlay, overlay.type == 'intro_video')"
         :src="src(overlay)"
         :style="overlay.css"
         :loop="overlay.loop"
@@ -75,8 +76,8 @@ function mediaRef(overlay: ThemeOverlay) {
         @ended="overlay.type === 'intro_video' && onIntroEnded($event)"
       />
       <audio
-        v-else-if="overlay.type === 'audio' || overlay.type === 'intro_audio'"
-        :ref="mediaRef(overlay)"
+        v-else-if="overlay.type === 'audio' || overlay.type === 'intro_audio' || overlay.type === 'outro_audio' "
+        :ref="mediaRef(overlay, overlay.type == 'intro_audio')"
         :src="src(overlay)"
         :style="overlay.css"
         :loop="overlay.loop"

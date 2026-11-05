@@ -59,6 +59,7 @@
 .question-category-span {
     font-weight: 1000;
     color: rgb(53, 141, 255);
+    margin-right: 12px;
 }
 
 .question-choices-wrapper {
