@@ -1,10 +1,6 @@
 <script setup lang="ts">
 /**
  * The buzzer plus the power-up bar.
- *
- * In the original this was four <img> tags and a status overlay toggled with
- * `.d-none` from eight different socket handlers. Here it's one enum off the
- * store, driving one <img>.
  */
 import { computed } from "vue";
 

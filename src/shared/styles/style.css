@@ -2,10 +2,6 @@ body {
     background-color: rgb(23, 23, 23);
 }
 
-.d-none {
-    display: none !important;
-}
-
 .bg-fill {
     position: absolute;
     z-index: -2;

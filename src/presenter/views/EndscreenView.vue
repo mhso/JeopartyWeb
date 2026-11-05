@@ -21,8 +21,9 @@ const t = pageStrings("presenter/endscreen");
 
 const { playOutro } = useThemeOverlays(() => store.stage);
 
-const showTechnoOverlay = ref(false);
 const avatarFlipped = ref(false);
+const showTechnoOverlay = ref(false);
+const showConfettiVideo = ref(true);
 
 const winners = store.state?.winners || [];
 const sorted = store.game?.game_contestants?.sort(
@@ -75,10 +76,10 @@ function startEndscreenAnimation() {
   // Add listener for stopping the party when the police knocks down the door
   setHandlers({
     onAction: () => {
-      overlay.classList.add("d-none");
+      showTechnoOverlay.value = false;
       endscreenMusic.pause();
       confettiVideo.pause();
-      confettiVideo.classList.add("d-none");
+      showConfettiVideo.value = false;
     }
   });
 }
@@ -146,7 +147,7 @@ onMounted(() => {
     </table>
 
     <!-- Confetti overlay video -->
-    <video
+    <video v-show="showConfetti"
       id="endscreen-confetti-video"
       :src="staticUrl('img/confetti.webm')"
       muted
