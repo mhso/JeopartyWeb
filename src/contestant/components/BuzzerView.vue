@@ -56,9 +56,9 @@ const resultSrc = computed(() => {
 #question-category-header {
   color: white;
   font-family: Garamond, serif;
-  font-size: 2.5rem;
-  margin-top: 20px;
-  margin-bottom: 30px;
+  font-size: 1.75rem;
+  margin-top: 15px;
+  margin-bottom: 25px;
 }
 
 #question-reward-span {

@@ -180,8 +180,8 @@ const showRoundHeader = computed(
 
 .contestant-round-header {
   font-weight: 1000;
-  margin-bottom: 0.5rem;
-  font-size: 1.75rem;
+  margin-bottom: 0;
+  font-size: 1.5rem;
   margin-top: 0;
 }
 </style>

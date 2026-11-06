@@ -34,6 +34,9 @@ const store = useGameStore();
   0% {
     opacity: 0;
   }
+  50% {
+    opacity: 0;
+  }
   100% {
     opacity: 1;
   }
@@ -52,7 +55,7 @@ const store = useGameStore();
   justify-content: center;
   z-index: 999;
 
-  animation: fadeIn 0.5s linear;
+  animation: fadeIn 2s linear;
   animation-fill-mode: forwards;
 }
 
@@ -60,22 +63,22 @@ const store = useGameStore();
   transition: opacity 0.5s;
   color: white;
   text-align: center;
-  width: 45%;
-  height: 50%;
+  width: 50%;
+  height: 60%;
 }
 
 #transition-overlay h2 {
   margin-top: 0;
-  color: rgb(90, 168, 236);
-  font-size: 6rem;
-  text-shadow: 1px 1px 5px rgb(13, 13, 13);
+  margin-bottom: 1rem;
+  color: white;
+  font-size: 8rem;
+  text-shadow: 3px 3px 3px rgb(42, 57, 212);
 }
 
 #transition-overlay svg {
   stroke: black;
   fill: white;
   width: 100%;
-  stroke-width: 8px;
 }
 
 @keyframes svgFlash {
