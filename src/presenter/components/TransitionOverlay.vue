@@ -28,3 +28,74 @@ const store = useGameStore();
     </div>
   </div>
 </template>
+
+<style scoped>
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+#transition-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #00000095;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+
+  animation: fadeIn 0.5s linear;
+  animation-fill-mode: forwards;
+}
+
+#transition-overlay > div {
+  transition: opacity 0.5s;
+  color: white;
+  text-align: center;
+  width: 45%;
+  height: 50%;
+}
+
+#transition-overlay h2 {
+  margin-top: 0;
+  color: rgb(90, 168, 236);
+  font-size: 6rem;
+  text-shadow: 1px 1px 5px rgb(13, 13, 13);
+}
+
+#transition-overlay svg {
+  stroke: black;
+  fill: white;
+  width: 100%;
+  stroke-width: 8px;
+}
+
+@keyframes svgFlash {
+  0% {
+    fill: white;
+  }
+  100% {
+    fill: rgb(0, 110, 255);
+  }
+}
+
+#transition-overlay svg path {
+  animation: svgFlash 0.9s linear 0s infinite alternate both;
+}
+
+#transition-overlay svg use:nth-of-type(1) {
+  animation: svgFlash 0.9s linear 0.3s infinite alternate both;
+}
+
+#transition-overlay svg use:nth-of-type(2) {
+  animation: svgFlash 0.9s linear 0.6s infinite alternate both;
+}
+</style>

@@ -116,3 +116,40 @@ async function submit(): Promise<void> {
     </div>
   </div>
 </template>
+
+<style scoped src="../styles/default_button.css"></style>
+
+<style scoped src="../styles/input_field.css"></style>
+
+<style scoped src="../styles/form_error.css"></style>
+
+<style scoped>
+#create-game-wrapper {
+  color: white;
+  margin-top: 5vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#create-game-wrapper > div {
+  min-width: 350px;
+  max-width: 500px;
+  padding: 20px;
+  text-align: center;
+  background-color: #2139bc;
+  border: solid 2px black;
+  border-radius: 20px;
+}
+
+#create-game-wrapper h1 {
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
+#create-game-wrapper form {
+  width: 100%;
+  text-align: center;
+}
+</style>

@@ -500,3 +500,211 @@ onUnmounted(() => window.removeEventListener("keydown", onKeydown));
     </button>
   </div>
 </template>
+
+<style scoped src="@shared/styles/bg_fill.css"></style>
+
+<style scoped src="@shared/styles/question_stage.css"></style>
+
+<style scoped src="@shared/styles/question_countdown.css"></style>
+
+<style scoped src="../styles/default_button.css"></style>
+
+<style scoped src="../styles/input_field.css"></style>
+
+<style scoped src="../styles/error_highlight.css"></style>
+
+<style scoped src="../styles/editor_error.css"></style>
+
+<style scoped>
+.question-pack-question-view {
+  top: 2vh;
+  left: 2vw;
+  width: 96vw;
+  height: 96vh;
+  z-index: 9999;
+  position: fixed;
+  outline: 2px solid white;
+}
+
+/* :deep because AnswerChoices' inputs sit in a child component. */
+.question-pack-question-view :deep(input) {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.question-view-wrapper {
+  transform-origin: top center;
+  transform: scale(0.8);
+  position: relative;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: calc(96vh * (1 / 0.8));
+}
+
+.question-pack-question-view-exit {
+  position: absolute;
+  padding: 3px 9px;
+  right: 4px;
+  top: 4px;
+  font-weight: bold;
+  font-size: 22px;
+  background-color: #333;
+  border-radius: 5px;
+  border: 2px solid #dbdbdb;
+  cursor: pointer;
+  color: #dbdbdb;
+  line-height: 1;
+}
+
+.question-pack-question-view-save {
+  position: absolute;
+  background-color: rgb(22, 61, 216);
+  bottom: 20px;
+  font-size: 20px;
+  color: #dbdbdb;
+  border: 2px solid #dbdbdb;
+  width: 160px;
+  left: calc(50% - 75px);
+}
+
+.question-bg-image-btn {
+  position: absolute;
+  right: 44px;
+  width: 40px;
+  aspect-ratio: 1.25;
+  height: auto;
+  background-color: #333;
+  border-radius: 5px;
+  border: 2px solid #dbdbdb;
+  cursor: pointer;
+  top: 4px;
+}
+
+.question-bg-image-btn > img {
+  position: relative;
+  width: 100%;
+  top: 7%;
+}
+
+.question-reward-span.question-editable {
+  min-width: 30px;
+  font-size: 3rem;
+  padding-left: 10px;
+}
+
+.question-question-header.question-editable {
+  min-width: 500px;
+  color: inherit;
+  opacity: 1;
+  resize: vertical;
+  max-height: 90px;
+  overflow: hidden;
+  margin-top: 15px;
+}
+
+.question-answer-explanation-wrapper {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  line-height: 1;
+}
+
+.question-answer-explanation-wrapper > label {
+  display: block;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.question-answer-explanation-wrapper > div {
+  display: inline;
+  font-size: 1.5rem;
+}
+
+.question-answer-explanation-wrapper > div > input {
+  font-size: inherit;
+  color: inherit;
+}
+
+.question-question-image.question-editable, .question-answer-image.question-editable, .question-question-video.question-editable {
+  opacity: 1;
+}
+
+.question-answer-image.question-editable {
+  position: relative;
+}
+
+.resize-target {
+  min-width: 30px;
+}
+
+.question-view-wrapper .input-field {
+  margin-bottom: 10px;
+}
+
+.question-view-wrapper .input-field > label {
+  margin-bottom: 0;
+}
+
+.question-view-wrapper .input-field {
+  text-align: center;
+}
+
+.question-countdown-wrapper.question-editable {
+  opacity: 1;
+}
+
+.question-countdown-filled.question-editable {
+  opacity: 1;
+  width: 90%;
+  background-color: rgba(96, 252, 12, 0.7);
+}
+
+.question-countdown-text.question-editable {
+  position: relative;
+  top: -2px;
+  width: 55px;
+  margin: 0 auto;
+  font-size: inherit;
+  background-color: rgba(0, 0, 0, 0.4);
+  color: inherit;
+  height: 100%;
+  text-align: center;
+  padding: 0;
+}
+
+.question-tip-wrapper.question-editable {
+  pointer-events: all;
+  opacity: 1;
+}
+
+.question-tip-content.question-editable {
+  color: white;
+}
+
+.question-answer-selection {
+  font-size: inherit;
+  min-width: 100px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: inherit;
+}
+
+.media-maximize-btn {
+  width: 36px;
+  right: 46px;
+}
+
+.media-color-btn {
+  background-color: initial !important;
+  width: 36px;
+  right: 90px;
+  padding: 0;
+}
+
+.media-remove-color-btn {
+  color: white;
+  width: 36px;
+  right: 134px;
+}
+
+.media-maximize-btn > img {
+  width: 100%;
+}
+</style>

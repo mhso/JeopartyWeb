@@ -40,3 +40,39 @@ watch(visible, (isVisible) => !isVisible && clearInterval(timer));
     <div id="connection-status">{{ label }}{{ dots }}</div>
   </div>
 </template>
+
+<style scoped>
+@keyframes appear {
+  0% {
+    opacity: 0;
+  }
+  90% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+#connection-status-wrapper {
+  position: fixed;
+  z-index: 100;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  color: white;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  font-size: 4rem;
+  opacity: 0;
+
+  animation-name: appear;
+  animation-duration: 5s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+</style>

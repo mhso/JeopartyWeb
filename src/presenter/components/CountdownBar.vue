@@ -53,3 +53,22 @@ const freezeStyle = computed(() => {
     <div class="question-countdown-text">{{ countdown.remaining.value.toFixed(2) }}</div>
   </div>
 </template>
+
+<style scoped src="@shared/styles/question_countdown.css"></style>
+
+<style scoped>
+.question-countdown-frozen {
+  position: absolute;
+  width: 100%;
+  z-index: 1;
+
+  opacity: 0;
+  transition: all 1.5s;
+}
+
+.question-countdown-frozen > img {
+  width: 110%;
+  margin-left: -20px;
+  margin-top: -10px;
+}
+</style>

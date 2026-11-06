@@ -20,3 +20,14 @@ const store = useGameStore();
     </ul>
   </div>
 </template>
+
+<style scoped>
+#question-game-feed {
+  font-size: 18px;
+}
+
+#question-game-feed > ul {
+  display: inline-block;
+  text-align: left;
+}
+</style>

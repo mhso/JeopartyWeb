@@ -12,3 +12,7 @@ import { staticUrl } from "@shared/static";
     A game with that code does not seem to exist, maybe you typed it wrong?
   </h2>
 </template>
+
+<style scoped src="@shared/styles/bg_fill.css"></style>
+
+<style scoped src="@shared/styles/logo.css"></style>

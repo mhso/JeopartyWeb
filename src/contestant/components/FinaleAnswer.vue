@@ -42,3 +42,21 @@ const wagered = computed(() => (store.me?.finale_wager ?? 0) > 0);
 
   <h4 v-else id="finale-no-wager-header">{{ t("finale_no_wager") }}</h4>
 </template>
+
+<style scoped src="../styles/category_name.css"></style>
+
+<style scoped src="../styles/wager_button.css"></style>
+
+<style scoped>
+#finale-answer {
+  font-size: 20px;
+  border: 2px solid black;
+  border-radius: 5px;
+  padding: 5px;
+  height: 35px;
+}
+
+#finale-question-header {
+  font-style: italic;
+}
+</style>

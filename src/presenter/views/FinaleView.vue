@@ -142,3 +142,98 @@ onMounted(() => {
 
   <p id="endscreen-teaser" :style="{ opacity: revealTeaser ? 1 : 0 }">{{ t("endscreen_teaser") }}</p>
 </template>
+
+<style scoped>
+#finale-wrapper {
+  text-align: center;
+  color: white;
+}
+
+.wager-answer-correct {
+  color: rgb(31, 187, 31) !important;
+}
+
+.wager-answer-wrong {
+  color: rgb(221, 17, 17) !important;
+
+}
+
+#finale-category-header {
+  font-size: 3.5rem;
+  color: gold;
+  text-shadow: 2px 2px 5px rgb(15, 15, 15);
+  margin-bottom: 0.5rem;
+}
+
+#finale-question-header {
+  font-style: italic;
+}
+
+#finale-wrapper > h4 {
+  font-size: 24px;
+  text-decoration: underline;
+  margin-bottom: 20px;
+}
+
+#finale-wagers-wrapper {
+  margin: 0 auto;
+  border: 1px solid white;
+  text-align: center;
+  background-color: #000000d6;
+  padding: 10px 20px;
+}
+
+#finale-results-wrapper {
+  width: 550px;
+  margin: 0 auto;
+  text-align: left;
+  background-color: #000000d6;
+  border: 1px solid white;
+  transition: opacity 2s;
+}
+
+.finale-wager-entry {
+  width: 100%;
+  text-align: left;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.finale-wager-entry .finale-wager-name {
+  font-size: 20px;
+}
+
+.finale-wager-entry .finale-wager-amount {
+  width: 100px;
+  float: right;
+  text-align: right;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+#finale-answer {
+  margin-top: 30px;
+  font-size: 3rem;
+  text-shadow: 2px 2px 5px rgb(15, 15, 15);
+}
+
+#finale-answer-text {
+  text-decoration: underline;
+  font-weight: 1000;
+}
+
+#finale-answer, .finale-result-name, .finale-result-desc, #endscreen-teaser {
+  color: white;
+  transition: opacity 2s;
+  text-shadow: 2px 2px 5px rgb(15, 15, 15);
+}
+
+.finale-result-name {
+  padding-left: 30px;
+}
+
+#endscreen-teaser {
+  margin-top: 15px;
+  font-size: 30px;
+}
+</style>

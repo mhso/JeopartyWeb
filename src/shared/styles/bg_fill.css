@@ -1,0 +1,16 @@
+.bg-fill {
+  position: absolute;
+  z-index: -2;
+  background: linear-gradient(to bottom, #2525c6, #1d1939);
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  top: 0;
+  left: 0;
+}
+
+.bg-fill.bg-image {
+  background: none;
+  background-size: cover;
+  filter: blur(5px) brightness(0.75);
+}

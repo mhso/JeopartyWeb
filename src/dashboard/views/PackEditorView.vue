@@ -514,11 +514,318 @@ watch(
   </div>
 </template>
 
-<style>
-/*
- * Not scoped: these reach into the child components. New rules only; the
- * ported sheet in shared/styles stays as it was.
- */
+<style scoped src="../styles/default_button.css"></style>
+
+<style scoped src="../styles/input_field.css"></style>
+
+<style scoped src="../styles/loading_icon.css"></style>
+
+<style scoped src="../styles/error_highlight.css"></style>
+
+<style scoped src="../styles/editor_error.css"></style>
+
+<style scoped>
+#question-pack-outer-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#question-pack-wrapper {
+  position: relative;
+  display: inline-block;
+  min-width: 45vw;
+  max-width: 90vw;
+  margin: 0 auto;
+  margin-top: 1vh;
+  text-align: center;
+  color: white;
+  z-index: 10;
+  padding: 20px;
+}
+
+#question-pack-wrapper .input-field {
+  text-align: center;
+}
+
+#question-pack-popup {
+  color: white;
+  width: 30vw;
+  min-width: 350px;
+  margin: 0 auto;
+  font-size: 1.5rem;
+  text-align: center;
+  background-color: #16163b;
+  border-radius: 10px;
+  border: 1px solid white;
+  font-weight: 800;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+
+  transform: translateY(-100%);
+
+  animation-direction: alternate;
+}
+
+#question-pack-popup.popup-error {
+  color: red;
+}
+
+#question-pack-data-wrapper {
+  background: linear-gradient(to bottom, #2525c6, #130a4c);
+  border: 2px solid white;
+  border-radius: 5px;
+  text-align: left;
+  margin-top: 25px;
+}
+
+#question-pack-data-header {
+  border-bottom: 1px solid white;
+}
+
+#question-pack-data-header > div {
+  display: inline-block;
+}
+
+.question-pack-round-select-button {
+  width: 120px;
+}
+
+.question-pack-add-round-btn {
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.question-pack-round-select-button, .question-pack-add-round-btn {
+  cursor: pointer;
+  background-color: #000282;
+  color: #ddd;
+  border: 1px solid white;
+  font-size: 16px;
+  padding: 4px 8px;
+}
+
+.question-pack-round-selected {
+  filter: brightness(1.2);
+  font-weight: 800;
+}
+
+.question-pack-round-select-button > div {
+  display: inline-block;
+  cursor: pointer;
+  font-size: 22px;
+  line-height: 0.7;
+  position: relative;
+  margin-left: 3px;
+  top: 1px;
+}
+
+#question-pack-name {
+  font-size: 20px;
+  max-width: 400px;
+  text-align: center;
+}
+
+#question-pack-wrapper .split-input-field {
+  position: relative;
+  width: 30%;
+  margin: 15px auto;
+  display: flex;
+  justify-content: space-around;
+  background-color: #373737;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid white;
+}
+
+.split-input-field > .divider {
+  position: absolute;
+  background-color: white;
+  top: 0;
+  height: 100%;
+  width: 2px;
+}
+
+.split-input-field > div:first-of-type, .split-input-field > div:last-of-type {
+  width: 50%;
+}
+
+.split-input-field label {
+  font-size: 18px;
+}
+
+.split-input-field select {
+  background-color: rgba(40, 40, 40, 0.75);
+  font-size: 16px;
+  display: block;
+  margin: 0 auto;
+  margin-top: 5px;
+  color: white;
+  border-radius: 5px;
+  border-color: gray;
+}
+
+#question-pack-music-wrapper {
+  width: 30%;
+  margin: 0 auto;
+  background-color: #373737;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid white;
+}
+
+#question-pack-lobby-music {
+  display: block;
+  margin: 0 auto;
+  margin: 5px auto;
+}
+
+.question-pack-round-select-finale {
+  border-left: 3px solid white;
+}
+
+#question-pack-data-body {
+  padding: 10px;
+}
+
+.question-pack-round-name {
+  text-align: center;
+  display: block;
+  color: white;
+  font-size: 18px;
+  padding: 5px;
+  margin: 0 auto;
+  margin-bottom: 10px;
+  background-color: rgba(40, 40, 40, 0.75);
+}
+
+.question-pack-round-name-label {
+  font-weight: 800;
+}
+
+.question-pack-round-wrapper {
+  position: relative;
+}
+
+.question-pack-round-wrapper > .input-field {
+  display: block;
+}
+
+.question-pack-round-wrapper > div {
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: left;
+}
+
+.question-pack-finale-wrapper > div {
+  display: flex;
+  justify-content: center;
+}
+
+.question-pack-categories-placeholder, .question-pack-categories-copy {
+  text-align: center;
+  font-size: 16px;
+  display: block;
+  margin: 0 auto;
+  padding: 10px;
+  border-radius: 5px;
+  border: 2px solid white;
+  cursor: pointer;
+  color: white;
+  margin-bottom: 15px;
+}
+
+.question-pack-categories-placeholder {
+  background-color: blue;
+}
+
+.question-pack-categories-copy {
+  background-color: rgb(78, 32, 206);
+}
+
+.question-pack-categories-placeholder:hover {
+  filter: brightness(1.25);
+}
+
+.question-pack-add-category-btn {
+  position: relative;
+  border: 2px dashed #ddd;
+  cursor: pointer;
+  line-height: 1;
+  font-weight: bold;
+  background-color: transparent;
+  color: white;
+  font-size: 15px;
+  border-left: none;
+  left: -6px;
+}
+
+.question-pack-add-category-btn:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+#question-pack-save-btn {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  border: 2px solid white;
+  width: 70px;
+  height: 46px;
+  background-color: rgb(2, 154, 2);
+  font-weight: bold;
+  font-size: 16px;
+  border-radius: 5px;
+  padding: 0;
+  margin: 15px auto;
+}
+
+#question-pack-save-btn:disabled {
+  cursor: default;
+  background-color: rgb(75, 75, 75);
+}
+
+#question-pack-save-btn > .save-btn-regular {
+  position: absolute;
+}
+
+#question-pack-save-btn > .save-btn-pending {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  margin: 0 auto;
+}
+
+#question-pack-save-btn > .save-btn-pending > .loading-icon {
+  height: 75%;
+  width: 75%;
+}
+
+#question-pack-save-btn > .save-btn-success {
+  position: absolute;
+  height: 70%;
+}
+
+#question-pack-save-btn > .save-btn-success > img {
+  position: relative;
+  height: 100%;
+  width: auto;
+}
+
+#question-pack-save-btn > .save-btn-fail {
+  position: absolute;
+  height: 70%;
+}
+
+#question-pack-save-btn > .save-btn-fail > img {
+  position: relative;
+  height: 100%;
+  width: auto;
+}
 
 /* Replaces resizeRoundWrappers: all rounds stack in one cell and size it. */
 #question-pack-data-body {
@@ -533,38 +840,9 @@ watch(
   visibility: hidden;
 }
 
-/* It overlaps the card below; it must not swallow that card's clicks. */
-.question-pack-question-preview {
-  pointer-events: none;
-}
-
 .question-pack-add-round-btn:disabled {
   cursor: default;
   opacity: 0.5;
-}
-
-/* showHighlightError's class, which had no rule in the old sheets. */
-.error-highlight {
-  outline: 3px solid #ff3b3b;
-  outline-offset: 2px;
-}
-
-.question-pack-editor-error {
-  position: absolute;
-  bottom: 75px;
-  left: 0;
-  right: 0;
-  width: fit-content;
-  max-width: 60vw;
-  margin: 0 auto;
-  padding: 8px 14px;
-  z-index: 10;
-  color: #ff6b6b;
-  background-color: rgba(0, 0, 0, 0.85);
-  border: 1px solid #ff6b6b;
-  border-radius: 5px;
-  font-weight: 800;
-  text-align: center;
 }
 
 /* The old popup rendered below the board, often off screen. */
@@ -584,5 +862,23 @@ watch(
 .save-fade-enter-from,
 .save-fade-leave-to {
   opacity: 0;
+}
+</style>
+
+<style>
+/* Not scoped: named from JS, and scoped keyframes get a hashed name. */
+@keyframes popup-animate {
+  0% {
+    transform: translateY(-100%);
+  }
+  15% {
+    transform: translateY(0px);
+  }
+  85% {
+    transform: translateY(0px);
+  }
+  100% {
+    transform: translateY(-100%);
+  }
 }
 </style>

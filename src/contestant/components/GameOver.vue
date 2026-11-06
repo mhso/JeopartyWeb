@@ -21,3 +21,5 @@ const won = computed(() => store.state?.winner ?? false);
     <h3>{{ t("game_over_loser_text") }}</h3>
   </template>
 </template>
+
+<style scoped src="../styles/player_status.css"></style>

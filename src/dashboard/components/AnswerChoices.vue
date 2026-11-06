@@ -101,3 +101,49 @@ function onDrop(index: number): void {
     <button class="question-add-choice" title="Add choice" @click="addChoice">+</button>
   </div>
 </template>
+
+<style scoped src="@shared/styles/question_choices.css"></style>
+
+<style scoped src="../styles/error_highlight.css"></style>
+
+<style scoped>
+.question-choices-wrapper > button {
+  cursor: pointer;
+  display: block;
+  margin: 0 auto;
+  font-size: 24px;
+  padding: 2px 8px;
+  background-color: #136fff;
+  border-radius: 3px;
+  color: rgb(222, 222, 222);
+}
+
+.question-choice-entry.question-editable {
+  opacity: 1;
+}
+
+.question-choice-entry.question-editable > button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: #333;
+  color: #dbdbdb;
+  font-size: 20px;
+  line-height: 1;
+  border: 1px solid #dbdbdb;
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.question-choice-entry.question-editable > p {
+  position: relative;
+  top: -5px;
+}
+
+.question-choice-text.question-editable {
+  color: inherit;
+  font-size: inherit;
+  width: 78%;
+  margin-left: 2px;
+}
+</style>

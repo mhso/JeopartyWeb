@@ -23,3 +23,17 @@ function logo() {
     />
   </div>
 </template>
+
+<style scoped src="@shared/styles/logo.css"></style>
+
+<style scoped>
+#logo-wrapper {
+  margin: 0 auto;
+  text-align: center;
+}
+
+#jeopardy-logo {
+  margin-top: -10px;
+  filter: drop-shadow(0 5px 5px black);
+}
+</style>

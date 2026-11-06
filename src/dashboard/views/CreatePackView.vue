@@ -112,3 +112,33 @@ async function submit(): Promise<void> {
     </div>
   </div>
 </template>
+
+<style scoped src="../styles/default_button.css"></style>
+
+<style scoped src="../styles/input_field.css"></style>
+
+<style scoped src="../styles/form_error.css"></style>
+
+<style scoped>
+#create-pack-wrapper {
+  color: white;
+  margin-top: 5vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#create-pack-wrapper > div {
+  text-align: center;
+  padding: 20px;
+  background-color: #2139bc;
+  border: solid 2px black;
+  border-radius: 20px;
+}
+
+#create-pack-wrapper h1 {
+  text-align: center;
+  margin-top: 0.5rem;
+}
+</style>

@@ -26,3 +26,21 @@ const t = pageStrings("global");
     </div>
   </div>
 </template>
+
+<style scoped>
+#contestants-footer {
+  position: absolute;
+  z-index: 90;
+  width: 100%;
+  bottom: 0;
+}
+
+#footer-contestants {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: end;
+  height: 160px;
+  margin: 0 auto;
+}
+</style>

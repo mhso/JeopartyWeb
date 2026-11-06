@@ -333,3 +333,96 @@ onUnmounted(() => {
     </div>
   </template>
 </template>
+
+<style scoped src="@shared/styles/bg_fill.css"></style>
+
+<style scoped src="@shared/styles/question_stage.css"></style>
+
+<style scoped src="@shared/styles/question_choices.css"></style>
+
+<style scoped>
+#question-wrapper {
+  width: 100vw;
+  height: 100vh;
+  color: #dedede;
+  text-align: center;
+}
+
+#question-power-up-splash {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  text-align: center;
+  z-index: 99;
+}
+
+#question-power-up-splash > video {
+  position: relative;
+  height: 100vh;
+  top: 0
+}
+
+#question-answer-wrong, #question-answer-correct {
+  font-size: 2.5rem;
+  text-align: center;
+  transition: opacity 1.5s;
+  margin-top: 10px;
+  opacity: 0;
+}
+
+#question-wrong-reason {
+  color: red;
+  font-weight: bold;
+}
+
+#question-actual-answer {
+  margin-top: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+#question-correct-reason {
+  color: #21d021;
+  font-weight: bold;
+}
+
+#question-wrong-reason, #question-correct-reason, #question-actual-answer {
+  text-shadow: 1px 3px 2px rgba(0, 0, 0, 0.75);
+}
+
+.question-emph {
+  font-weight: 1000;
+}
+
+@keyframes answering {
+  0% {
+    background-color: rgb(255, 187, 0);
+  }
+  100% {
+    background-color: rgb(255, 145, 0);
+  }
+}
+
+.question-answering {
+  animation-name: answering;
+  animation-duration: 1s;
+  animation-fill-mode: both;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+.question-choice-entry.question-answered-correct {
+  background-color: rgb(31, 187, 31);
+}
+
+.question-choice-entry.question-answered-wrong {
+  background-color: rgb(221, 17, 17);
+}
+
+.question-result-avatar {
+  position: relative;
+  width: auto;
+  height: 50px;
+  top: 10px;
+}
+</style>

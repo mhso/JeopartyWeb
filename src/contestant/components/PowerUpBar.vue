@@ -34,3 +34,34 @@ const store = useGameStore();
     </button>
   </div>
 </template>
+
+<style scoped>
+#contestant-power-ups {
+  position: absolute;
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+#contestant-power-ups > button {
+  width: 75px;
+  margin: 0 5px;
+  background-color: transparent;
+  border: none;
+}
+
+.contestant-power-icon, .contestant-power-used {
+  width: 70px;
+  border-radius: 35px;
+  border: 2px solid white;
+}
+
+.contestant-power-used {
+  position: absolute;
+  z-index: 10;
+}
+
+.contestant-power-icon.power-disabled {
+  filter: grayscale(100%);
+}
+</style>

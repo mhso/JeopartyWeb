@@ -105,3 +105,104 @@ onMounted(() => {
     loop 
   />
 </template>
+
+<style scoped>
+#menu-wrapper {
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+  color: white;
+}
+
+#menu-game-title {
+  font-family: 'Lucida Sans';
+  font-style: italic;
+  filter: drop-shadow(5px 5px 5px black);
+  border-bottom: 2px solid white;
+  margin: 0 auto;
+  width: fit-content;
+  padding-bottom: 20px;
+  margin-bottom: 30px;
+  text-align: center;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-top: 30px;
+}
+
+#menu-wrapper > h3 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  margin-top: 2.5rem;
+  font-weight: 800;
+  text-align: center;
+}
+
+#menu-wrapper > #logo-wrapper {
+  padding-top: 60px;
+  padding-bottom: 10px;
+}
+
+#menu-lobby-url {
+  text-align: center;
+  font-size: 24px;
+  margin-top: 10px;
+  line-height: 1.6;
+}
+
+#menu-join-url {
+  color: #00abff;
+  background-color: rgba(0, 0, 0, 0.76);
+  padding: 5px;
+}
+
+#menu-join-command {
+  font-family: Consolas;
+}
+
+#menu-join-url, #menu-join-command {
+  background-color: rgba(0, 0, 0, 0.76);
+  padding: 5px;
+}
+
+#menu-contestants {
+  font-size: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 40vh;
+  flex-wrap: wrap;
+  align-content: center;
+}
+
+#menu-no-contestants-placeholder {
+  font-size: 20px;
+  font-style: italic;
+}
+
+.menu-contestant-entry {
+  width: 180px;
+  margin-bottom: 15px;
+  text-align: left;
+  border: 2px solid white;
+  border-radius: 10px;
+  padding: 10px;
+  background-color: #101010;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: left;
+}
+
+.menu-contestant-avatar {
+  width: 42px;
+  border-radius: 24px;
+}
+
+.menu-contestant-name {
+  text-align: left;
+  font-size: 20px;
+  color: white;
+  margin-left: 10px;
+  padding-bottom: 2px;
+}
+</style>

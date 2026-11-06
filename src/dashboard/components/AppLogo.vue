@@ -13,3 +13,5 @@ const src = () => staticUrl(props.themeLogo ?? "img/logo.webp");
     </RouterLink>
   </div>
 </template>
+
+<style scoped src="@shared/styles/logo.css"></style>

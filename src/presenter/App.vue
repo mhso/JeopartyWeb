@@ -68,3 +68,30 @@ const showFooter = computed(() => store.stage !== "lobby" && store.stage !== "en
 
   <PresenterFooter v-if="showFooter" />
 </template>
+
+<style scoped src="@shared/styles/bg_fill.css"></style>
+
+<style>
+body {
+  overflow: hidden;
+}
+
+p {
+  text-align: center;
+}
+
+h1 {
+  font-family: league;
+  font-size: 4.5rem;
+  color: #e6d86b;
+  text-shadow: 1px 3px 2px rgba(0, 0, 0, 0.75);
+}
+
+h2 {
+  font-size: 3rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+}
+</style>

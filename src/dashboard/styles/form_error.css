@@ -1,0 +1,8 @@
+#dashboard-form-error {
+  position: absolute;
+  transform: translateX(-50%);
+  left: 50%;
+  color: red;
+  font-weight: 800;
+  font-size: 20px;
+}

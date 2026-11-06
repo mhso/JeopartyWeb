@@ -1,0 +1,27 @@
+.question-choices-wrapper {
+  margin: 0 auto;
+  width: 650px;
+  margin-bottom: 20px;
+}
+
+.question-choice-entry {
+  position: relative;
+  width: 42%;
+  display: inline-block;
+  margin: 5px;
+  height: 60px;
+  background-color: #2e28f2;
+  border-radius: 10px;
+  border: 1px solid white;
+  font-size: 20px;
+  padding: 6px 10px;
+  text-align: left;
+  line-height: 1;
+  opacity: 0;
+  transition: opacity 1s;
+}
+
+.question-choice-number {
+  font-weight: bold;
+  color: orange;
+}

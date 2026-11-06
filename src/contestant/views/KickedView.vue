@@ -10,3 +10,7 @@ import { staticUrl } from "@shared/static";
   </div>
   <h2 style="color: white; text-align: center">You have been kicked :(</h2>
 </template>
+
+<style scoped src="@shared/styles/bg_fill.css"></style>
+
+<style scoped src="@shared/styles/logo.css"></style>

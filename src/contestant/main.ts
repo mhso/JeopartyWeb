@@ -4,7 +4,6 @@ import { createPinia } from "pinia";
 import { i18n } from "@shared/i18n";
 
 import "@shared/styles/style.css";
-import "@shared/styles/contestant_style.css";
 
 import App from "./App.vue";
 import { router } from "./router";

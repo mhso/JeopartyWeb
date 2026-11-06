@@ -43,9 +43,68 @@ const resultSrc = computed(() => {
     <img :src="buzzerSrc" alt="Buzzer" />
   </div>
 
-  <div v-if="resultSrc" :key="resultSrc" id="contestant-buzzer-status" class="flash">
+  <div v-if="resultSrc" :key="resultSrc" id="contestant-buzzer-status">
     <img :src="resultSrc" alt="" />
   </div>
 
   <PowerUpBar />
 </template>
+
+<style scoped src="../styles/category_name.css"></style>
+
+<style scoped>
+#question-category-header {
+  color: white;
+  font-family: Garamond, serif;
+  font-size: 2.5rem;
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
+
+#question-reward-span {
+  color: gold;
+  font-weight: 1000;
+}
+
+#buzzer-wrapper {
+  touch-action: manipulation;
+  margin-bottom: 10px;
+}
+
+#buzzer-wrapper > img {
+  width: 200px;
+  touch-action: manipulation;
+}
+
+@keyframes showBuzzerStatus {
+    0% {
+        opacity: 0;
+        transform: scale(0.2);
+    }
+    33% {
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+#contestant-buzzer-status {
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.662);
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 99;
+  text-align: center;
+}
+
+#contestant-buzzer-status > img {
+  width: 90vw;
+  position: relative;
+  top: calc(50% - 45vw);
+  animation: showBuzzerStatus 2.5s ease forwards;
+}
+</style>

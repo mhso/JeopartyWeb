@@ -1,0 +1,5 @@
+/* showHighlightError's class, which had no rule in the old sheets. */
+.error-highlight {
+  outline: 3px solid #ff3b3b;
+  outline-offset: 2px;
+}

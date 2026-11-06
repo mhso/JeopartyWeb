@@ -159,3 +159,101 @@ function onDragEnd(): void {
     </button>
   </div>
 </template>
+
+<style scoped src="../styles/delete_button.css"></style>
+
+<style scoped src="../styles/error_highlight.css"></style>
+
+<style scoped>
+.question-pack-category-wrapper {
+  text-align: center;
+  flex-shrink: 1;
+}
+
+.question-pack-category-header {
+  position: relative;
+}
+
+.question-pack-category-name, .question-pack-question-value {
+  background-color: rgb(15, 12, 118);
+  text-align: center;
+  padding: 0 5px;
+  height: 50px;
+}
+
+.question-pack-category-name {
+  color: white;
+  font-weight: 800;
+  margin: 0 5px;
+}
+
+.question-pack-question-wrapper {
+  position: relative;
+  display: block;
+  margin: 0 auto;
+}
+
+.question-pack-question-wrapper:hover {
+  filter: brightness(1.4);
+}
+
+.question-pack-question-value {
+  color: rgb(236, 188, 94);
+  cursor: pointer;
+  margin-left: 5px;
+  margin-right: 5px;
+  border: 2px silver groove;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.question-pack-question-dropzone {
+  min-height: 10px;
+}
+
+.question-pack-question-dropzone[data-drop_active="true"] {
+  background-color: #5395ff;
+}
+
+.question-pack-question-preview {
+  position: absolute;
+  border-radius: 10px;
+  width: 12vw;
+  z-index: 10;
+  background-color: #00005d;
+  border: 2px solid white;
+  padding: 10px;
+}
+
+.question-pack-question-preview > h3 {
+  margin-top: 0;
+  font-size: 1rem;
+}
+
+.question-pack-question-preview > h4 {
+  margin-bottom: 5px;
+  font-style: italic;
+}
+
+.question-pack-add-question-btn {
+  position: relative;
+  border: 2px dashed #ddd;
+  border-top: none;
+  cursor: pointer;
+  line-height: 1;
+  font-weight: bold;
+  background-color: transparent;
+  color: white;
+  font-size: 15px;
+}
+
+.question-pack-add-question-btn:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* It overlaps the card below; it must not swallow that card's clicks. */
+.question-pack-question-preview {
+  pointer-events: none;
+}
+</style>

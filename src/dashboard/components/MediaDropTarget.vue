@@ -131,3 +131,89 @@ async function onDrop(event: DragEvent): Promise<void> {
     />
   </div>
 </template>
+
+<style scoped src="../styles/delete_button.css"></style>
+
+<style scoped src="../styles/loading_icon.css"></style>
+
+<style scoped>
+.media-drag-target {
+  position: relative;
+  cursor: pointer;
+  margin-top: 10px;
+  margin-left: 5px;
+  margin-right: 5px;
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.media-drag-target:hover, .media-drag-hover {
+  filter: drop-shadow(0px 0px 8px white);
+}
+
+.media-drag-target.target-empty {
+  border: 2px dashed white;
+  width: 300px;
+  min-height: 200px;
+}
+
+.media-drag-target.target-empty.media-drag-hover, .media-drag-target.target-empty:hover {
+  border: solid 2px white;
+  background-color: rgba(255, 255, 255, 0.205);
+}
+
+.media-delete-btn {
+  z-index: 10;
+  right: 6px;
+  font-size: 29px;
+  padding: 0 8px;
+  padding-bottom: 0px;
+  padding-bottom: 0px;
+  line-height: 1;
+  padding-bottom: 5px;
+  color: #dbdbdb;
+}
+
+/* Also styles the buttons QuestionEditor passes in through the controls slot. */
+.media-control-btn, :slotted(.media-control-btn) {
+  cursor: pointer;
+  background-color: #333;
+  position: absolute;
+  border: 2px solid #dbdbdb;
+  border-radius: 10px;
+  height: 36px;
+  top: 4px;
+}
+
+.media-control-btn:hover, :slotted(.media-control-btn:hover) {
+  filter: brightness(0.8);
+}
+
+.drag-target-tooltip > h3 {
+  margin-top: 0;
+}
+
+.drag-target-preview-wrapper {
+  text-align: center;
+}
+
+.drag-target-loading {
+  position: absolute;
+  min-height: 200px;
+  height: 100%;
+  width: auto;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.drag-target-loading > .loading-icon {
+  width: auto;
+  height: 65%;
+  aspect-ratio: 1;
+  border-width: 6px;
+}
+</style>

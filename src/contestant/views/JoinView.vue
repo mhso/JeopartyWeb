@@ -174,3 +174,100 @@ async function join(): Promise<void> {
 
   <div v-if="error" id="contestant-lobby-status" class="error-status">{{ error.template ? t(error.template) : error.message }}</div>
 </template>
+
+<style scoped>
+#contestant-lobby-wrapper {
+  text-align: center;
+  color: white;
+}
+
+#contestant-lobby-wrapper > h1 {
+  margin-bottom: 50px;
+}
+
+#contestant-lobby-status {
+  text-align: center;
+  font-weight: 800;
+  font-size: 20px;
+  margin-top: 10px;
+}
+
+#contestant-lobby-status.error-status {
+  color: red;
+}
+
+#contestant-lobby-avatar-wrapper {
+  position: relative;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  width: 128px;
+  height: 128px;
+  border: 2px solid white;
+  border-radius: 130px;
+}
+
+#contestant-lobby-avatar-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0;
+}
+
+#contestant-lobby-avatar-img {
+  display: block;
+}
+
+#contestant-lobby-name {
+  font-size: 22px;
+  line-height: 1;
+  width: 160px;
+  display: block;
+  margin: 0 auto;
+  margin-top: 15px;
+  margin-bottom: 30px;
+}
+
+#contestant-lobby-color-label {
+  position: relative;
+  font-size: 22px;
+  margin-right: 10px;
+  top: 5px;
+  display: block;
+  margin-bottom: 12px;
+}
+
+#contestant-lobby-color {
+  line-height: 1;
+  height: 35px;
+  vertical-align: top;
+}
+
+#contestant-lobby-password-label {
+  font-size: 22px;
+  display: block;
+  margin-top: 30px;
+  margin-bottom: 5px;
+}
+
+#contestant-lobby-join {
+  font-size: 20px;
+  background-color: rgb(19, 86, 231);
+  display: block;
+  margin: 0 auto;
+  margin-top: 30px;
+  color: white;
+  border-radius: 5px;
+  border: 2px solid white;
+  cursor: pointer;
+  padding: 5px 10px;
+}
+
+#contestant-lobby-join:disabled {
+  background-color: rgb(67, 67, 67);
+}
+</style>

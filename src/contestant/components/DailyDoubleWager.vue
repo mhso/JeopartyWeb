@@ -50,3 +50,9 @@ const maxWager = computed(() =>
     {{ t("waiting_double") }}
   </h3>
 </template>
+
+<style scoped src="../styles/player_status.css"></style>
+
+<style scoped src="../styles/wager_input.css"></style>
+
+<style scoped src="../styles/wager_button.css"></style>

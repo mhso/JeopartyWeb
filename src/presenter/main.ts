@@ -5,8 +5,6 @@ import { i18n } from "@shared/i18n";
 import { setUnauthorizedHandler } from "@shared/api";
 
 import "@shared/styles/style.css";
-import "@shared/styles/presenter_style.css";
-import "@shared/styles/question_style.css";
 
 import App from "./App.vue";
 import { router } from "./router";

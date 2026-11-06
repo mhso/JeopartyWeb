@@ -140,3 +140,166 @@ function resumeGame(game: GameSummary): void {
     </div>
   </div>
 </template>
+
+<style scoped src="../styles/default_button.css"></style>
+
+<style scoped>
+#dashboard-wrapper {
+  color: #f4f4f4;
+  margin-top: 2vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#dashboard-wrapper h1 {
+  text-align: center;
+  font-size: 3rem;
+  text-shadow: 0px 1px 3px #454545;
+  margin-top: 0;
+}
+
+#dashboard-wrapper > div {
+  display: flex;
+
+}
+
+#dashboard-games-list, #dashboard-questions-list {
+  position: relative;
+  color: white;
+  width: 26vw;
+  min-width: 300px;
+  padding: 15px;
+  background-color: #151b39;
+  border: solid 2px white;
+  border-radius: 20px;
+  text-align: center;
+}
+
+#dashboard-games-data, #dashboard-questions-data {
+  overflow-y: auto;
+  max-height: 50vh;
+  padding: 0 15px;
+  text-align: left;
+}
+
+#dashboard-wrapper div > h3 {
+  margin: 0;
+  margin-bottom: 15px;
+}
+
+#dashboard-games-list {
+  margin-right: 15px;
+}
+
+#dashboard-questions-list {
+  margin-left: 15px;
+}
+
+#dashboard-questions-list-empty, #dashboard-game-list-empty {
+  font-style: italic;
+  margin-bottom: 15px;
+}
+
+.dashboard-list-header {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.dashboard-game-entry-wrapper {
+  background-color: #2b2b35;
+}
+
+.dashboard-entry-wrapper {
+  position: relative;
+  border: 2px solid white;
+  padding: 10px;
+  margin-top: 15px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  line-height: 1.2;
+}
+
+.dashboard-questions-entry-wrapper, .dashboard-game-entry-wrapper.game-active {
+  cursor: pointer;
+  background-color: #2c305e;
+}
+
+.dashboard-game-entry-ended {
+  font-weight: bold;
+  color: rgb(205, 106, 0);
+}
+
+.dashboard-game-entry-ended.game-active {
+  font-weight: initial;
+  color: #11f511;
+}
+
+.dashboard-questions-entry-wrapper:hover, .dashboard-game-entry-wrapper.game-active:hover {
+  filter: brightness(1.25);
+}
+
+.dashboard-questions-entry-wrapper > h3, .dashboard-game-entry-wrapper > h3 {
+  text-align: center;
+  margin-top: 0;
+  font-weight: bold;
+}
+
+.dashboard-question-entry-public.pack-public {
+  color: rgb(0, 108, 0);
+}
+
+.dashboard-question-entry-public.pack-private {
+  color: rgb(205, 106, 0);
+}
+
+.dashboard-create-btn {
+  margin-top: 10px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.dashboard-create-btn > a {
+  color: black;
+  text-decoration: none;
+}
+
+.dashboard-cheatsheet-btn {
+  cursor: pointer;
+  position: absolute;
+  background-color: transparent;
+  border: 1px solid transparent;
+  bottom: 5px;
+  right: 5px;
+  padding: 0 3px;
+}
+
+.dashboard-cheatsheet-btn > img {
+  width: 26px;
+}
+
+.dashboard-delete-btn {
+  cursor: pointer;
+  position: absolute;
+  background-color: transparent;
+  border: 1px solid transparent;
+  right: 5px;
+  top: 5px;
+  padding: 3px;
+  transition: opacity 0.2s;
+  opacity: 0;
+}
+
+.dashboard-delete-btn > img {
+  width: 26px;
+}
+
+.dashboard-delete-btn:hover {
+  filter: brightness(0.75);
+}
+
+.dashboard-entry-wrapper:hover .dashboard-delete-btn {
+  opacity: 1;
+}
+</style>

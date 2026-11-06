@@ -44,7 +44,7 @@ import type { KeyHandlers } from "@shared/composables/useActionKey";
 import type { ActiveQuestion, PowerUpType } from "@shared/types";
 
 import { playSound, preloadSounds, SOUNDS, stopSound } from "../audio";
-import { useGameStore, BuzzEmoji } from "../stores/game";
+import { useGameStore } from "../stores/game";
 
 export type Beat =
   | "wager"
@@ -279,19 +279,16 @@ export function usePresenterFlow(question: ActiveQuestion, options: FlowOptions)
     later(() => {
       if (!recordsAreEqual(indicator.value, next)) return;
       indicatorVisible.value = true;
-      let resultEmoji;
       if (next.correct) {
         void playSound(store.state?.correct_sound);
-        resultEmoji = "sunglasses";
       } else {
         // Each wrong answer on a question gets the next sound in the list.
         void playSound(store.state?.wrong_sounds?.[wrongSoundsPlayed]);
         wrongSoundsPlayed += 1;
-        resultEmoji = "clown";
       }
 
       if (next.contestantId != null) {
-        store.buzzEmojis.set(next.contestantId, resultEmoji as BuzzEmoji);
+        store.buzzEmojis.set(next.contestantId, next.correct);
 
         later(() => {
           if (next.contestantId != null) store.buzzEmojis.delete(next.contestantId);
@@ -434,13 +431,14 @@ export function usePresenterFlow(question: ActiveQuestion, options: FlowOptions)
   /** `buzz_winner`. */
   function playerBuzzedFirst(contestantId: string): void {
     if (questionOver.value) return;
-    if (activePowerUp.value !== null && activePowerUp.value !== "hijack") return;
+    const currentPower = activePowerUp.value;
+    if (currentPower !== null && currentPower !== "hijack") return;
 
     buzzedIn.value.push(contestantId);
 
     if (
       !activeContestants.value[contestantId] ||
-      (answering.value !== null && activePowerUp.value !== "hijack")
+      (answering.value !== null && currentPower !== "hijack")
     ) {
       return;
     }
@@ -452,10 +450,10 @@ export function usePresenterFlow(question: ActiveQuestion, options: FlowOptions)
     const personal = store.contestant(contestantId)?.buzz_sound;
     if (personal) later(() => void playSound(personal), TIMING.personalBuzzDelayMs);
 
-    afterBuzzIn(contestantId);
+    afterBuzzIn(contestantId, currentPower);
   }
 
-  function afterBuzzIn(contestantId: string): void {
+  function afterBuzzIn(contestantId: string, currentPower: PowerUpType | null): void {
     pauseVideo();
     countdown.stop();
     askTimer = cancel(askTimer);
@@ -466,6 +464,10 @@ export function usePresenterFlow(question: ActiveQuestion, options: FlowOptions)
 
     answerStartTimer = cancel(answerStartTimer);
     answerStartTimer = later(() => {
+      if (currentPower === null && activePowerUp.value !== null && activePowerUp.value === "rewind") {
+        return;
+      }
+
       answerStartTimer = null;
       startAnswerCountdown(answerTime);
       enablePowerUp(contestantId, "freeze");
@@ -487,6 +489,7 @@ export function usePresenterFlow(question: ActiveQuestion, options: FlowOptions)
 
   /** Space on `answering`: stop the clock and take the answer. */
   function pauseBeforeAnswer(): void {
+    disablePowerUp(null, "rewind");
     disablePowerUp(null, "hijack");
     disablePowerUp(answering.value, "freeze");
     pauseVideo();
@@ -692,7 +695,7 @@ export function usePresenterFlow(question: ActiveQuestion, options: FlowOptions)
     });
 
     answering.value = last.contestantId;
-    afterBuzzIn(last.contestantId);
+    afterBuzzIn(last.contestantId, activePowerUp.value);
   }
 
   // -- 4. power-ups ---------------------------------------------------------
@@ -766,6 +769,21 @@ export function usePresenterFlow(question: ActiveQuestion, options: FlowOptions)
     );
   }
 
+  function handleRewindSimultanousBuzz(contestantId: string) {
+    // Anyone who buzzed after the rewinder gets their buzz back.
+    const index = buzzedIn.value.indexOf(contestantId);
+    if (index >= 0) {
+      for (const refunded of buzzedIn.value.slice(index + 1)) {
+        activeContestants.value[refunded] = true;
+      }
+      buzzedIn.value = buzzedIn.value.slice(0, index + 1);
+      countdown.stop();
+      return true;
+    }
+
+    return false;
+  }
+
   function onRewindUsed(contestantId: string): void {
     countdown.stop();
 
@@ -782,20 +800,24 @@ export function usePresenterFlow(question: ActiveQuestion, options: FlowOptions)
     }
     lastJudgement = null;
 
-    // Anyone who buzzed after the rewinder gets their buzz back.
-    const index = buzzedIn.value.indexOf(contestantId);
-    if (index >= 0) {
-      for (const refunded of buzzedIn.value.slice(index + 1)) {
-        activeContestants.value[refunded] = true;
+    // Try to catch and handle any buzz that registers as we handle this rewind.
+    // Tries to do this 5 times, every 0.25 second, or until a buzz is registered
+    const maxAttempts = 20;
+    let attempt = 0;
+    const intervalId = setInterval(() => {
+      if (handleRewindSimultanousBuzz(contestantId) || attempt == maxAttempts) {
+        clearInterval(intervalId);
+        return;
       }
-      buzzedIn.value = buzzedIn.value.slice(0, index + 1);
-    }
+
+      attempt++;
+    }, 200);
 
     answering.value = contestantId;
   }
 
   function afterRewindUsed(): void {
-    if (answering.value !== null) afterBuzzIn(answering.value);
+    if (answering.value !== null) afterBuzzIn(answering.value, "rewind");
   }
 
   /** presenter.js `isHijackBeforeQuestion`. */
@@ -818,7 +840,7 @@ export function usePresenterFlow(question: ActiveQuestion, options: FlowOptions)
   function afterHijackUsed(contestantId: string, videoWasPlaying: boolean): void {
     if (!hijackBonus.value && answering.value !== null) {
       answering.value = contestantId;
-      afterBuzzIn(contestantId);
+      afterBuzzIn(contestantId, "hijack");
     } else {
       store.spotlight = contestantId;
       if (videoWasPlaying) void video.value?.play();

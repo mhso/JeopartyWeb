@@ -72,3 +72,56 @@ onMounted(async () => {
     </div>
   </div>
 </template>
+
+<style scoped>
+#cheatsheet-outer-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#cheatsheet-wrapper {
+  color: white;
+}
+
+#cheatsheet-rounds-header > button {
+  padding: 5px;
+  font-size: 18px;
+  margin: 0 5px;
+}
+
+.cheatsheet-category-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cheatsheet-category {
+  margin: 10px 0;
+}
+
+.cheatsheet-category-header > button {
+  padding: 5px;
+  height: 40px;
+}
+
+.cheatsheet-questions-table {
+  background-color: #252525;
+  border: 1px solid white;
+  color: rgb(240, 240, 240);
+}
+
+.cheatsheet-questions-table td {
+  padding: 10px 5px;
+  border-top: 1px solid white;
+}
+
+.cheatsheet-questions-table .cheatsheet-value {
+  font-weight: 800;
+}
+
+.cheatsheet-questions-table .cheatsheet-answer {
+  font-style: italic;
+  color: rgb(39, 140, 223);
+}
+</style>

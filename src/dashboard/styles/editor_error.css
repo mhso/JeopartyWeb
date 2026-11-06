@@ -1,0 +1,17 @@
+.question-pack-editor-error {
+  position: absolute;
+  bottom: 75px;
+  left: 0;
+  right: 0;
+  width: fit-content;
+  max-width: 60vw;
+  margin: 0 auto;
+  padding: 8px 14px;
+  z-index: 10;
+  color: #ff6b6b;
+  background-color: rgba(0, 0, 0, 0.85);
+  border: 1px solid #ff6b6b;
+  border-radius: 5px;
+  font-weight: 800;
+  text-align: center;
+}

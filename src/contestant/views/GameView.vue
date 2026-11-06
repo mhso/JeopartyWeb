@@ -112,3 +112,76 @@ const showRoundHeader = computed(
     <component :is="stageComponent" />
   </div>
 </template>
+
+<style scoped>
+#contestant-game-wrapper {
+  position: relative;
+  padding: 0 10px;
+  color: white;
+  text-align: center;
+}
+
+#contestant-game-header {
+  width: 90%;
+  max-width: 240px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border: 2px solid white;
+  background-color: #323232;
+  margin: 0 auto;
+  margin-top: 20px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+}
+
+#contestant-game-header > div > img {
+  width: 64px;
+  border-radius: 34px;
+}
+
+#contestant-game-info {
+  flex-grow: 1;
+  text-align: right;
+  padding-right: 5px;
+  line-height: 1.6;
+}
+
+#contestant-game-score {
+  font-size: 18px;
+}
+
+#contestant-game-name {
+  text-align: center;
+  font-size: 20px;
+}
+
+#contestant-game-hits {
+  color: rgb(48, 188, 48);
+}
+
+#contestant-game-misses {
+  color: red;
+}
+
+.contestant-low-ping {
+  color: rgb(0, 154, 0);
+}
+
+.contestant-moderate-ping {
+  color: rgb(229, 138, 35);
+}
+
+.contestant-high-ping {
+  color: rgb(247, 10, 10);
+}
+
+.contestant-round-header {
+  font-weight: 1000;
+  margin-bottom: 0.5rem;
+  font-size: 1.75rem;
+  margin-top: 0;
+}
+</style>

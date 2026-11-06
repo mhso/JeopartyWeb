@@ -64,3 +64,36 @@ async function submit(signup = false): Promise<void> {
     </div>
   </div>
 </template>
+
+<style scoped src="../styles/default_button.css"></style>
+
+<style scoped src="../styles/input_field.css"></style>
+
+<style scoped src="../styles/form_error.css"></style>
+
+<style scoped>
+#login-wrapper {
+  color: white;
+  margin-top: 5vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+#login-wrapper h1 {
+  text-align: center;
+}
+
+#login-wrapper form {
+  text-align: center;
+}
+
+.login-submit-btn {
+  width: 85px;
+  font-size: 16px;
+}
+
+.login-submit-btn:first-of-type {
+  margin-right: 5px;
+}
+</style>

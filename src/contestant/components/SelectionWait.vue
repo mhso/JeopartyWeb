@@ -24,3 +24,5 @@ const isMyTurn = computed(() => store.me?.has_turn ?? false);
        spinning the wheel. `turn_chosen` refetches and this resolves. -->
   <h3 v-else id="contestant-turn-desc">{{ t("waiting_turn_3") }}</h3>
 </template>
+
+<style scoped src="../styles/player_status.css"></style>

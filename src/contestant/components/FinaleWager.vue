@@ -42,3 +42,7 @@ const maxWager = computed(() => Math.max(store.me?.score ?? 0, store.state?.game
     {{ t("invalid_wager") }} {{ store.wagerBounds[0] }} {{ t("and") }} {{ store.wagerBounds[1] }}
   </p>
 </template>
+
+<style scoped src="../styles/wager_input.css"></style>
+
+<style scoped src="../styles/wager_button.css"></style>

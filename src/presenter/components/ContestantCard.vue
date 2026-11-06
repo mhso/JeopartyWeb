@@ -164,10 +164,16 @@ function remove(): void {
     <img class="footer-contestant-entry-avatar" :src="staticUrl(contestant.avatar)" alt="" />
 
     <img
-      v-show="store.buzzEmojis.has(contestant.id)"
-      class="footer-contestant-entry-buzz-emoji footer-contestant-icon-overlay flash"
-      :src="staticUrl(`img/${store.buzzEmojis.get(contestant.id)}.png`)"
-      :key="store.buzzEmojis.get(contestant.id)"
+      v-show="store.buzzEmojis.has(contestant.id) && store.buzzEmojis.get(contestant.id)"
+      class="footer-contestant-entry-buzz-emoji footer-contestant-icon-overlay"
+      :src="staticUrl(`img/sunglasses.png`)"
+      alt=""
+    />
+
+    <img
+      v-show="store.buzzEmojis.has(contestant.id) && !store.buzzEmojis.get(contestant.id)"
+      class="footer-contestant-entry-buzz-emoji footer-contestant-icon-overlay"
+      :src="staticUrl(`img/clown.png`)"
       alt=""
     />
 
@@ -217,3 +223,201 @@ function remove(): void {
     </div>
   </div>
 </template>
+
+<style scoped>
+.footer-contestant-entry {
+  width: 180px;
+  height: 65%;
+  position: relative;
+  border: 2px solid black;
+  border-bottom: none;
+  margin: 0 20px;
+  padding: 0 2px;
+}
+
+.footer-contestant-entry.active-contestant-entry {
+  height: 100%;
+  box-shadow: 0px 0px 15px white;
+}
+
+.footer-contestant-buzzes {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.3rem;
+  font-weight: 800;
+}
+
+.footer-contestant-buzzes > div {
+  position: relative;
+  background-color: #0000009e;
+  padding: 0 10px;
+  padding-bottom: 2px;
+  border-radius: 5px;
+  top: -1px;
+}
+
+.footer-contestant-entry-hits {
+  color: rgb(0, 173, 0);
+  left: -2px;
+}
+
+.footer-contestant-entry-misses {
+  color: red;
+  text-align: right;
+  right: -2px;
+}
+
+.footer-contestant-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 6px;
+  line-height: 1;
+}
+
+.footer-contestant-entry-name {
+  font-weight: 1000;
+  margin-right: 12px;
+  max-width: 47%;
+  height: 100%;
+}
+
+.footer-contestant-entry-score {
+  font-size: 1.2rem;
+  text-align: center;
+  font-weight: 700;
+
+  animation-duration: 2s;
+  animation-iteration-count: 1;
+}
+
+.score-animation-correct {
+  color: rgb(0, 212, 0);
+}
+
+.score-animation-wrong {
+  color: red;
+}
+
+.footer-contestant-entry-powers {
+  display: flex;
+  justify-content: center;
+  margin-top: 6px;
+}
+
+.footer-contestant-entry-powers > div {
+  position: relative;
+}
+
+.footer-contestant-entry-powers > div > img {
+  width: 30px;
+  border-radius: 16px;
+  border: 2px solid white;
+  margin: 0 2px;
+}
+
+.footer-contestant-entry-power-used {
+  position: absolute;
+}
+
+.footer-contestant-entry-avatar {
+  width: 64px;
+  height: 64px;
+  position: absolute;
+  top: -34px;
+  left: calc(50% - 34px);
+  border-radius: 34px;
+  border: solid 2px black;
+}
+
+.footer-contestant-icon-overlay {
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  top: -32px;
+  left: calc(50% - 32px);
+  border-radius: 32px;
+  background: #00000075;
+}
+
+@keyframes flash {
+  0%   { opacity: 0; }
+  15%  { opacity: 1; }
+  80%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.footer-contestant-entry-buzz-emoji {
+  animation: flash 2.5s ease forwards;
+}
+
+.footer-contestant-edit-btn {
+  cursor: pointer;
+}
+
+.footer-contestant-edit-btn > img {
+  width: 60%;
+  height: auto;
+}
+
+.footer-contestant-remove-btn {
+  background-color: rgb(181, 7, 7);
+  font-size: 22px;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  padding: 0 7px;
+  color: white;
+  border-radius: 5px;
+  border: 2px solid white;
+  font-weight: bold;
+  cursor: pointer;
+}
+</style>
+
+<style>
+/* Not scoped: named from JS, and scoped keyframes get a hashed name. */
+@keyframes scoreUpdatedSmall {
+  25% {
+    font-weight: 1000;
+    transform: scale(1.25);
+  }
+  100% {
+    font-weight: initial;
+    transform: scale(1);
+  }
+}
+
+@keyframes scoreUpdatedMedium {
+  25% {
+    font-weight: 1000;
+    transform: scale(1.4);
+  }
+  100% {
+    font-weight: initial;
+    transform: scale(1);
+  }
+}
+
+@keyframes scoreUpdatedLarge {
+  25% {
+    font-weight: 1000;
+    transform: scale(1.6);
+  }
+  100% {
+    font-weight: initial;
+    transform: scale(1);
+  }
+}
+
+@keyframes scoreUpdatedHuge {
+  25% {
+    font-weight: 1000;
+    transform: scale(1.8);
+  }
+  100% {
+    font-weight: initial;
+    transform: scale(1);
+  }
+}
+</style>

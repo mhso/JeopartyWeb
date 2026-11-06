@@ -147,7 +147,7 @@ onMounted(() => {
     </table>
 
     <!-- Confetti overlay video -->
-    <video v-show="showConfetti"
+    <video v-show="showConfettiVideo"
       id="endscreen-confetti-video"
       :src="staticUrl('img/confetti.webm')"
       muted
@@ -163,3 +163,95 @@ onMounted(() => {
     :src="staticUrl('data/sounds/shooting_star.mp3')"
   />
 </template>
+
+<style scoped>
+#endscreen-wrapper {
+  text-align: center;
+  color: white;
+}
+
+#endscreen-wrapper > #logo-wrapper {
+  width: 100%;
+}
+
+#endscreen-winner-desc {
+  font-size: 3rem;
+  margin-top: 30px;
+  margin-bottom: 100px;
+  text-shadow: 2px 2px 5px rgb(15, 15, 15);
+}
+
+#endscreen-avatars-wrapper {
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.endscreen-avatars-entry {
+  display: inline-block;
+  position: relative;
+  margin-left: 30px;
+  margin-right: 30px;
+}
+
+.endscreen-crown {
+  position: absolute;
+  width: 160px;
+  left: calc(50% - 80px);
+  top: -90px;
+  z-index: 10;
+}
+
+.endscreen-avatar {
+  position: relative;
+  width: 120px;
+  border-radius: 60px;
+  border: 2px solid gold;
+}
+
+#endscreen-scores-table {
+  margin: 0 auto;
+  font-size: 24px;
+  background-color: #000000d1;
+  border: 2px solid white;
+  margin-top: 2rem;
+}
+
+#endscreen-scores-table td {
+  padding: 10px 20px;
+  border-bottom: 1px solid white;
+}
+
+#endscreen-scores-table th {
+  padding: 10px 20px;
+  font-weight: 800;
+  border-bottom: 2px solid white;
+}
+
+.endscreen-score-name {
+  text-align: left;
+}
+
+.endscreen-score-data {
+  text-align: right;
+}
+
+#endscreen-techno-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  pointer-events: none;
+}
+
+#endscreen-confetti-video {
+  pointer-events: none;
+  width: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+}
+</style>
